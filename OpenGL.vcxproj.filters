@@ -48,13 +48,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="directions.png">
+    <Image Include="images\directions.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="imagetwo.png">
+    <Image Include="images\imagetwo.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="imagethree.png">
+    <Image Include="images\imagethree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\container.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

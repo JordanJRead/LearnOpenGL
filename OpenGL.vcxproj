@@ -164,9 +164,10 @@
     <ClInclude Include="vector3.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="directions.png" />
-    <Image Include="imagethree.png" />
-    <Image Include="imagetwo.png" />
+    <Image Include="images\container.png" />
+    <Image Include="images\directions.png" />
+    <Image Include="images\imagethree.png" />
+    <Image Include="images\imagetwo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

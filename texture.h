@@ -9,9 +9,11 @@
 class Texture {
 public:
     unsigned int ID;
+    int textureUnit;
 
-	Texture(std::string_view imagePath, int textureUnit) {
-        glActiveTexture(GL_TEXTURE0 + textureUnit);
+	Texture(std::string_view imagePath, int textureUnitOffset) {
+        textureUnit = GL_TEXTURE0 + textureUnitOffset;
+        glActiveTexture(textureUnit);
         glGenTextures(1, &ID);
         glBindTexture(GL_TEXTURE_2D, ID);
 
@@ -25,7 +27,8 @@ public:
         unsigned char* data = stbi_load(imagePath.data(), &width, &height, &channelCount, 0);
 
         if (data) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            auto internalFormat{ channelCount == 3 ? GL_RGB : GL_RGBA };
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
             stbi_image_free(data);
         }
@@ -34,7 +37,10 @@ public:
         }
 	}
 
-    void use() { glBindTexture(GL_TEXTURE_2D, ID); }
+    void use() {
+        glActiveTexture(textureUnit);
+        glBindTexture(GL_TEXTURE_2D, ID);
+    }
 };
 
 #endif

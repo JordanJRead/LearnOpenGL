@@ -148,19 +148,35 @@ int main()
     glBindVertexArray(0);
 
 
-    glm::vec3 lightPos{ 0, 1, -1.3 };
+    glm::vec3 lightPos{ 0, 1, 0 };
     // Shaders
     Shader lightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" };
     lightingShader.use();
-    lightingShader.setVector3("objectColor", glm::vec3{ 1, 0.5, 0.31 });
-    lightingShader.setVector3("lightColor", glm::vec3{ 1, 1, 1 });
-    lightingShader.setVector3("lightPos", lightPos);
+    lightingShader.setVector3("objectColor", 1, 0.5, 0.31);
+    lightingShader.setVector3("lightColor", 1, 1, 1);
     lightingShader.setVector3("viewPos", g_camera.pos);
+
+    // Object
+    lightingShader.setInt("material.diffuseMap", 0);
+    Texture diffuseMap{ "images/container.png", 0 };
+
+    lightingShader.setInt("material.specularMap", 1);
+    Texture specularMap{ "images/container_specular.png", 1 };
+
+    lightingShader.setInt("material.emissionMap", 2);
+    Texture emissionMap{ "images/emission.jpg", 2 };
+
+    lightingShader.setFloat("material.shininess", 32);
+
+    // Light
+    lightingShader.setVector3("light.pos", lightPos);
+    lightingShader.setVector3("light.ambient", 0.2, 0.2, 0.2);
+    lightingShader.setVector3("light.diffuse", 1, 1, 1);
+    lightingShader.setVector3("light.specular", 1, 1, 1);
 
     Shader gourandShader{ "shaders/gourand.vert", "shaders/gourand.frag" };
     gourandShader.use();
-    gourandShader.setVector3("objectColor", glm::vec3{ 1, 0.5, 0.31 });
-    gourandShader.setVector3("lightColor", glm::vec3{ 1, 1, 1 });
+    gourandShader.setVector3("lightColor", 1, 1, 1);
     gourandShader.setVector3("lightPos", lightPos);
     gourandShader.setVector3("viewPos", g_camera.pos);
 
@@ -178,9 +194,9 @@ int main()
     float lastFrame = currentFrame;
     while (!glfwWindowShouldClose(window)) {
 
-        lightPos.x = 0.3 * sin(glfwGetTime());
-        lightPos.y = 1.5 * sin(glfwGetTime());
-        lightPos.z = 1.5 * cos(glfwGetTime());
+        //lightPos.x = 0.3 * sin(glfwGetTime());
+        //lightPos.y = 1.5 * sin(glfwGetTime());
+        //lightPos.z = 1.5 * cos(glfwGetTime());
         lightModel = glm::mat4(1);
         lightModel = glm::translate(lightModel, lightPos);
         lightModel = glm::scale(lightModel, glm::vec3{ 0.2 });
@@ -198,8 +214,11 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(cubeModel));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(g_camera.view));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(g_camera.projection));
-        lightingShader.setVector3("lightPos", lightPos);
+        lightingShader.setVector3("light.pos", lightPos);
         lightingShader.setVector3("viewPos", g_camera.pos);
+        diffuseMap.use();
+        specularMap.use();
+        emissionMap.use();
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -208,6 +227,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
         glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(g_camera.view));
         glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(g_camera.projection));
+        lightSourceShader.setVector3("lightColor", 1, 1, 1);
         glBindVertexArray(lightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
