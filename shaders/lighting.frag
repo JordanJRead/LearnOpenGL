@@ -40,6 +40,6 @@ void main() {
 	float specFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	vec3 specular = light.specular * vec3(texture(material.specularMap, texCoords)) * specFactor;
 
-	vec3 result = ambient + diffuse + specular + vec3(texture(material.emissionMap, texCoords));
+	vec3 result = ambient + diffuse + specular;
 	FragColor = vec4(result, 1);
 }

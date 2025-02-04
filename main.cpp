@@ -163,8 +163,8 @@ int main()
     lightingShader.setInt("material.specularMap", 1);
     Texture specularMap{ "images/container_specular.png", 1 };
 
-    lightingShader.setInt("material.emissionMap", 2);
-    Texture emissionMap{ "images/emission.jpg", 2 };
+    //lightingShader.setInt("material.emissionMap", 2);
+    //Texture emissionMap{ "images/emission.jpg", 2 };
 
     lightingShader.setFloat("material.shininess", 32);
 
@@ -184,6 +184,7 @@ int main()
 
     // Matrices
     glm::mat4 cubeModel = glm::mat4(1.0f);
+    cubeModel = glm::scale(cubeModel, glm::vec3{ 10, 1, 10 });
 
     glm::mat4 lightModel = glm::mat4(1);
     lightModel = glm::translate(lightModel, lightPos);
@@ -218,7 +219,7 @@ int main()
         lightingShader.setVector3("viewPos", g_camera.pos);
         diffuseMap.use();
         specularMap.use();
-        emissionMap.use();
+        //emissionMap.use();
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
