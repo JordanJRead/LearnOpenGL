@@ -12,7 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 class Shader {
-public:
+protected:
     unsigned int ID;
 
 	Shader(std::string_view vertPath, std::string_view fragPath) {
@@ -87,10 +87,6 @@ public:
         glDeleteShader(fragShader);
 	}
 
-    void use() const {
-        glUseProgram(ID);
-    }
-
     void setBool(const std::string& name, bool value) const {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
     }
@@ -100,7 +96,7 @@ public:
     void setFloat(const std::string& name, float value) const {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
-    void setMatrix4(const std::string& name, const glm::mat4& matrix) {
+    void setMatrix4(const std::string& name, const glm::mat4& matrix) const {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
     }
     void setVector3(const std::string& name, const glm::vec3& value) const {
@@ -108,6 +104,11 @@ public:
     }
     void setVector3(const std::string& name, float x, float y, float z) const {
         glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+    }
+
+public:
+    void use() const {
+        glUseProgram(ID);
     }
 
     ~Shader() {

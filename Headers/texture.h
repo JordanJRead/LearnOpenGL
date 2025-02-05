@@ -41,6 +41,10 @@ public:
         glActiveTexture(textureUnit);
         glBindTexture(GL_TEXTURE_2D, ID);
     }
+
+    ~Texture() {
+        glDeleteTextures(1, &ID);
+    }
 };
 
 #endif

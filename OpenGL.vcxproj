@@ -153,17 +153,18 @@
     <None Include="shaders\gourand.vert" />
     <None Include="shaders\lightSource.frag" />
     <None Include="shaders\lightSource.vert" />
-    <None Include="shaders\lighting.frag" />
+    <None Include="shaders\oldlighting.frag" />
     <None Include="shaders\lighting.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="object.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="structs.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="vector3.h" />
+    <ClInclude Include="Headers\camera.h" />
+    <ClInclude Include="Headers\lightingshader.h" />
+    <ClInclude Include="Headers\object.h" />
+    <ClInclude Include="Headers\pointLight.h" />
+    <ClInclude Include="Headers\shader.h" />
+    <ClInclude Include="Headers\stb_image.h" />
+    <ClInclude Include="Headers\structs.h" />
+    <ClInclude Include="Headers\texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\container.png" />
