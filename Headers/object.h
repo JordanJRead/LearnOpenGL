@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "lightingshader.h"
+#include "vertexarraywrapper.h"
 
 // VAO, model, material
 class Object {
@@ -17,7 +18,7 @@ private:
 	Texture m_diffusionMap;
 	Texture m_specularMap;
 	Texture m_emissionMap;
-	unsigned int m_VAO;
+	VertexArrayWrapper vertexArrayWrapper;
 	float shininess;
 public:
 	glm::mat4 model;
@@ -28,26 +29,8 @@ public:
 		, m_specularMap{ material.specularMapPath, 1 }
 		, m_emissionMap{ material.emissionMapPath, 2 }
 		, shininess{ material.shininess }
+		, vertexArrayWrapper{ vertices }
 	{
-		glGenVertexArrays(1, &m_VAO);
-		glBindVertexArray(m_VAO);
-
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-
 		model = glm::mat4(1.0);
 		model = glm::translate(model, transform.pos);
 		model = glm::rotate(model, transform.rotation.y, { 0, 1, 0 });

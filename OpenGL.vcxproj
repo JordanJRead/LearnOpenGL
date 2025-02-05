@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Headers\vertexarraywrapper.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

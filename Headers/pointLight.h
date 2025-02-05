@@ -24,6 +24,7 @@ struct PointLight {
 	float attConst;
 	float attLinear;
 	float attQuad;
+	// TODO add VertexArrayWrapper?
 };
 
 #endif
