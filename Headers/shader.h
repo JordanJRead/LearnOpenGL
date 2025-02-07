@@ -10,6 +10,8 @@
 #include <string_view>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "scene.h"
+#include "camera.h"
 
 class Shader {
 protected:
@@ -110,6 +112,8 @@ public:
     void use() const {
         glUseProgram(ID);
     }
+
+    virtual void render(const Scene& scene, const Camera& camera) = 0;
 
     ~Shader() {
         glDeleteProgram(ID);

@@ -21,7 +21,7 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Headers\vertexarraywrapper.h">
+    <ClCompile Include="Headers\modelinfo.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,6 +56,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\lightingshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\spotLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\lightsourceshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
