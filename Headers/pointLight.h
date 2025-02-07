@@ -7,27 +7,17 @@
 
 class PointLight {
 public:
-	glm::vec3 ambient;
-	glm::vec3 diffuse;
-	glm::vec3 specular;
+	MultiColors colors{};
 
-	float attConst;
-	float attLinear;
-	float attQuad;
+	Attenuation attenuation;
 
 	ModelInfo modelInfo;
 
 	Transform transform;
 
-	PointLight(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular,
-		float _attConst, float _attLinear, float _attQuad,
-		const std::vector<float>& vertices, const Transform& _transform)
-		: ambient{ _ambient }
-		, diffuse{ _diffuse }
-		, specular{ _specular }
-		, attConst{ _attConst }
-		, attLinear{ _attLinear }
-		, attQuad{ _attQuad }
+	PointLight(const MultiColors& _colors, const Attenuation& _attenuation, const std::vector<float>& vertices, const Transform& _transform)
+		: colors{ _colors }
+		, attenuation{ _attenuation }
 		, modelInfo{ vertices, _transform }
 		, transform{ _transform }
 	{}

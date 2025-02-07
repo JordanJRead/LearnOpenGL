@@ -124,19 +124,19 @@ void LightingShader::setUniformPointLights(const std::vector<PointLight>& pointL
 		prefix += std::to_string(i);
 		prefix += "].";
 		setVector3(prefix + "pos",       pointLights[i].transform.pos);
-		setVector3(prefix + "ambient",   pointLights[i].ambient);
-		setVector3(prefix + "diffuse",   pointLights[i].diffuse);
-		setVector3(prefix + "specular",  pointLights[i].specular);
-		setFloat(  prefix + "attConst",  pointLights[i].attConst);
-		setFloat(  prefix + "attLinear", pointLights[i].attLinear);
-		setFloat(  prefix + "attQuad",   pointLights[i].attQuad);
+		setVector3(prefix + "ambient",   pointLights[i].colors.ambient);
+		setVector3(prefix + "diffuse",   pointLights[i].colors.diffuse);
+		setVector3(prefix + "specular",  pointLights[i].colors.specular);
+		setFloat(  prefix + "attConst",  pointLights[i].attenuation.attConst);
+		setFloat(  prefix + "attLinear", pointLights[i].attenuation.attLinear);
+		setFloat(  prefix + "attQuad",   pointLights[i].attenuation.attQuad);
 	}
 }
 void LightingShader::setUniformDirLight(const DirLight& dirLight) {
 	setVector3("dirLight.dir", dirLight.dir);
-	setVector3("dirLight.ambient", dirLight.ambient);
-	setVector3("dirLight.diffuse", dirLight.diffuse);
-	setVector3("dirLight.specular", dirLight.specular);
+	setVector3("dirLight.ambient", dirLight.colors.ambient);
+	setVector3("dirLight.diffuse", dirLight.colors.diffuse);
+	setVector3("dirLight.specular", dirLight.colors.specular);
 }
 void LightingShader::setUniformSpotLights(const std::vector<SpotLight>& spotLights) const {
 	std::size_t iMax{ spotLights.size() < 4 ? spotLights.size() : 4 };
@@ -149,9 +149,9 @@ void LightingShader::setUniformSpotLights(const std::vector<SpotLight>& spotLigh
 		setFloat(prefix + "cutoffDot", spotLights[i].cutoffDot);
 		setFloat(prefix + "outerDot", spotLights[i].outerDot);
 
-		setVector3(prefix + "ambient", spotLights[i].ambient);
-		setVector3(prefix + "diffuse", spotLights[i].diffuse);
-		setVector3(prefix + "specular", spotLights[i].specular);
+		setVector3(prefix + "ambient", spotLights[i].colors.ambient);
+		setVector3(prefix + "diffuse", spotLights[i].colors.diffuse);
+		setVector3(prefix + "specular", spotLights[i].colors.specular);
 	}
 }
 void LightingShader::setUniformMaxSpotLights(int count) const {

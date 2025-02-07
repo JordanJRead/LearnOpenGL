@@ -36,12 +36,12 @@ public:
 
 		for (const PointLight& pointLight : scene.getPointLights()) {
 			setUniformModel(pointLight.modelInfo.model);
-			setUniformLightColor(pointLight.diffuse);
+			setUniformLightColor(pointLight.colors.diffuse);
 			glDrawArrays(GL_TRIANGLES, 0, pointLight.modelInfo.vertexCount);
 		}
 		for (const SpotLight& spotLight : scene.getSpotLights()) {
 			setUniformModel(spotLight.modelInfo.model);
-			setUniformLightColor(spotLight.diffuse);
+			setUniformLightColor(spotLight.colors.diffuse);
 			glDrawArrays(GL_TRIANGLES, 0, spotLight.modelInfo.vertexCount);
 		}
 	}

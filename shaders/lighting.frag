@@ -72,7 +72,7 @@ void main() {
 	for (int i = 0; i < min(N_SPOT_LIGHTS, maxSpotLights); i++) {
 		resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
 	}
-
+	
 	FragColor = vec4(resultColor, 1);
 }
 

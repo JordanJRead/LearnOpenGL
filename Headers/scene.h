@@ -21,15 +21,21 @@ public:
 	}
 	const DirLight& getDirLight() const { return m_dirLight; }
 
-	void addSpotLight(const glm::vec3& dir, float cutoffDot, float outerDot, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, const std::vector<float>& vertices, const Transform& transform) {
-		m_spotLights.emplace_back(dir, cutoffDot, outerDot, ambient, diffuse, specular, vertices, transform);
+	//void addSpotLight(MultiColors colors, const glm::vec3& dir, float cutoffDot, float outerDot, const std::vector<float>& vertices, const Transform& transform) {
+	//	m_spotLights.emplace_back(colors, dir, cutoffDot, outerDot, vertices, transform);
+	//}
+	//template <class... SpotLight>
+	//void addSpotLight(SpotLight&&... spotLight) {
+	//	// decltype?
+	//	m_spotLights.emplace_back(std::forward<SpotLight>(spotLight)...);
+	//}
+	void addSpotLight(const MultiColors& colors, const glm::vec3& dir, float cutoffDot, float outerDot, const std::vector<float>& vertices, const Transform& transform) {
+		m_spotLights.emplace_back(colors, dir, cutoffDot, outerDot, vertices, transform);
 	}
 	const std::vector<SpotLight>& getSpotLights() const { return m_spotLights; }
 
-	void addPointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-		float attConst, float attLinear, float attQuad,
-		const std::vector<float>& vertices, const Transform& transform) {
-		m_pointLights.emplace_back(ambient, diffuse, specular, attConst, attLinear, attQuad, vertices, transform);
+	void addPointLight(const MultiColors& colors, const Attenuation& attenuation, const std::vector<float>& vertices, const Transform& transform) {
+		m_pointLights.emplace_back(colors, attenuation, vertices, transform);
 	}
 	const std::vector<PointLight>& getPointLights() const { return m_pointLights; };
 

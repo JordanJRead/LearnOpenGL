@@ -14,6 +14,7 @@
 #include <vector>
 #include "Headers/object.h"
 #include "Headers/scene.h"
+#include "Headers/structs.h"
 
 float g_deltaTime;
 int g_width{ 800 };
@@ -119,13 +120,14 @@ int main()
     };
     glClearColor(0.2, 0.2, 0.2, 1);
 
+    using Direction = glm::vec3;
+
     Scene scene{};
-    scene.setDirLight({ {0, -1, 0}, {0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5} });
+    scene.setDirLight(DirLight { Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
 
-    //const glm::vec3& dir, float cutoffDot, float outerDot, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, const std::vector<float>& vertices, const Transform& transform
-    scene.addSpotLight({ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 0.5, 0.5, 0.5 }, cubeVertices, Transform{ {0, 5, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
+    scene.addSpotLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 0.5, 0.5, 0.5 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 5, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    scene.addPointLight({ 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 }, 1, 0.22, 0.2, cubeVertices, Transform{ { 2, 2, 3 }, { 0.2, 0.2, 0.2 } });
+    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 2, 2, 3 }, { 0.2, 0.2, 0.2 } });
 
     Transform transform{ {}, {10, 1, 10}, {0, 0, 0}};
     Material material{ "images/container.png", "images/container_specular.png", "images/emission.jpg", 32 };
