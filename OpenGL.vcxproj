@@ -169,6 +169,8 @@
     <ClInclude Include="Headers\lightsourceshader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Headers\mesh.h" />
+    <ClInclude Include="Headers\model.h" />
     <ClInclude Include="Headers\object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -190,6 +192,8 @@
     <ClInclude Include="Headers\structs.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Headers\Test\mymesh.h" />
+    <ClInclude Include="Headers\Test\mymodel.h" />
     <ClInclude Include="Headers\texture.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>

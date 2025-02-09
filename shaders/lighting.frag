@@ -9,9 +9,8 @@ uniform vec3 viewPos;
 uniform vec3 viewDir;
 
 struct Material {
-	sampler2D diffuseMap;
-	sampler2D specularMap;
-	sampler2D emissionMap;
+	sampler2D texture_diffuse0;
+	sampler2D texture_specular0;
 	float shininess;
 };
 uniform Material material;
@@ -61,8 +60,8 @@ void main() {
 	vec3 resultColor = vec3(0);
 
 	vec3 normal = normalize(fragNormal);
-	vec3 objectColor = vec3(texture(material.diffuseMap, fragTexCoords));
-	vec3 objectSpecularColor = vec3(texture(material.specularMap, fragTexCoords));
+	vec3 objectColor = vec3(texture(material.texture_diffuse0, fragTexCoords));
+	vec3 objectSpecularColor = vec3(texture(material.texture_specular0, fragTexCoords));
 
 	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
 

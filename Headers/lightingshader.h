@@ -31,8 +31,8 @@ public:
 		: Shader{ vertPath, fragPath }
 	{
 		use();
-		setInt("material.diffuseMap", 0);
-		setInt("material.specularMap", 1);
+		setInt("material.texture_diffuse0", 0);
+		setInt("material.texture_diffuse1", 1);
 		setInt("material.emissionMap", 2);
 		setFloat("material.shininess", 32);
 	}
