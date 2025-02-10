@@ -7,15 +7,19 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "mesh.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "structs.h"
 
 class Model {
 private:
 	std::vector<Mesh> meshes;
 	std::string directory;
 	std::vector<MeshTexture> loadedTextures;
+	glm::mat4 model;
 
 	void loadModel(const std::string& path) {
-		Assimp::Importer importer;
+		Assimp::Importer importer{};
 		const aiScene* scene{ importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs) };
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -25,6 +29,8 @@ private:
 		directory = path.substr(0, path.find_last_of('/'));
 
 		processNode(scene->mRootNode, scene);
+		int x;
+		x = 5;
 	}
 	void processNode(aiNode* node, const aiScene* scene) {
 		for (size_t i{ 0 }; i < node->mNumMeshes; ++i) {
@@ -33,6 +39,7 @@ private:
 		}
 
 		for (size_t i{ 0 }; i < node->mNumChildren; ++i) {
+			std::cerr << "child #" << i << "\n";
 			processNode(node->mChildren[i], scene);
 		}
 	}
@@ -126,20 +133,28 @@ private:
 			}
 			if (!skip) {
 				MeshTexture texture;
-				texture.id = textureFromFile(texturePath.C_Str());
+				texture.id = textureFromFile(directory + '/' + texturePath.C_Str());
 				texture.type = typeName;
 				texture.path = texturePath.C_Str();
 				textures.push_back(texture);
+				loadedTextures.push_back(texture);
 			}
 		}
 		return textures;
 	}
 
 public:
-	Model(char* path) {
+	Model(const std::string& path, const Transform& transform) {
 		loadModel(path);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, transform.pos);
+		model = glm::rotate(model, transform.rotation.x, { 1, 0, 0 });
+		model = glm::rotate(model, transform.rotation.y, { 0, 1, 0 });
+		model = glm::rotate(model, transform.rotation.z, { 0, 0, 1 });
+		model = glm::scale(model, transform.scale);
 	}
 	void draw(Shader& shader) {
+		shader.setMatrix4("model", model);
 		for (size_t i{ 0 }; i < meshes.size(); ++i) {
 			meshes[i].draw(shader);
 		}

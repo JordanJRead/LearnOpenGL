@@ -15,6 +15,7 @@
 #include "Headers/object.h"
 #include "Headers/scene.h"
 #include "Headers/structs.h"
+#include "Headers/model.h"
 
 float g_deltaTime;
 int g_width{ 800 };
@@ -127,7 +128,7 @@ int main()
 
     scene.addSpotLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 0.5, 0.5, 0.5 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 5, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 2, 2, 3 }, { 0.2, 0.2, 0.2 } });
+    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 0, 0, 0 }, { 0.2, 0.2, 0.2 } });
 
     Transform transform{ {}, {10, 1, 10}, {0, 0, 0}};
     Material material{ "images/container.png", "images/container_specular.png", "images/emission.jpg", 32 };
@@ -156,6 +157,8 @@ int main()
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
+    transform = Transform{ {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
+    Model model{ "C:/Users/Jordan/Downloads/backpack/backpack.obj", transform };
     while (!glfwWindowShouldClose(window)) {
         currentFrame = glfwGetTime();
         g_deltaTime = currentFrame - lastFrame;
@@ -165,10 +168,13 @@ int main()
 
         processInput(window);
 
+        lightingShader.use();
         lightingShader.render(scene, g_camera);
-
+        model.draw(lightingShader);
+    
         // Render light source
         lightSourceShader.render(scene, g_camera);
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();

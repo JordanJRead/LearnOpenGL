@@ -13,7 +13,6 @@
 
 class LightingShader : public Shader {
 private:
-	void setUniformModel(const glm::mat4& model) const;
 	void setUniformView(const glm::mat4& model) const;
 	void setUniformProjection(const glm::mat4& model) const;
 
@@ -27,6 +26,7 @@ private:
 	void setUniformMaxSpotLights(int count) const;
 
 public:
+	void setUniformModel(const glm::mat4& model) const;
 	LightingShader(std::string_view vertPath, std::string_view fragPath)
 		: Shader{ vertPath, fragPath }
 	{

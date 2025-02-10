@@ -56,7 +56,6 @@ vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcSpotLight  (SpotLight  spotLight , vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 void main() {
-
 	vec3 resultColor = vec3(0);
 
 	vec3 normal = normalize(fragNormal);
