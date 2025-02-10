@@ -31,8 +31,8 @@ public:
 
 	void render(const Scene& scene, const Camera& camera) override {
 		use();
-		setUniformView(camera.view);
-		setUniformProjection(camera.projection); // is once per frame best?
+		setUniformView(camera.mView);
+		setUniformProjection(camera.mProjection); // is once per frame best?
 
 		for (const PointLight& pointLight : scene.getPointLights()) {
 			pointLight.modelInfo.use();
