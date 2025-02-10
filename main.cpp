@@ -1,21 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
 #include "Headers/lightingshader.h"
 #include "Headers/lightsourceshader.h"
-#include "Headers/texture.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include "Headers/camera.h"
-#include <vector>
-#include "Headers/object.h"
 #include "Headers/scene.h"
-#include "Headers/structs.h"
-#include "Headers/model.h"
 
 float g_deltaTime;
 int g_width{ 800 };
@@ -26,24 +15,24 @@ void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
-    float moveMag{ g_camera.speed * g_deltaTime };
+    float moveMag{ g_camera.mSpeed * g_deltaTime };
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        g_camera.moveBy(moveMag * g_camera.forward);
+        g_camera.moveBy(moveMag * g_camera.mForward);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        g_camera.moveBy(-moveMag * g_camera.forward);
+        g_camera.moveBy(-moveMag * g_camera.mForward);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        g_camera.moveBy(moveMag * glm::normalize(glm::cross(g_camera.forward, g_camera.up)));
+        g_camera.moveBy(moveMag * glm::normalize(glm::cross(g_camera.mForward, g_camera.mUp)));
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        g_camera.moveBy(-moveMag * glm::normalize(glm::cross(g_camera.forward, g_camera.up)));
+        g_camera.moveBy(-moveMag * glm::normalize(glm::cross(g_camera.mForward, g_camera.mUp)));
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        g_camera.moveBy(moveMag * g_camera.up);
+        g_camera.moveBy(moveMag * g_camera.mUp);
     }
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-        g_camera.moveBy(-moveMag * g_camera.up);
+        g_camera.moveBy(-moveMag * g_camera.mUp);
     }
 }
 
@@ -59,6 +48,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_REFRESH_RATE, GLFW_DONT_CARE);
 
     GLFWwindow* window{ glfwCreateWindow(g_width, g_height, "LearnOpenGL", nullptr, nullptr) };
     if (window == nullptr) {
@@ -128,26 +118,7 @@ int main()
 
     scene.addSpotLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 0.5, 0.5, 0.5 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 5, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 0, 0, 0 }, { 0.2, 0.2, 0.2 } });
-
-    Transform transform{ {}, {10, 1, 10}, {0, 0, 0}};
-    Material material{ "images/container.png", "images/container_specular.png", "images/emission.jpg", 32 };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {0, 10, 0}, {10, 1, 10}, {0, 0, 0} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {0, 5, 5}, {10, 1, 10}, {glm::radians(90.0f), 0, 0} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {0, 5, -5}, {10, 1, 10}, {glm::radians(90.0f), 0, 0} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {5, 5, 0}, {10, 1, 10}, {0, glm::radians(90.0f), glm::radians(90.0f)} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {-5, 5, 0}, {10, 1, 10}, {0, glm::radians(90.0f), glm::radians(90.0f)} };
-    scene.addObject(material, cubeVertices, transform);
+    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 0, 0, 2 }, { 0.2, 0.2, 0.2 } });
 
     // Shaders
     LightingShader lightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" };
@@ -157,9 +128,12 @@ int main()
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
-    transform = Transform{ {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
-    Model model{ "C:/Users/Jordan/Downloads/backpack/backpack.obj", transform };
+    Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
+    scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
     while (!glfwWindowShouldClose(window)) {
+        //glfwSwapInterval(0); // show true fps
+        //std::cout << 1.0f / g_deltaTime << "\n";
+
         currentFrame = glfwGetTime();
         g_deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -168,13 +142,9 @@ int main()
 
         processInput(window);
 
-        lightingShader.use();
         lightingShader.render(scene, g_camera);
-        model.draw(lightingShader);
     
-        // Render light source
         lightSourceShader.render(scene, g_camera);
-
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -110,7 +110,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_INCLUDE_NONE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/w44365 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -129,7 +129,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_INCLUDE_NONE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/w44365 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -146,6 +146,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Headers\camera.cpp" />
+    <ClCompile Include="Headers\lightingshader.cpp" />
+    <ClCompile Include="Headers\mesh.cpp" />
+    <ClCompile Include="Headers\model.cpp" />
+    <ClCompile Include="Headers\scene.cpp" />
+    <ClCompile Include="Headers\shader.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,14 +163,14 @@
     <None Include="shaders\lighting.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Test\mymesh.h" />
-    <ClInclude Include="Headers\Test\mymodel.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="images\container.png" />
     <Image Include="images\directions.png" />
     <Image Include="images\imagethree.png" />
     <Image Include="images\imagetwo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Downloads\modelinfo.h" />
+    <ClInclude Include="..\..\..\Downloads\vertexarraywrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,8 +1,24 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
-#include "texture.h"
 #include <glm/glm.hpp>
 #include <string>
+
+struct Vertex {
+	glm::vec3 pos;
+	glm::vec3 normal;
+	glm::vec2 texCoords;
+};
+
+enum class TextureType {
+	diffuse,
+	specular
+};
+
+struct Texture {
+	unsigned int id;
+	TextureType type;
+	std::string path;
+};
 
 struct Material {
 	std::string diffuseMapPath;
