@@ -2,14 +2,14 @@
 #define SCENE_H
 
 #include <vector>
-#include "object.h"
 #include "pointLight.h"
 #include "structs.h"
 #include "spotLight.h"
+#include "model.h"
 
 class Scene {
 private:
-	std::vector<Object> m_objects{};
+	std::vector<Model> m_models{};
 	std::vector<PointLight> m_pointLights{};
 	std::vector<SpotLight> m_spotLights{};
 	DirLight m_dirLight{};
@@ -39,10 +39,10 @@ public:
 	}
 	const std::vector<PointLight>& getPointLights() const { return m_pointLights; };
 
-	void addObject(Material material, const std::vector<float>& vertices, const Transform& transform) {
-		m_objects.emplace_back(material, vertices, transform);
+	void addModel(const std::string& filePath, const Transform& transform) {
+		m_models.emplace_back(filePath, transform);
 	}
-	const std::vector<Object>& getObjects() const { return m_objects; }
+	const std::vector<Model>& getModels() const { return m_models; }
 };
 
 #endif

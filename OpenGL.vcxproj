@@ -157,10 +157,6 @@
     <None Include="shaders\lighting.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Test\mymesh.h" />
-    <ClInclude Include="Headers\Test\mymodel.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="images\container.png" />
     <Image Include="images\directions.png" />
     <Image Include="images\imagethree.png" />

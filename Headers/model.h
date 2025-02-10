@@ -16,7 +16,6 @@ private:
 	std::vector<Mesh> meshes;
 	std::string directory;
 	std::vector<MeshTexture> loadedTextures;
-	glm::mat4 model;
 
 	void loadModel(const std::string& path) {
 		Assimp::Importer importer{};
@@ -144,6 +143,7 @@ private:
 	}
 
 public:
+	glm::mat4 model;
 	Model(const std::string& path, const Transform& transform) {
 		loadModel(path);
 		model = glm::mat4(1.0);

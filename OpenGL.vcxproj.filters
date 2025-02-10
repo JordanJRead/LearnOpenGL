@@ -31,14 +31,6 @@
     <None Include="shaders\gourand.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Test\mymesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Test\mymodel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="images\directions.png">
       <Filter>Resource Files</Filter>
     </Image>

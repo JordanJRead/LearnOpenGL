@@ -130,25 +130,6 @@ int main()
 
     scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 0, 0, 0 }, { 0.2, 0.2, 0.2 } });
 
-    Transform transform{ {}, {10, 1, 10}, {0, 0, 0}};
-    Material material{ "images/container.png", "images/container_specular.png", "images/emission.jpg", 32 };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {0, 10, 0}, {10, 1, 10}, {0, 0, 0} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {0, 5, 5}, {10, 1, 10}, {glm::radians(90.0f), 0, 0} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {0, 5, -5}, {10, 1, 10}, {glm::radians(90.0f), 0, 0} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {5, 5, 0}, {10, 1, 10}, {0, glm::radians(90.0f), glm::radians(90.0f)} };
-    scene.addObject(material, cubeVertices, transform);
-
-    transform = { {-5, 5, 0}, {10, 1, 10}, {0, glm::radians(90.0f), glm::radians(90.0f)} };
-    scene.addObject(material, cubeVertices, transform);
-
     // Shaders
     LightingShader lightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" };
 
@@ -157,7 +138,7 @@ int main()
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
-    transform = Transform{ {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
+    Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
     Model model{ "C:/Users/Jordan/Downloads/backpack/backpack.obj", transform };
     while (!glfwWindowShouldClose(window)) {
         currentFrame = glfwGetTime();

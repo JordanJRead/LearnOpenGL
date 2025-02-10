@@ -10,6 +10,7 @@
 #include "scene.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "models.h"
 
 class LightingShader : public Shader {
 private:
@@ -50,48 +51,15 @@ public:
 		setUniformSpotLights(scene.getSpotLights());
 		setUniformMaxSpotLights(scene.getSpotLights().size());
 
-		for (const Object& object : scene.getObjects()) {
-			setUniformModel(object.modelInfo.model);
-			setUniformMaterialShininess(object.shininess);
-			object.use();
-			glDrawArrays(GL_TRIANGLES, 0, object.modelInfo.vertexCount);
+		for (const Model& model: scene.getModels()) {
+			setUniformModel(model.model);
+			for (const Mesh& mesh : model.getMeshes) {
+				setUniformModel(mesh.model);
+				setUniformMaterialShininess(object.shininess);
+				object.use();
+				glDrawArrays(GL_TRIANGLES, 0, object.modelInfo.vertexCount);
+			}
 		}
-	//	std::vector<float> vertices{
-	//		-0.5, -0.5, 0,
-	//		0.5, -0.5, 0,
-	//		0, 0.5, 0
-	//	};
-	//	unsigned int VAO;
-	//	glGenVertexArrays(1, &VAO);
-	//	glBindVertexArray(VAO);
-
-	//	unsigned int VBO;
-	//	glGenBuffers(1, &VBO);
-	//	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-
-	//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//	glEnableVertexAttribArray(0);
-
-	//	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	//	//glEnableVertexAttribArray(1);
-
-	//	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	//	//glEnableVertexAttribArray(2);
-
-	//	glm::mat4 model{ 1 };
-	//	setUniformModel(model);
-	//	setUniformProjection(model); // is once per frame best?
-	//	setUniformView(model);
-	//	setUniformMaterialShininess(32.0f);
-
-	//	glDrawArrays(GL_TRIANGLES, 0, 36);
-
-	//	glBindVertexArray(0);
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//	glDeleteVertexArrays(1, &VAO);
-	//	glDeleteBuffers(1, &VBO);
 
 	}
 };
