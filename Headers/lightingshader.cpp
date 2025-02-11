@@ -9,6 +9,7 @@
 #include "lightingshader.h"
 #include <glad/glad.h>
 #include "shader.h"
+#include <iostream>
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }
@@ -18,6 +19,29 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	setInt("material.specularMap", 1);
 	setInt("material.emissionMap", 2);
 	setFloat("material.shininess", 32);
+}
+
+void LightingShader::renderModel(const Model& model) {
+	setUniformModel(model.mModel);
+	for (const Mesh& mesh : model.getMeshes()) {
+		setUniformMaterialShininess(mesh.mShininess);
+		glBindVertexArray(mesh.mVAO);
+
+		glActiveTexture(GL_TEXTURE0);
+		int diffuseMap{ mesh.getFirstDiffuse() };
+		if (diffuseMap >= 0) {
+			glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		}
+
+		glActiveTexture(GL_TEXTURE1);
+		int specularMap{ mesh.getFirstSpecular() };
+		if (specularMap >= 0) {
+			glBindTexture(GL_TEXTURE_2D, specularMap);
+		}
+
+		glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	}
 }
 
 void LightingShader::render(const Scene& scene, const Camera& camera) {
@@ -32,30 +56,53 @@ void LightingShader::render(const Scene& scene, const Camera& camera) {
 	setUniformDirLight(scene.getDirLight());
 	setUniformSpotLights(scene.getSpotLights());
 	setUniformMaxSpotLights(scene.getSpotLights().size());
-
 	for (const Model& model : scene.getModels()) {
-		setUniformModel(model.mModel);
-		for (const Mesh& mesh : model.getMeshes()) {
-			setUniformMaterialShininess(mesh.mShininess);
-			glBindVertexArray(mesh.mVAO);
-
-			glActiveTexture(GL_TEXTURE0);
-			int diffuseMap{ mesh.getFirstDiffuse() };
-			if (diffuseMap >= 0) {
-				glBindTexture(GL_TEXTURE_2D, diffuseMap);
-			}
-
-			glActiveTexture(GL_TEXTURE1);
-			int specularMap{ mesh.getFirstSpecular() };
-			if (specularMap >= 0) {
-				glBindTexture(GL_TEXTURE_2D, specularMap);
-			}
-
-			glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-		}
+		renderModel(model);
 	}
 
+	std::vector<float> vertices{
+		-1, -1, 0, 0, 0, -1, 0, 0,
+		-1, 1, 0, 0, 0, -1, 0, 1,
+		1, -1, 0, 0, 0, -1, 1, 0,
+
+		1, 1, 0, 0, 0, -1, 1, 1,
+		-1, 1, 0, 0, 0, -1, 0, 1,
+		1, -1, 0, 0, 0, -1, 1, 0
+	};
+
+	unsigned int grassVAO;
+	unsigned int grassVBO;
+	glGenVertexArrays(1, &grassVAO);
+	glGenBuffers(1, &grassVBO);
+
+	glBindVertexArray(grassVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
+
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(3 * sizeof(float)));
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(6 * sizeof(float)));
+	setUniformMaterialShininess(64);
+	for (const glm::vec3& grassPos : scene.getGrassPositions()) {
+		glm::mat4 model{ 1 };
+		model = glm::translate(model, grassPos);
+		setUniformModel(model);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, scene.grassDiffuse);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, scene.grassSpecular);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+
+	glBindVertexArray(0);
+	glDeleteVertexArrays(1, &grassVAO);
+	glDeleteBuffers(1, &grassVBO);
 }
 
 void LightingShader::setUniformModel(const glm::mat4& model) const {

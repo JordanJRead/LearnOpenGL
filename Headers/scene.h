@@ -13,8 +13,11 @@ private:
 	std::vector<PointLight> mPointLights{};
 	std::vector<SpotLight> mSpotLights{};
 	DirLight mDirLight{};
+	std::vector<glm::vec3> mGrassPositions{};
 
 public:
+	unsigned int grassDiffuse;
+	unsigned int grassSpecular;
 	Scene();
 	void setDirLight(const DirLight& dirLight);
 
@@ -31,11 +34,14 @@ public:
 		const Transform& transform);
 
 	void addModel(const std::string& filePath, const Transform& transform);
+	void addGrassPosition(const glm::vec3& pos);
 
 	const DirLight& getDirLight() const;
-	const std::vector<SpotLight>&  getSpotLights()  const;
-	const std::vector<PointLight>& getPointLights() const;
-	const std::vector<Model>&      getModels()      const;
+	const std::vector<SpotLight>&  getSpotLights()     const;
+	const std::vector<PointLight>& getPointLights()    const;
+	const std::vector<Model>&      getModels()         const;
+	const std::vector <glm::vec3>& getGrassPositions() const;
+	void sortTransparent(const glm::vec3& cameraPos);
 };
 
 #endif

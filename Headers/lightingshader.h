@@ -2,9 +2,11 @@
 #define LIGHTING_SHADER_H
 
 #include "shader.h"
+class DualShader;
 
 class LightingShader : public Shader {
-private:
+	friend class DualShader;
+protected:
 	void setUniformModel(const glm::mat4& model) const;
 	void setUniformView(const glm::mat4& model) const;
 	void setUniformProjection(const glm::mat4& model) const;
@@ -22,6 +24,7 @@ private:
 	void setUniformSpotLights(const std::vector<SpotLight>& spotLights) const;
 	void setUniformMaxSpotLights(int count) const;
 
+	void renderModel(const Model& model) override;
 public:
 	LightingShader(std::string_view vertPath, std::string_view fragPath);
 	void render(const Scene& scene, const Camera& camera) override;

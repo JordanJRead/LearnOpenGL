@@ -5,13 +5,15 @@
 #include <glm/glm.hpp>
 #include "scene.h"
 #include "camera.h"
+#include "model.h"
 
 class Shader {
 
 protected:
     unsigned int ID;
     Shader(std::string_view vertPath, std::string_view fragPath);
-    void use() const;
+    virtual void renderModel(const Model& model) {}
+    virtual void use() const final;
 
     void setBool   (const std::string& name, bool value)                const;
     void setInt    (const std::string& name, int value)                 const;
@@ -21,7 +23,7 @@ protected:
     void setFloat  (const std::string& name, float value)               const;
 
 public:
-    virtual void render(const Scene& scene, const Camera& camera) = 0;
+    virtual void render(const Scene& scene, const Camera& camera) {} //=0
     ~Shader();
 };
 

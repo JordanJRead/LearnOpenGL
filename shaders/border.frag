@@ -8,6 +8,8 @@ in vec2 fragTexCoords;
 uniform vec3 viewPos;
 uniform vec3 viewDir;
 
+uniform bool isBorder;
+
 struct Material {
 	sampler2D diffuseMap;
 	sampler2D specularMap;
@@ -56,21 +58,27 @@ vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcSpotLight  (SpotLight  spotLight , vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 void main() {
-	vec3 resultColor = vec3(0);
-
-	vec3 normal = normalize(fragNormal);
-	vec3 objectColor = vec3(texture(material.diffuseMap, fragTexCoords));
-	vec3 objectSpecularColor = vec3(texture(material.specularMap, fragTexCoords));
-
-	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
-
-	for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
-		resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor);
+	if (isBorder) {
+		FragColor = vec4(1, 0, 0, 1);
 	}
-	for (int i = 0; i < min(N_SPOT_LIGHTS, maxSpotLights); i++) {
-		resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
+	else {
+		vec3 resultColor = vec3(0);
+
+		vec3 normal = normalize(fragNormal);
+		vec3 objectColor = vec3(texture(material.diffuseMap, fragTexCoords));
+		vec3 objectSpecularColor = vec3(texture(material.specularMap, fragTexCoords));
+
+		//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
+
+		for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
+			resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor);
+		}
+		for (int i = 0; i < min(N_SPOT_LIGHTS, maxSpotLights); i++) {
+			resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
+		}
+		FragColor = vec4(resultColor, texture(material.diffuseMap, fragTexCoords).w);
+		FragColor = vec4(objectColor, 1);
 	}
-	FragColor = vec4(resultColor, texture(material.diffuseMap, fragTexCoords).w);
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {

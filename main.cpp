@@ -3,36 +3,37 @@
 #include <iostream>
 #include "Headers/lightingshader.h"
 #include "Headers/lightsourceshader.h"
+#include "Headers/bordershader.h"
 #include "Headers/camera.h"
 #include "Headers/scene.h"
 
 float g_deltaTime;
 int g_width{ 800 };
 int g_height{ 600 };
-Camera g_camera{ g_width, g_height, { 0, 0, 3 } };
+Camera gCamera{ g_width, g_height, { 0, 0, 3 } };
 
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
-    float moveMag{ g_camera.mSpeed * g_deltaTime };
+    float moveMag{ gCamera.mSpeed * g_deltaTime };
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        g_camera.moveBy(moveMag * g_camera.mForward);
+        gCamera.moveBy(moveMag * gCamera.mForward);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        g_camera.moveBy(-moveMag * g_camera.mForward);
+        gCamera.moveBy(-moveMag * gCamera.mForward);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        g_camera.moveBy(moveMag * glm::normalize(glm::cross(g_camera.mForward, g_camera.mUp)));
+        gCamera.moveBy(moveMag * glm::normalize(glm::cross(gCamera.mForward, gCamera.mUp)));
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        g_camera.moveBy(-moveMag * glm::normalize(glm::cross(g_camera.mForward, g_camera.mUp)));
+        gCamera.moveBy(-moveMag * glm::normalize(glm::cross(gCamera.mForward, gCamera.mUp)));
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        g_camera.moveBy(moveMag * g_camera.mUp);
+        gCamera.moveBy(moveMag * gCamera.mUp);
     }
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-        g_camera.moveBy(-moveMag * g_camera.mUp);
+        gCamera.moveBy(-moveMag * gCamera.mUp);
     }
 }
 
@@ -57,8 +58,8 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xPos, double yPos) { g_camera.mouseCallback(window, xPos, yPos); });
-    glfwSetScrollCallback(window,    [](GLFWwindow* window, double xPos, double yPos) { g_camera.scrollCallback(window, xPos, yPos); });
+    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xPos, double yPos) { gCamera.mouseCallback(window, xPos, yPos); });
+    glfwSetScrollCallback(window,    [](GLFWwindow* window, double xPos, double yPos) { gCamera.scrollCallback(window, xPos, yPos); });
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD\n";
@@ -67,6 +68,10 @@ int main()
 
     glViewport(0, 0, g_width, g_height);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_CULL_FACE);
     
     glfwSetFramebufferSizeCallback(window, [](GLFWwindow*, int width, int height){ glViewport(0, 0, width, height); });
 
@@ -122,29 +127,38 @@ int main()
 
     // Shaders
     LightingShader lightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" };
-
     LightSourceShader lightSourceShader{ "shaders/lightSource.vert", "shaders/lightSource.frag" };
+    BorderShader borderShader{ "shaders/border.vert", "shaders/border.frag" };
 
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
     Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
+    //scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
+    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
+
+    transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
     scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
+    scene.addGrassPosition({ 0, 0, 3});
+    scene.addGrassPosition({ 0, 0, 4 });
+    scene.addGrassPosition({ 1, 0, 5 });
     while (!glfwWindowShouldClose(window)) {
+        scene.sortTransparent(gCamera.mPos);
         //glfwSwapInterval(0); // show true fps
         //std::cout << 1.0f / g_deltaTime << "\n";
-
         currentFrame = glfwGetTime();
         g_deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         processInput(window);
 
-        lightingShader.render(scene, g_camera);
-    
-        lightSourceShader.render(scene, g_camera);
+        //lightingShader.render(scene, gCamera);
+        borderShader.render(scene, gCamera);
+
+        lightSourceShader.render(scene, gCamera);
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
