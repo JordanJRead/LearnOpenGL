@@ -13,6 +13,13 @@
 #include <iostream>
 #include <glad/glad.h>
 
+struct MeshInfo {
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+	std::vector<size_t> textureIndices;
+	float shininess;
+};
+
 void Model::loadModel(const std::string& path) {
 	Assimp::Importer importer{};
 	const aiScene* scene{ importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs) };
@@ -27,37 +34,40 @@ void Model::loadModel(const std::string& path) {
 	int x;
 	x = 5;
 }
+
 void Model::processNode(aiNode* node, const aiScene* scene) {
 	for (size_t i{ 0 }; i < node->mNumMeshes; ++i) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		mMeshes.push_back(processMesh(mesh, scene));
+		MeshInfo meshInfo{ processMesh(mesh, scene) };
+		//mMeshes.emplace_back(this, meshInfo.vertices, meshInfo.indices, meshInfo.textureIndices, meshInfo.shininess);
 	}
 
 	for (size_t i{ 0 }; i < node->mNumChildren; ++i) {
 		processNode(node->mChildren[i], scene);
 	}
 }
-Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
+
+MeshInfo Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
+	std::vector<size_t> textureIndices;
 
 	for (size_t vertI{ 0 }; vertI < mesh->mNumVertices; ++vertI) {
-		Vertex vertex;
-		glm::vec3 pos;
+		Vertex vertex{};
+		glm::vec3 pos{};
 		pos.x = mesh->mVertices[vertI].x;
 		pos.y = mesh->mVertices[vertI].y;
 		pos.z = mesh->mVertices[vertI].z;
 		vertex.pos = pos;
 
-		glm::vec3 normal;
+		glm::vec3 normal{};
 		normal.x = mesh->mNormals[vertI].x;
 		normal.y = mesh->mNormals[vertI].y;
 		normal.z = mesh->mNormals[vertI].z;
 		vertex.normal = normal;
 
 		if (mesh->mTextureCoords[0]) {
-			glm::vec2 texCoords;
+			glm::vec2 texCoords{};
 			texCoords.x = mesh->mTextureCoords[0][vertI].x;
 			texCoords.y = mesh->mTextureCoords[0][vertI].y;
 			vertex.texCoords = texCoords;
@@ -77,77 +87,48 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	float shininess{ 32 };
 	if (mesh->mMaterialIndex >= 0) { // ?
 		aiMaterial* material{ scene->mMaterials[mesh->mMaterialIndex] };
-		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::diffuse);
-		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::specular);
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		std::vector<size_t> diffuseIndices = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::diffuse);
+		textureIndices.insert(textureIndices.end(), diffuseIndices.begin(), diffuseIndices.end());
+		std::vector<size_t> specularIndices = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::specular);
+		textureIndices.insert(textureIndices.end(), specularIndices.begin(), specularIndices.end());
 		if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess)) {
 			shininess = 32;
 		}
 	}
 
-	return Mesh{ vertices, indices, textures, shininess };
+	return MeshInfo{ vertices, indices, textureIndices, shininess };
 }
 
-unsigned int Model::textureFromFile(std::string_view imagePath) {
-	unsigned int ID;
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	int width, height, channelCount;
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(imagePath.data(), &width, &height, &channelCount, 0);
-
-	if (data) {
-		auto internalFormat{ channelCount == 3 ? GL_RGB : GL_RGBA };
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		stbi_image_free(data);
-	}
-	else {
-		std::cerr << "Failed to load texture data\n";
-	}
-	return ID;
-}
-
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName) {
-	std::vector<Texture> textures;
-	for (size_t i{ 0 }; i < mat->GetTextureCount(type); ++i) {
+std::vector<size_t> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType textureType) {
+	std::vector<size_t> textureIndices;
+	for (size_t meshTextureIndex{ 0 }; meshTextureIndex < mat->GetTextureCount(type); ++meshTextureIndex) {
 		aiString texturePath;
-		mat->GetTexture(type, i, &texturePath);
-		bool skip{ false };
-		for (const Texture& loadedTexture : mLoadedTextures) {
-			if (std::strcmp(loadedTexture.path.data(), texturePath.C_Str()) == 0) {
-				textures.push_back(loadedTexture);
-				skip = true;
+		mat->GetTexture(type, meshTextureIndex, &texturePath);
+		bool alreadyLoaded{ false };
+		for (size_t loadedTextureIndex{ 0 }; loadedTextureIndex < mTextures.size(); ++loadedTextureIndex) {
+			if (std::strcmp(mTextures[loadedTextureIndex].mPath.data(), texturePath.C_Str()) == 0) { // changed to full path
+				textureIndices.push_back(loadedTextureIndex);
+				alreadyLoaded = true;
 				break;
 			}
 		}
-		if (!skip) {
-			Texture texture;
-			texture.id = textureFromFile(mDirectory + '/' + texturePath.C_Str());
-			texture.type = typeName;
-			texture.path = texturePath.C_Str();
-			textures.push_back(texture);
-			mLoadedTextures.push_back(texture);
+		if (!alreadyLoaded) {
+			Texture test{ texturePath.C_Str(), textureType };
+			mTextures.emplace_back(texturePath.C_Str(), textureType);
+			textureIndices.push_back(mTextures.size() - 1);
 		}
 	}
-	return textures;
+	return textureIndices;
 }
 
-Model::Model(const std::string& path, const Transform& transform) {
+Model::Model(const std::string& path, const Transform& transform, bool hasBorder) : mHasBorder{ hasBorder } {
 	loadModel(path);
-	mModel = glm::mat4(1.0);
-	mModel = glm::translate(mModel, transform.pos);
-	mModel = glm::rotate(mModel, transform.rotation.x, { 1, 0, 0 });
-	mModel = glm::rotate(mModel, transform.rotation.y, { 0, 1, 0 });
-	mModel = glm::rotate(mModel, transform.rotation.z, { 0, 0, 1 });
-	mModel = glm::scale(mModel, transform.scale);
+	mModelMatrix = glm::mat4(1.0);
+	mModelMatrix = glm::translate(mModelMatrix, transform.pos);
+	mModelMatrix = glm::rotate(mModelMatrix, transform.rotation.x, { 1, 0, 0 });
+	mModelMatrix = glm::rotate(mModelMatrix, transform.rotation.y, { 0, 1, 0 });
+	mModelMatrix = glm::rotate(mModelMatrix, transform.rotation.z, { 0, 0, 1 });
+	mModelMatrix = glm::scale(mModelMatrix, transform.scale);
 }
 
 //void Model::draw(Shader& shader) {

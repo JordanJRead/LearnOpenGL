@@ -8,34 +8,66 @@
 #include "stb_image.h"
 #include <iostream>
 
-unsigned int textureFromFile(std::string_view imagePath) {
-	unsigned int ID;
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
+extern int g_width; // ?
+extern int g_height;
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+void Scene::initFBO() {
+	// Vertex Info
+	float quadVertices[] = {
+		// positions  // texCoords
+		-1.0f, 1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f,
+		1.0f, -1.0f,  1.0f, 0.0f,
+		-1.0f, 1.0f,  0.0f, 1.0f,
+		1.0f, -1.0f,  1.0f, 0.0f,
+		1.0f, 1.0f,   1.0f, 1.0f
+	};
 
-	int width, height, channelCount;
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(imagePath.data(), &width, &height, &channelCount, 0);
+	glGenVertexArrays(1, &screenQuadVAO);
+	glBindVertexArray(screenQuadVAO);
 
-	if (data) {
-		auto internalFormat{ channelCount == 3 ? GL_RGB : GL_RGBA };
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		stbi_image_free(data);
+	glGenBuffers(1, &screenQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, screenQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, std::size(quadVertices) * sizeof(float), quadVertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	// Framebuffer
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+	// Color Attatchment
+	glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &FBOColorTexture);
+	glBindTexture(GL_TEXTURE_2D, FBOColorTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_width, g_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, FBOColorTexture, 0);
+	// todo make g_width and g_height change with dim. change
+	// todo clear fbo buffer?
+
+	// Depth / Stencil
+	glGenRenderbuffers(1, &RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, g_width, g_height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL, GL_RENDERBUFFER, RBO);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		std::cerr << "FRAMEBUFFER ERROR\n";
 	}
-	else {
-		std::cerr << "Failed to load texture data " << imagePath << "\n";
-	}
-	return ID;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Scene::Scene() {
-	grassDiffuse = textureFromFile("images/window.png");
+	initFBO();
+	grassDiffuse = textureFromFile("images/window.png"); // todo memory unsafe (RAII)
 	grassSpecular = textureFromFile("images/white.png");
 }
 void Scene::setDirLight(const DirLight& dirLight) {
@@ -58,8 +90,8 @@ void Scene::addPointLight(const MultiColors& colors, const Attenuation& attenuat
 	mPointLights.emplace_back(colors, attenuation, vertices, transform);
 }
 
-void Scene::addModel(const std::string& filePath, const Transform& transform) {
-	mModels.emplace_back(filePath, transform);
+void Scene::addModel(const std::string& filePath, const Transform& transform, bool hasBorder) {
+	mModels.emplace_back(filePath, transform, hasBorder);
 }
 void Scene::addGrassPosition(const glm::vec3& pos) {
 	mGrassPositions.push_back(pos);

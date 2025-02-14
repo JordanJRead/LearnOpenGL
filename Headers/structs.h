@@ -2,6 +2,9 @@
 #define STRUCTS_H
 #include <glm/glm.hpp>
 #include <string>
+#include "glad/glad.h"
+#include "stb_image.h"
+#include <iostream>
 
 struct Vertex {
 	glm::vec3 pos;
@@ -12,12 +15,6 @@ struct Vertex {
 enum class TextureType {
 	diffuse,
 	specular
-};
-
-struct Texture {
-	unsigned int id;
-	TextureType type;
-	std::string path;
 };
 
 struct Material {

@@ -25,7 +25,7 @@ public:
     glm::mat4 mProjection{};
     glm::mat4 mView{};
 
-    float mSpeed{ 2.5 };
+    float mSpeed{ 10 };
 
     Camera(int width, int height, const glm::vec3& pos = { 0, 0, 0 }, float fov = 45, float yaw = -90, float pitch = 0);
     void mouseCallback(GLFWwindow* window, double xPos, double yPos);

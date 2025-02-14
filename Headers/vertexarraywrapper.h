@@ -5,15 +5,20 @@
 #include <glad/glad.h>
 
 class VertexArrayWrapper {
-	unsigned int m_id;
+	unsigned int mVAO;
+	unsigned int mVBO;
 public:
-	VertexArrayWrapper(const std::vector<float>& vertices) {
-		glGenVertexArrays(1, &m_id);
-		glBindVertexArray(m_id);
+	VertexArrayWrapper& operator=(const VertexArrayWrapper&) = delete;
+	VertexArrayWrapper& operator=(VertexArrayWrapper&&) = delete;
+	VertexArrayWrapper(const VertexArrayWrapper&) = delete;
+	VertexArrayWrapper(VertexArrayWrapper&&) = delete;
 
-		unsigned int VBO;
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	VertexArrayWrapper(const std::vector<float>& vertices) {
+		glGenVertexArrays(1, &mVAO);
+		glBindVertexArray(mVAO);
+
+		glGenBuffers(1, &mVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -30,7 +35,12 @@ public:
 	}
 
 	void use() {
-		glBindVertexArray(m_id);
+		glBindVertexArray(mVAO);
+	}
+
+	~VertexArrayWrapper() {
+		glDeleteVertexArrays(1, &mVAO);
+		glDeleteBuffers(1, &mVBO);
 	}
 };
 

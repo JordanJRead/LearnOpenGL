@@ -1,5 +1,5 @@
-#ifndef VERTEX_ARRAY_WRAPPER
-#define VERTEX_ARRAY_WRAPPER
+#ifndef MODEL_INFO_H
+#define MODEL_INFO_H
 
 #include <vector>
 #include <glad/glad.h>

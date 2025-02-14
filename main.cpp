@@ -6,6 +6,7 @@
 #include "Headers/bordershader.h"
 #include "Headers/camera.h"
 #include "Headers/scene.h"
+#include "Headers/textureshader.h"
 
 float g_deltaTime;
 int g_width{ 800 };
@@ -123,25 +124,43 @@ int main()
 
     scene.addSpotLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 0.5, 0.5, 0.5 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 5, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.22, 0.2 }, cubeVertices, Transform{ { 0, 0, 2 }, { 0.2, 0.2, 0.2 } });
+    scene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.02, 0.02 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
 
     // Shaders
     LightingShader lightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" };
     LightSourceShader lightSourceShader{ "shaders/lightSource.vert", "shaders/lightSource.frag" };
     BorderShader borderShader{ "shaders/border.vert", "shaders/border.frag" };
+    TextureShader textureShader{ "shaders/texture.vert", "shaders/texture.frag" };
 
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
     Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
-    //scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
+
+    transform = { {0, 8, -4}, {2, 2, 2}, {0, 0, 0} };
+    scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
+    scene.addGrassPosition({ 0, 4, 3});
+    scene.addGrassPosition({ 0, 4, 4 });
+    scene.addGrassPosition({ 1, 4, 5 });
+
+    transform = { {0, 0, 0}, {10, 1, 10}, {0, 0, 0} };
     scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
 
-    transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
-    scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
-    scene.addGrassPosition({ 0, 0, 3});
-    scene.addGrassPosition({ 0, 0, 4 });
-    scene.addGrassPosition({ 1, 0, 5 });
+    transform = { {0, 20, 0}, {10, 1, 10}, {0, 0, 0} };
+    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
+
+    transform = { {0, 10, 10}, {10, 1, 10}, {glm::radians(90.0f), 0, 0} };
+    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
+
+    transform = { {0, 10, -10}, {10, 1, 10}, {glm::radians(90.0f), 0, 0} };
+    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
+
+    transform = { {10, 10, 0}, {10, 1, 10}, {0, 0, glm::radians(90.0f)} };
+    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform, true);
+
+    transform = { {-10, 10, 0}, {10, 1, 10}, {0, 0, glm::radians(90.0f)} };
+    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform, true);
+
     while (!glfwWindowShouldClose(window)) {
         scene.sortTransparent(gCamera.mPos);
         //glfwSwapInterval(0); // show true fps
@@ -154,9 +173,21 @@ int main()
 
         processInput(window);
 
-        //lightingShader.render(scene, gCamera);
-        borderShader.render(scene, gCamera);
+        /*
+        glBindFramebuffer(GL_FRAMEBUFFER, scene.FBO);
+        glClearColor(0.1, 1, 0.1, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        lightingShader.render(scene, gCamera);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClearColor(1, 0.1, 0.1, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        //borderShader.render(scene, gCamera);
 
+        textureShader.render(scene, gCamera);
+        */
+
+        lightingShader.render(scene, gCamera);
         lightSourceShader.render(scene, gCamera);
 
 

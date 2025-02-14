@@ -116,7 +116,7 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,8 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Headers\bordershader.cpp" />
     <ClCompile Include="Headers\camera.cpp" />
     <ClCompile Include="Headers\lightingshader.cpp" />
+    <ClCompile Include="Headers\lightsourceshader.cpp" />
     <ClCompile Include="Headers\mesh.cpp" />
     <ClCompile Include="Headers\model.cpp" />
     <ClCompile Include="Headers\scene.cpp" />
@@ -171,9 +173,7 @@
     <Image Include="images\imagetwo.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\modelinfo.h" />
-    <ClInclude Include="..\..\..\Downloads\vertexarraywrapper.h" />
-    <ClInclude Include="Headers\bordershader.h" />
+    <ClInclude Include="Headers\texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

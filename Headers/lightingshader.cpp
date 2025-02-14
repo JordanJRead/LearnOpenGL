@@ -10,6 +10,7 @@
 #include <glad/glad.h>
 #include "shader.h"
 #include <iostream>
+#include "mesh.h"
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }
@@ -22,7 +23,7 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 }
 
 void LightingShader::renderModel(const Model& model) {
-	setUniformModel(model.mModel);
+	setUniformModel(model.mModelMatrix);
 	for (const Mesh& mesh : model.getMeshes()) {
 		setUniformMaterialShininess(mesh.mShininess);
 		glBindVertexArray(mesh.mVAO);
@@ -70,6 +71,7 @@ void LightingShader::render(const Scene& scene, const Camera& camera) {
 		1, -1, 0, 0, 0, -1, 1, 0
 	};
 
+	// TODO delete this (RAII)
 	unsigned int grassVAO;
 	unsigned int grassVBO;
 	glGenVertexArrays(1, &grassVAO);

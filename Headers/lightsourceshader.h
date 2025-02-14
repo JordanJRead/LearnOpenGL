@@ -10,42 +10,14 @@
 
 class LightSourceShader : public Shader {
 private:
-	void setUniformModel(const glm::mat4& model) const {
-		setMatrix4("model", model);
-	}
-	void setUniformView(const glm::mat4& view) const {
-		setMatrix4("view", view);
-	}
-	void setUniformProjection(const glm::mat4& projection) const {
-		setMatrix4("projection", projection);
-	}
-	void setUniformLightColor(const glm::vec3& lightColor) const {
-		setVector3("lightColor", lightColor);
-	}
+	void setUniformModel(const glm::mat4& model) const;
+	void setUniformView(const glm::mat4& view) const;
+	void setUniformProjection(const glm::mat4& projection) const;
+	void setUniformLightColor(const glm::vec3& lightColor) const;
 
 public:
-	LightSourceShader(std::string_view vertPath, std::string_view fragPath)
-		: Shader{ vertPath, fragPath }
-	{
-	}
+	LightSourceShader(std::string_view vertPath, std::string_view fragPath);
 
-	void render(const Scene& scene, const Camera& camera) override {
-		use();
-		setUniformView(camera.mView);
-		setUniformProjection(camera.mProjection); // is once per frame best?
-
-		for (const PointLight& pointLight : scene.getPointLights()) {
-			pointLight.modelInfo.use();
-			setUniformModel(pointLight.modelInfo.model);
-			setUniformLightColor(pointLight.colors.diffuse);
-			glDrawArrays(GL_TRIANGLES, 0, pointLight.modelInfo.vertexCount);
-		}
-		for (const SpotLight& spotLight : scene.getSpotLights()) {
-			spotLight.modelInfo.use();
-			setUniformModel(spotLight.modelInfo.model);
-			setUniformLightColor(spotLight.colors.diffuse);
-			glDrawArrays(GL_TRIANGLES, 0, spotLight.modelInfo.vertexCount);
-		}
-	}
+	void render(const Scene& scene, const Camera& camera) override;
 };
 #endif

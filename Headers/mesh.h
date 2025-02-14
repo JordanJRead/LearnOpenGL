@@ -3,22 +3,38 @@
 
 #include <vector>
 #include "structs.h"
+#include "glad/glad.h"
+
+class Model;
 
 class Mesh {
 private:
-	std::vector<Texture> mTextures;
+	unsigned int mVBO, mEBO;
+	const Model* mParentModel;
+	std::vector<size_t> mTextureIndices;
+
+	Mesh& operator=(const Mesh&) = delete;
+	Mesh& operator=(Mesh&&) = delete;
+	Mesh(const Mesh&) = delete;
+	Mesh(Mesh&&) = delete;
+
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 
 public:
-	unsigned int mVAO, mVBO, mEBO;
+	unsigned int mVAO;
 	unsigned int mVertexCount;
 	float mShininess;
 
-	Mesh(const std::vector<Vertex>& vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, float shininess);
+	Mesh(const Model* model, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, std::vector<size_t> textureIndices, float shininess);
 
-	//void draw(Shader& shader);
 	int getFirstDiffuse() const;
 	int getFirstSpecular() const;
+
+	~Mesh() {
+		glDeleteVertexArrays(1, &mVAO);
+		glDeleteBuffers(1, &mVBO);
+		glDeleteBuffers(1, &mEBO);
+	}
 };
 
 #endif
