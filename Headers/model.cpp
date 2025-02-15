@@ -7,11 +7,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "structs.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "model.h"
 #include <iostream>
 #include <glad/glad.h>
+#include "texture.h"
 
 void Model::loadModel(const std::string& path) {
 	Assimp::Importer importer{};
@@ -77,9 +77,9 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	float shininess{ 32 };
 	if (mesh->mMaterialIndex >= 0) { // ?
 		aiMaterial* material{ scene->mMaterials[mesh->mMaterialIndex] };
-		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, TextureType::diffuse);
+		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, Texture::diffuse);
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, TextureType::specular);
+		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, Texture::specular);
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess)) {
 			shininess = 32;
@@ -115,26 +115,22 @@ unsigned int Model::textureFromFile(std::string_view imagePath) {
 	return ID;
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName) {
+std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, Texture::Type typeName) {
 	std::vector<Texture> textures;
 	for (size_t i{ 0 }; i < mat->GetTextureCount(type); ++i) {
 		aiString texturePath;
 		mat->GetTexture(type, i, &texturePath);
 		bool skip{ false };
 		for (const Texture& loadedTexture : mLoadedTextures) {
-			if (std::strcmp(loadedTexture.path.data(), texturePath.C_Str()) == 0) {
-				textures.push_back(loadedTexture);
+			if (std::strcmp(loadedTexture.mPath.data(), texturePath.C_Str()) == 0) {
+				textures.push_back(loadedTexture); // todo index
 				skip = true;
 				break;
 			}
 		}
 		if (!skip) {
-			Texture texture;
-			texture.id = textureFromFile(mDirectory + '/' + texturePath.C_Str());
-			texture.type = typeName;
-			texture.path = texturePath.C_Str();
-			textures.push_back(texture);
-			mLoadedTextures.push_back(texture);
+			textures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName);
+			mLoadedTextures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName);
 		}
 	}
 	return textures;
@@ -149,12 +145,5 @@ Model::Model(const std::string& path, const Transform& transform) {
 	mModel = glm::rotate(mModel, transform.rotation.z, { 0, 0, 1 });
 	mModel = glm::scale(mModel, transform.scale);
 }
-
-//void Model::draw(Shader& shader) {
-//	shader.setMatrix4("model", model);
-//	for (size_t i{ 0 }; i < m_meshes.size(); ++i) {
-//		m_meshes[i].draw(shader);
-//	}
-//}
 
 const std::vector<Mesh>& Model::getMeshes() const { return mMeshes; }

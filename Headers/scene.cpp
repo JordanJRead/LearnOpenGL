@@ -4,9 +4,9 @@
 #include "spotLight.h"
 #include "model.h"
 #include "scene.h"
-//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <iostream>
+#include <algorithm>
 
 unsigned int textureFromFile(std::string_view imagePath) {
 	unsigned int ID;

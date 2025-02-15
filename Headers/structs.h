@@ -9,17 +9,6 @@ struct Vertex {
 	glm::vec2 texCoords;
 };
 
-enum class TextureType {
-	diffuse,
-	specular
-};
-
-struct Texture {
-	unsigned int id;
-	TextureType type;
-	std::string path;
-};
-
 struct Material {
 	std::string diffuseMapPath;
 	std::string specularMapPath;

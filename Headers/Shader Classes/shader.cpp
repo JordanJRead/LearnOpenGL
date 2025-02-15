@@ -6,8 +6,8 @@
 #include <string_view>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "scene.h"
-#include "camera.h"
+#include "../scene.h"
+#include "../camera.h"
 #include "shader.h"
 
 Shader::Shader(std::string_view vertPath, std::string_view fragPath) {

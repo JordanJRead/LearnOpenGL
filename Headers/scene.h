@@ -2,10 +2,16 @@
 #define SCENE_H
 
 #include <vector>
-#include "pointLight.h"
-#include "structs.h"
+#include <glm/glm.hpp>
+#include <string>
 #include "spotLight.h"
 #include "model.h"
+#include "pointLight.h"
+
+class DirLight;
+class MultiColors;
+class Transform;
+class Attenuation;
 
 class Scene {
 private:
@@ -40,7 +46,7 @@ public:
 	const std::vector<SpotLight>&  getSpotLights()     const;
 	const std::vector<PointLight>& getPointLights()    const;
 	const std::vector<Model>&      getModels()         const;
-	const std::vector <glm::vec3>& getGrassPositions() const;
+	const std::vector<glm::vec3>&  getGrassPositions() const;
 	void sortTransparent(const glm::vec3& cameraPos);
 };
 

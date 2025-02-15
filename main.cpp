@@ -1,11 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "Headers/lightingshader.h"
-#include "Headers/lightsourceshader.h"
-#include "Headers/bordershader.h"
+#include "Headers/Shader Classes/lightingshader.h"
+#include "Headers/Shader Classes/lightsourceshader.h"
+#include "Headers/Shader Classes/bordershader.h"
 #include "Headers/camera.h"
 #include "Headers/scene.h"
+#include "Headers/structs.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "Headers/stb_image.h"
 
 float g_deltaTime;
 int g_width{ 800 };

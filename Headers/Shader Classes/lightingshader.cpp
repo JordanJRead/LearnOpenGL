@@ -1,15 +1,17 @@
 #include <vector>
-#include "pointLight.h"
-#include "structs.h"
-#include "spotLight.h"
-#include "camera.h"
-#include "scene.h"
+#include "../pointLight.h"
+#include "../structs.h"
+#include "../spotLight.h"
+#include "../camera.h"
+#include "../scene.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "lightingshader.h"
 #include <glad/glad.h>
 #include "shader.h"
 #include <iostream>
+#include "../model.h"
+#include "../mesh.h"
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }

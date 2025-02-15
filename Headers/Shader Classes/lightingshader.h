@@ -2,10 +2,18 @@
 #define LIGHTING_SHADER_H
 
 #include "shader.h"
-class DualShader;
+#include "glm/glm.hpp"
+#include "string_view"
+#include "string"
+#include <vector>
+#include "../pointLight.h"
+#include "../spotLight.h"
+
+class Scene;
+class Camera;
+class DirLight;
 
 class LightingShader : public Shader {
-	friend class DualShader;
 protected:
 	void setUniformModel(const glm::mat4& model) const;
 	void setUniformView(const glm::mat4& model) const;

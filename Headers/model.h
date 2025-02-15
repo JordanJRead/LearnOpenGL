@@ -1,7 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
+
+#include "texture.h"
 #include "mesh.h"
-#include <assimp/scene.h>
+
+class Mesh;
+class aiScene;
+class aiNode;
+class aiMesh;
+class aiMaterial;
+enum aiTextureType;
 
 class Model {
 private:
@@ -15,12 +23,11 @@ private:
 
 	unsigned int textureFromFile(std::string_view imagePath);
 
-	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, TextureType typeName);
+	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, Texture::Type typeName);
 
 public:
 	glm::mat4 mModel;
 	Model(const std::string& path, const Transform& transform);
-	//void draw(Shader& shader);
 	const std::vector<Mesh>& getMeshes() const;
 };
 

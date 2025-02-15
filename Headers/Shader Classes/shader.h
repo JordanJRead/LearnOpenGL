@@ -3,9 +3,11 @@
 
 #include <string_view>
 #include <glm/glm.hpp>
-#include "scene.h"
-#include "camera.h"
-#include "model.h"
+#include <string>
+
+class Scene;
+class Camera;
+class Model;
 
 class Shader {
 
@@ -15,8 +17,8 @@ protected:
     virtual void renderModel(const Model& model) {}
     virtual void use() const final;
 
-    void setBool   (const std::string& name, bool value)                const;
-    void setInt    (const std::string& name, int value)                 const;
+    void setBool   (const std::string& name, bool  value)                const;
+    void setInt    (const std::string& name, int   value)                 const;
     void setVector3(const std::string& name, const glm::vec3& value)    const;
     void setVector3(const std::string& name, float x, float y, float z) const;
     void setMatrix4(const std::string& name, const glm::mat4& matrix)   const;

@@ -4,6 +4,8 @@
 #include <vector>
 #include "structs.h"
 
+class Texture;
+
 class Mesh {
 private:
 	std::vector<Texture> mTextures;
@@ -14,9 +16,8 @@ public:
 	unsigned int mVertexCount;
 	float mShininess;
 
-	Mesh(const std::vector<Vertex>& vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, float shininess);
+	Mesh(const std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture> textures, float shininess);
 
-	//void draw(Shader& shader);
 	int getFirstDiffuse() const;
 	int getFirstSpecular() const;
 };
