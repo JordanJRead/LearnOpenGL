@@ -30,13 +30,13 @@ void LightingShader::renderModel(const Model& model) {
 		glBindVertexArray(mesh.mVAO);
 
 		glActiveTexture(GL_TEXTURE0);
-		int diffuseMap{ mesh.getFirstDiffuse() };
+		int diffuseMap{ mesh.getFirstDiffuse(model.mLoadedTextures) };
 		if (diffuseMap >= 0) {
 			glBindTexture(GL_TEXTURE_2D, diffuseMap);
 		}
 
 		glActiveTexture(GL_TEXTURE1);
-		int specularMap{ mesh.getFirstSpecular() };
+		int specularMap{ mesh.getFirstSpecular(model.mLoadedTextures) };
 		if (specularMap >= 0) {
 			glBindTexture(GL_TEXTURE_2D, specularMap);
 		}

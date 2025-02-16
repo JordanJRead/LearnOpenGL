@@ -8,18 +8,18 @@ class Texture;
 
 class Mesh {
 private:
-	std::vector<Texture> mTextures;
-	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+	std::vector<size_t> mTextureIndices;
+	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices);
 
 public:
 	unsigned int mVAO, mVBO, mEBO;
 	unsigned int mVertexCount;
 	float mShininess;
 
-	Mesh(const std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture> textures, float shininess);
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices, const std::vector<size_t>& textureIndices, float shininess);
 
-	int getFirstDiffuse() const;
-	int getFirstSpecular() const;
+	int getFirstDiffuse(const std::vector<Texture>& textures) const;
+	int getFirstSpecular(const std::vector<Texture>& textures) const;
 };
 
 #endif

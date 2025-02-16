@@ -1,20 +1,20 @@
 #pragma once
 #include "glad/glad.h"
-class VAO {
+class VBO {
 public:
 	unsigned int mID;
 	bool mHasMoved{ false };
 
 	// Move constructor
-	VAO(VAO&& other) noexcept {
+	VBO(VBO&& other) noexcept {
 		mID = other.mID;
 		other.mHasMoved = true;
 	}
 
-	VAO& operator=(const VAO&) = delete; // copy assignment
-	VAO& operator=(VAO&&) = delete; // move assignment
+	VBO& operator=(const VBO&) = delete; // copy assignment
+	VBO& operator=(VBO&&) = delete; // move assignment
 
 	// regular constructor and destructor
-	VAO() { glGenBuffers(1, &mID); }
-	~VAO() { if (!mHasMoved) glDeleteBuffers(1, &mID); }
+	VBO() { glGenBuffers(1, &mID); }
+	~VBO() { if (!mHasMoved) glDeleteBuffers(1, &mID); }
 };

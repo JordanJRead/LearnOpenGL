@@ -1,20 +1,27 @@
 #pragma once
 #include "glad/glad.h"
-class VAO {
+class TEX {
 public:
 	unsigned int mID;
 	bool mHasMoved{ false };
 
 	// Move constructor
-	VAO(VAO&& other) noexcept {
+	TEX(TEX&& other) noexcept {
 		mID = other.mID;
 		other.mHasMoved = true;
 	}
+	TEX& operator=(TEX&&) = delete; // move assignment
+	//TEX& operator=(TEX&& other) noexcept {
+	//	other.mHasMoved = true;
+	//	if (!mHasMoved) {
+	//		glDeleteTextures(1, &mID);
+	//	}
+	//	mID = other.mID;
+	//}
 
-	VAO& operator=(const VAO&) = delete; // copy assignment
-	VAO& operator=(VAO&&) = delete; // move assignment
+	TEX& operator=(const TEX&) = delete; // copy assignment
 
 	// regular constructor and destructor
-	VAO() { glGenTextures(1, &mID); }
-	~VAO() { if (!mHasMoved) glDeleteTextures(1, &mID); }
+	TEX() { glGenTextures(1, &mID); }
+	~TEX() { if (!mHasMoved) glDeleteTextures(1, &mID); }
 };

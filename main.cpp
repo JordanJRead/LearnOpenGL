@@ -142,7 +142,7 @@ int main()
     scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
-    scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
+    //scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
     scene.addGrassPosition({ 0, 0, 3});
     scene.addGrassPosition({ 0, 0, 4 });
     scene.addGrassPosition({ 1, 0, 5 });
@@ -158,8 +158,8 @@ int main()
 
         processInput(window);
 
-        //lightingShader.render(scene, gCamera);
-        borderShader.render(scene, gCamera);
+        lightingShader.render(scene, gCamera);
+        //borderShader.render(scene, gCamera);
 
         lightSourceShader.render(scene, gCamera);
 

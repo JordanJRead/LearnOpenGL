@@ -24,8 +24,6 @@ void Model::loadModel(const std::string& path) {
 	mDirectory = path.substr(0, path.find_last_of('/'));
 
 	processNode(scene->mRootNode, scene);
-	int x;
-	x = 5;
 }
 void Model::processNode(aiNode* node, const aiScene* scene) {
 	for (size_t i{ 0 }; i < node->mNumMeshes; ++i) {
@@ -39,8 +37,8 @@ void Model::processNode(aiNode* node, const aiScene* scene) {
 }
 Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
+	std::vector<size_t> indices;
+	std::vector<size_t> textureIndices;
 
 	for (size_t vertI{ 0 }; vertI < mesh->mNumVertices; ++vertI) {
 		Vertex vertex;
@@ -77,16 +75,15 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	float shininess{ 32 };
 	if (mesh->mMaterialIndex >= 0) { // ?
 		aiMaterial* material{ scene->mMaterials[mesh->mMaterialIndex] };
-		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, Texture::diffuse);
-		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, Texture::specular);
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		std::vector<size_t> diffuseMapIndices = loadMaterialTextureIndices(material, aiTextureType_DIFFUSE, Texture::diffuse);
+		textureIndices.insert(textureIndices.end(), diffuseMapIndices.begin(), diffuseMapIndices.end());
+		std::vector<size_t> specularMapIndices = loadMaterialTextureIndices(material, aiTextureType_SPECULAR, Texture::specular);
+		textureIndices.insert(textureIndices.end(), specularMapIndices.begin(), specularMapIndices.end());
 		if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess)) {
 			shininess = 32;
 		}
 	}
-
-	return Mesh{ vertices, indices, textures, shininess };
+	return Mesh{ vertices, indices, textureIndices, shininess };
 }
 
 unsigned int Model::textureFromFile(std::string_view imagePath) {
@@ -115,25 +112,26 @@ unsigned int Model::textureFromFile(std::string_view imagePath) {
 	return ID;
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, Texture::Type typeName) {
-	std::vector<Texture> textures;
+std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, Texture::Type typeName) {
+	std::vector<size_t> textureIndices;
 	for (size_t i{ 0 }; i < mat->GetTextureCount(type); ++i) {
 		aiString texturePath;
 		mat->GetTexture(type, i, &texturePath);
-		bool skip{ false };
-		for (const Texture& loadedTexture : mLoadedTextures) {
+		bool alreadyLoaded{ false };
+		for (size_t loadedTextureIndex{ 0 }; loadedTextureIndex < mLoadedTextures.size(); ++loadedTextureIndex) {
+			const Texture& loadedTexture = mLoadedTextures[loadedTextureIndex];
 			if (std::strcmp(loadedTexture.mPath.data(), texturePath.C_Str()) == 0) {
-				textures.push_back(loadedTexture); // todo index
-				skip = true;
+				textureIndices.push_back(loadedTextureIndex);
+				alreadyLoaded = true;
 				break;
 			}
 		}
-		if (!skip) {
-			textures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName);
-			mLoadedTextures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName);
+		if (!alreadyLoaded) {
+			mLoadedTextures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName); // here
+			textureIndices.push_back(mLoadedTextures.size() - 1);
 		}
 	}
-	return textures;
+	return textureIndices;
 }
 
 Model::Model(const std::string& path, const Transform& transform) {

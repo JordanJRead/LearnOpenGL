@@ -4,8 +4,9 @@
 #include <glad/glad.h>
 #include "mesh.h"
 #include "texture.h"
+#include <iostream>
 
-void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
+void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices) {
 	glGenVertexArrays(1, &mVAO);
 	glGenBuffers(1, &mVBO);
 	glGenBuffers(1, &mEBO);
@@ -13,10 +14,21 @@ void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsi
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+	if (vertices.size() != 0) {
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), NULL, GL_STATIC_DRAW);
+	} else {
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+		std::cerr << "VERTEX SIZE IS 0\n";
+	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	if (indices.size() != 0) {
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), 0, GL_STATIC_DRAW);
+	} else {
+		std::cerr << "INDICES SIZE IS 0\n";
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	}
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
@@ -30,26 +42,28 @@ void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsi
 	glBindVertexArray(0);
 }
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture> textures, float shininess)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices, const std::vector<size_t>& textureIndices, float shininess)
 	: mVertexCount{ static_cast<unsigned int>(indices.size()) }
-	, mTextures{ textures }
+	, mTextureIndices{ textureIndices }
 	, mShininess{ shininess }
 {
 	setupMesh(vertices, indices);
 }
 
-int Mesh::getFirstDiffuse() const {
-	for (const Texture& texture : mTextures) {
+int Mesh::getFirstDiffuse(const std::vector<Texture>& textures) const {
+	for (size_t textureIndex : mTextureIndices) {
+		const Texture& texture = textures[textureIndex];
 		if (texture.mType == Texture::diffuse) {
-			return texture.mID;
+			return texture.mTex.mID; // TODO return TEX instead maybe?
 		}
 	}
 	return -1;
 }
-int Mesh::getFirstSpecular() const {
-	for (const Texture& texture : mTextures) {
+int Mesh::getFirstSpecular(const std::vector<Texture>& textures) const {
+	for (size_t textureIndex : mTextureIndices) {
+		const Texture& texture = textures[textureIndex];
 		if (texture.mType == Texture::specular) {
-			return texture.mID;
+			return texture.mTex.mID;
 		}
 	}
 	return -1;

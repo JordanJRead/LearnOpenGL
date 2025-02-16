@@ -71,6 +71,7 @@ void main() {
 		resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
 	}
 	FragColor = vec4(resultColor, texture(material.diffuseMap, fragTexCoords).w);
+	FragColor = vec4(1, 1, 0, 1);
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {

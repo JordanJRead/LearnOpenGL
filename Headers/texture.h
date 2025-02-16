@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "glad/glad.h"
+#include "OpenGL Wrappers/TEX.h"
 
 class Texture {
 private:
@@ -12,7 +13,7 @@ public:
 	};
 
 	std::string  mPath;
-	unsigned int mID;
+	TEX mTex;
 	Type mType;
 
 	Texture(const std::string& path, Type type);

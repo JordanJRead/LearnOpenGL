@@ -36,6 +36,4 @@ enum Type {
 	specular
 };
 
-Texture::Texture(const std::string& path, Type type) : mPath{ path }, mType{ type } {
-	mID = textureFromFile(path);
-}
+Texture::Texture(const std::string& path, Type type) : mPath{ path }, mType{ type } {}
