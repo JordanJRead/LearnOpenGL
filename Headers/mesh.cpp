@@ -6,7 +6,7 @@
 #include "texture.h"
 #include <iostream>
 
-void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices) {
+void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
 	glGenVertexArrays(1, &mVAO);
 	glGenBuffers(1, &mVBO);
 	glGenBuffers(1, &mEBO);
@@ -14,21 +14,10 @@ void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<size
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-
-	if (vertices.size() != 0) {
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), NULL, GL_STATIC_DRAW);
-	} else {
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-		std::cerr << "VERTEX SIZE IS 0\n";
-	}
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEBO);
-	if (indices.size() != 0) {
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), 0, GL_STATIC_DRAW);
-	} else {
-		std::cerr << "INDICES SIZE IS 0\n";
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-	}
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
@@ -42,7 +31,7 @@ void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<size
 	glBindVertexArray(0);
 }
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<size_t>& indices, const std::vector<size_t>& textureIndices, float shininess)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<size_t>& textureIndices, float shininess)
 	: mVertexCount{ static_cast<unsigned int>(indices.size()) }
 	, mTextureIndices{ textureIndices }
 	, mShininess{ shininess }

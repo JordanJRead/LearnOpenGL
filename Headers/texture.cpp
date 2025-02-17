@@ -5,10 +5,9 @@
 #include <iostream>
 #include "texture.h"
 
-unsigned int Texture::textureFromFile(std::string_view imagePath) {
-	unsigned int ID;
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
+void Texture::textureFromFile(std::string_view imagePath) {
+	glGenTextures(1, &mTex.mID);
+	glBindTexture(GL_TEXTURE_2D, mTex.mID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -28,7 +27,6 @@ unsigned int Texture::textureFromFile(std::string_view imagePath) {
 	else {
 		std::cerr << "Failed to load texture data " << imagePath << "\n";
 	}
-	return ID;
 }
 
 enum Type {
@@ -36,4 +34,6 @@ enum Type {
 	specular
 };
 
-Texture::Texture(const std::string& path, Type type) : mPath{ path }, mType{ type } {}
+Texture::Texture(const std::string& path, Type type) : mPath{ path }, mType{ type } {
+	textureFromFile(path);
+}

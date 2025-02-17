@@ -5,7 +5,7 @@
 
 class Texture {
 private:
-	unsigned int textureFromFile(std::string_view imagePath);
+	void textureFromFile(std::string_view imagePath);
 public:
 	enum Type {
 		diffuse,

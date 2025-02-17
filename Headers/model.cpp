@@ -37,7 +37,7 @@ void Model::processNode(aiNode* node, const aiScene* scene) {
 }
 Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	std::vector<Vertex> vertices;
-	std::vector<size_t> indices;
+	std::vector<unsigned int> indices;
 	std::vector<size_t> textureIndices;
 
 	for (size_t vertI{ 0 }; vertI < mesh->mNumVertices; ++vertI) {
@@ -127,7 +127,7 @@ std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTexture
 			}
 		}
 		if (!alreadyLoaded) {
-			mLoadedTextures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName); // here
+			mLoadedTextures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName);
 			textureIndices.push_back(mLoadedTextures.size() - 1);
 		}
 	}

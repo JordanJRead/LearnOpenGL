@@ -16,7 +16,6 @@ void main() {
 
 	vec4 worldPos4 = model * vec4(vPos, 1);
 	fragWorldPos = worldPos4.xyz;
-	float test = gl_VertexID;
 	fragTexCoords = vTexCoords;
 	gl_Position = projection * view * worldPos4;
 }
