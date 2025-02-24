@@ -4,17 +4,17 @@
 #include "spotLight.h"
 #include "model.h"
 #include "scene.h"
-//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <iostream>
+#include <algorithm>
+#include "OpenGL Wrappers/TEX.h"
 
-unsigned int textureFromFile(std::string_view imagePath) {
-	unsigned int ID;
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
+TEX textureFromFile(std::string_view imagePath) {
+	TEX tex;
+	glBindTexture(GL_TEXTURE_2D, tex);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
@@ -31,13 +31,9 @@ unsigned int textureFromFile(std::string_view imagePath) {
 	else {
 		std::cerr << "Failed to load texture data " << imagePath << "\n";
 	}
-	return ID;
+	return tex;
 }
 
-Scene::Scene() {
-	grassDiffuse = textureFromFile("images/window.png");
-	grassSpecular = textureFromFile("images/white.png");
-}
 void Scene::setDirLight(const DirLight& dirLight) {
 	mDirLight = dirLight;
 }
@@ -61,18 +57,18 @@ void Scene::addPointLight(const MultiColors& colors, const Attenuation& attenuat
 void Scene::addModel(const std::string& filePath, const Transform& transform) {
 	mModels.emplace_back(filePath, transform);
 }
-void Scene::addGrassPosition(const glm::vec3& pos) {
-	mGrassPositions.push_back(pos);
+void Scene::addTransparentModel(const std::string& filePath, const Transform& transform) {
+	mTransparentModels.emplace_back(filePath, transform);
 }
 
-const DirLight&                Scene::getDirLight()       const { return mDirLight; }
-const std::vector<SpotLight>&  Scene::getSpotLights()     const { return mSpotLights; }
-const std::vector<PointLight>& Scene::getPointLights()    const { return mPointLights; };
-const std::vector<Model>&      Scene::getModels()         const { return mModels; }
-const std::vector<glm::vec3>&  Scene::getGrassPositions() const { return mGrassPositions; }
+const DirLight&                Scene::getDirLight()          const { return mDirLight; }
+const std::vector<SpotLight>&  Scene::getSpotLights()        const { return mSpotLights; }
+const std::vector<PointLight>& Scene::getPointLights()       const { return mPointLights; };
+const std::vector<Model>&      Scene::getModels()            const { return mModels; }
+const std::vector<Model>&      Scene::getTransparentModels() const { return mTransparentModels; }
 void Scene::sortTransparent(const glm::vec3& cameraPos) {
-	auto compare = [cameraPos](const glm::vec3& pos1, const glm::vec3& pos2)->bool {
-		return (glm::length(pos1 - cameraPos)) > (glm::length(pos2 - cameraPos));
+	auto compare = [cameraPos](const Model& model1, const Model& model2)->bool {
+		return (glm::length(model1.mTransform.pos - cameraPos)) > (glm::length(model2.mTransform.pos - cameraPos));
 	};
-	std::sort(mGrassPositions.begin(), mGrassPositions.end(), compare);
+	std::sort(mTransparentModels.begin(), mTransparentModels.end(), compare);
 }

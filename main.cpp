@@ -1,11 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "Headers/lightingshader.h"
-#include "Headers/lightsourceshader.h"
-#include "Headers/bordershader.h"
+#include "Headers/Shader Classes/lightingshader.h"
+#include "Headers/Shader Classes/lightsourceshader.h"
+#include "Headers/Shader Classes/bordershader.h"
 #include "Headers/camera.h"
 #include "Headers/scene.h"
+#include "Headers/structs.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "Headers/stb_image.h"
 
 float g_deltaTime;
 int g_width{ 800 };
@@ -42,8 +46,7 @@ float sinRange(float x, float y) {
     return (y - x) / 2 * sin(glfwGetTime()) + (x+y)/2;
 }
 
-int main()
-{
+int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -134,14 +137,18 @@ int main()
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
     Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
-    //scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
-    scene.addModel("C:/Users/Jordan/Desktop/Cube/cube.obj", transform);
+    transform.pos += glm::vec3{ 0, 0, 7 };
+    scene.addTransparentModel("Objects/Window/window.obj", transform);
+    transform.pos -= glm::vec3{ 0, 0, 1 };
+    scene.addTransparentModel("Objects/Window/window.obj", transform);
+    transform.pos -= glm::vec3{ 0, 0, 1 };
+    scene.addTransparentModel("Objects/Window/window.obj", transform);
+    transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
+    scene.addModel("Objects/Backpack/backpack.obj", transform);
+    scene.addModel("Objects/Cube/cube.obj", transform);
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
-    scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
-    scene.addGrassPosition({ 0, 0, 3});
-    scene.addGrassPosition({ 0, 0, 4 });
-    scene.addGrassPosition({ 1, 0, 5 });
+    //scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
     while (!glfwWindowShouldClose(window)) {
         scene.sortTransparent(gCamera.mPos);
         //glfwSwapInterval(0); // show true fps
@@ -154,8 +161,8 @@ int main()
 
         processInput(window);
 
-        //lightingShader.render(scene, gCamera);
-        borderShader.render(scene, gCamera);
+        lightingShader.render(scene, gCamera);
+        //borderShader.render(scene, gCamera);
 
         lightSourceShader.render(scene, gCamera);
 
