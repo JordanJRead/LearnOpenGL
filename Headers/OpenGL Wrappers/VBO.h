@@ -17,4 +17,8 @@ public:
 	// regular constructor and destructor
 	VBO() { glGenBuffers(1, &mID); }
 	~VBO() { if (!mHasMoved) glDeleteBuffers(1, &mID); }
+
+	operator unsigned int() const {
+		return mID;
+	}
 };

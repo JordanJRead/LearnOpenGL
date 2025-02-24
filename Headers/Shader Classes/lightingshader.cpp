@@ -12,6 +12,8 @@
 #include <iostream>
 #include "../model.h"
 #include "../mesh.h"
+#include "../OpenGL Wrappers/VAO.h"
+#include "../OpenGL Wrappers/VBO.h"
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }
@@ -62,49 +64,11 @@ void LightingShader::render(const Scene& scene, const Camera& camera) {
 		renderModel(model);
 	}
 
-	std::vector<float> vertices{
-		-1, -1, 0, 0, 0, -1, 0, 0,
-		-1, 1, 0, 0, 0, -1, 0, 1,
-		1, -1, 0, 0, 0, -1, 1, 0,
-
-		1, 1, 0, 0, 0, -1, 1, 1,
-		-1, 1, 0, 0, 0, -1, 0, 1,
-		1, -1, 0, 0, 0, -1, 1, 0
-	};
-
-	unsigned int grassVAO;
-	unsigned int grassVBO;
-	glGenVertexArrays(1, &grassVAO);
-	glGenBuffers(1, &grassVBO);
-
-	glBindVertexArray(grassVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, grassVBO);
-
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(3 * sizeof(float)));
-
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(6 * sizeof(float)));
-	setUniformMaterialShininess(64);
-	for (const glm::vec3& grassPos : scene.getGrassPositions()) {
-		glm::mat4 model{ 1 };
-		model = glm::translate(model, grassPos);
-		setUniformModel(model);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, scene.grassDiffuse);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, scene.grassSpecular);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+	for (const Model& model : scene.getTransparentModels()) {
+		renderModel(model);
 	}
 
 	glBindVertexArray(0);
-	glDeleteVertexArrays(1, &grassVAO);
-	glDeleteBuffers(1, &grassVBO);
 }
 
 void LightingShader::setUniformModel(const glm::mat4& model) const {

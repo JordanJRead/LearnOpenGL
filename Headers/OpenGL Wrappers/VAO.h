@@ -17,4 +17,8 @@ public:
 	// regular constructor and destructor
 	  VAO() {                 glGenVertexArrays   (1, &mID); }
 	 ~VAO() { if (!mHasMoved) glDeleteVertexArrays(1, &mID); }
+
+	 operator unsigned int() const {
+		 return mID;
+	 }
 };

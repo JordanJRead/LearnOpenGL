@@ -17,4 +17,8 @@ public:
 	// regular constructor and destructor
 	FBO() { glGenFramebuffers(1, &mID); }
 	~FBO() { if (!mHasMoved) glDeleteFramebuffers(1, &mID); }
+
+	operator unsigned int() const {
+		return mID;
+	}
 };

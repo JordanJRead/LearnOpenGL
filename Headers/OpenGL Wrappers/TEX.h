@@ -24,4 +24,8 @@ public:
 	// regular constructor and destructor
 	TEX() { glGenTextures(1, &mID); }
 	~TEX() { if (!mHasMoved) glDeleteTextures(1, &mID); }
+
+	operator unsigned int() const {
+		return mID;
+	}
 };

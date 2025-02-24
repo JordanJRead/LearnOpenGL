@@ -12,6 +12,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include "texture.h"
+#include <iostream>
 
 void Model::loadModel(const std::string& path) {
 	Assimp::Importer importer{};
@@ -86,32 +87,6 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	return Mesh{ vertices, indices, textureIndices, shininess };
 }
 
-unsigned int Model::textureFromFile(std::string_view imagePath) {
-	unsigned int ID;
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	int width, height, channelCount;
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(imagePath.data(), &width, &height, &channelCount, 0);
-
-	if (data) {
-		auto internalFormat{ channelCount == 3 ? GL_RGB : GL_RGBA };
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		stbi_image_free(data);
-	}
-	else {
-		std::cerr << "Failed to load texture data\n";
-	}
-	return ID;
-}
-
 std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, Texture::Type typeName) {
 	std::vector<size_t> textureIndices;
 	for (size_t i{ 0 }; i < mat->GetTextureCount(type); ++i) {
@@ -120,7 +95,7 @@ std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTexture
 		bool alreadyLoaded{ false };
 		for (size_t loadedTextureIndex{ 0 }; loadedTextureIndex < mLoadedTextures.size(); ++loadedTextureIndex) {
 			const Texture& loadedTexture = mLoadedTextures[loadedTextureIndex];
-			if (std::strcmp(loadedTexture.mPath.data(), texturePath.C_Str()) == 0) {
+			if (std::strcmp(loadedTexture.mPath.data(), (mDirectory + '/' + texturePath.C_Str()).data()) == 0) {
 				textureIndices.push_back(loadedTextureIndex);
 				alreadyLoaded = true;
 				break;
@@ -134,7 +109,7 @@ std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTexture
 	return textureIndices;
 }
 
-Model::Model(const std::string& path, const Transform& transform) {
+Model::Model(const std::string& path, const Transform& transform) : mTransform{ transform } {
 	loadModel(path);
 	mModel = glm::mat4(1.0);
 	mModel = glm::translate(mModel, transform.pos);

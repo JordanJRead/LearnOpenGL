@@ -178,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Downloads\modelinfo.h" />
     <ClInclude Include="..\..\..\Downloads\vertexarraywrapper.h" />
+    <ClInclude Include="Headers\OpenGL Wrappers\EBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\FBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\TEX.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\VAO.h" />

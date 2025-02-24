@@ -96,5 +96,8 @@
     <ClInclude Include="Headers\OpenGL Wrappers\FBO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\OpenGL Wrappers\EBO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

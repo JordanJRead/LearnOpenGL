@@ -3,6 +3,9 @@
 
 #include <vector>
 #include "structs.h"
+#include "OpenGL Wrappers/VAO.h"
+#include "OpenGL Wrappers/VBO.h"
+#include "OpenGL Wrappers/EBO.h"
 
 class Texture;
 
@@ -12,7 +15,9 @@ private:
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 
 public:
-	unsigned int mVAO, mVBO, mEBO;
+	VAO mVAO;
+	VBO mVBO;
+	EBO mEBO;
 	unsigned int mVertexCount;
 	float mShininess;
 

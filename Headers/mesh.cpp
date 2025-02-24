@@ -7,10 +7,6 @@
 #include <iostream>
 
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
-	glGenVertexArrays(1, &mVAO);
-	glGenBuffers(1, &mVBO);
-	glGenBuffers(1, &mEBO);
-
 	glBindVertexArray(mVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 

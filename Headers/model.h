@@ -27,6 +27,7 @@ private:
 public:
 	std::vector<Texture> mLoadedTextures;
 	glm::mat4 mModel;
+	Transform mTransform;
 	Model(const std::string& path, const Transform& transform);
 	const std::vector<Mesh>& getMeshes() const;
 };
