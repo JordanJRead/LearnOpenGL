@@ -53,10 +53,26 @@ void Camera::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) 
     mFov -= yOffset;
     if (mFov < 1) mFov = 1;
     if (mFov > 45) mFov = 45;
-    mProjection = glm::perspective(glm::radians(mFov), 800.0f / 600.0f, 0.1f, 100.0f);
+    mProjection = glm::perspective(glm::radians(mFov), static_cast<float>(mScreenWidth) / mScreenHeight, 0.1f, 100.0f);
 }
 
 void Camera::moveBy(const glm::vec3& v) {
     mPos += v;
     mView = glm::lookAt(mPos, mPos + mForward, mUp);
+    mProjection = glm::perspective(glm::radians(mFov), static_cast<float>(mScreenWidth) / mScreenHeight, 0.1f, 100.0f);
+}
+
+void Camera::setScreenDimensions(int width, int height) {
+    mScreenWidth = width;
+    mScreenHeight = height;
+    mProjection = glm::perspective(glm::radians(mFov), static_cast<float>(mScreenWidth) / mScreenHeight, 0.1f, 100.0f);
+}
+
+void Camera::setForward(const glm::vec3& forward) {
+    mForward = forward;
+    mView = glm::lookAt(mPos, mPos + mForward, mUp);
+}
+
+const glm::vec3& Camera::getForward() const {
+    return mForward;
 }

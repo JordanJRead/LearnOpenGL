@@ -5,9 +5,6 @@
 
 class Camera {
 private:
-    int mScreenWidth{};
-    int mScreenHeight{};
-
     bool mIsFirstMouse{ true };
     float mPrevMouseX{ 0 };
     float mPrevMouseY{ 0 };
@@ -15,11 +12,14 @@ private:
     float mPitch{ 0 };
     float mSensitivity{ 0.1 };
 
+    int mScreenWidth{};
+    int mScreenHeight{};
+
     float mFov{ 45 };
+    glm::vec3 mForward{};
 
 public:
     glm::vec3 mPos{};
-    glm::vec3 mForward{};
     glm::vec3 mUp{ 0, 1, 0 };
 
     glm::mat4 mProjection{};
@@ -31,6 +31,9 @@ public:
     void mouseCallback(GLFWwindow* window, double xPos, double yPos);
     void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
     void moveBy(const glm::vec3& v);
+    void setScreenDimensions(int width, int height);
+    void setForward(const glm::vec3& forward);
+    const glm::vec3& getForward() const;
 };
 
 #endif

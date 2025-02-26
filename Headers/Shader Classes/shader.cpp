@@ -65,16 +65,16 @@ Shader::Shader(std::string_view vertPath, std::string_view fragPath) {
     }
 
     // Program
-    ID = glCreateProgram();
-    glAttachShader(ID, vertShader);
-    glAttachShader(ID, fragShader);
-    glLinkProgram(ID);
+    mID = glCreateProgram();
+    glAttachShader(mID, vertShader);
+    glAttachShader(mID, fragShader);
+    glLinkProgram(mID);
 
     success = 0;
-    glGetProgramiv(ID, GL_LINK_STATUS, &success);
+    glGetProgramiv(mID, GL_LINK_STATUS, &success);
     if (!success) {
         char infoLog[512];
-        glGetProgramInfoLog(ID, 512, NULL, infoLog);
+        glGetProgramInfoLog(mID, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << "\n";
     }
 
@@ -82,30 +82,30 @@ Shader::Shader(std::string_view vertPath, std::string_view fragPath) {
     glDeleteShader(fragShader);
 }
 void Shader::use() const {
-    glUseProgram(ID);
+    glUseProgram(mID);
 }
 
 void Shader::setBool(const std::string& name, bool value) const {
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(mID, name.c_str()), value);
 }
 void Shader::setInt(const std::string& name, int value) const {
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(mID, name.c_str()), value);
 }
 void Shader::setVector3(const std::string& name, const glm::vec3& value) const {
-    glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, glm::value_ptr(value));
+    glUniform3fv(glGetUniformLocation(mID, name.c_str()), 1, glm::value_ptr(value));
 }
 void Shader::setVector3(const std::string& name, float x, float y, float z) const {
-    glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+    glUniform3f(glGetUniformLocation(mID, name.c_str()), x, y, z);
 }
 void Shader::setMatrix4(const std::string& name, const glm::mat4& matrix) const {
-    glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+    glUniformMatrix4fv(glGetUniformLocation(mID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 void Shader::setFloat(const std::string& name, float value) const {
-    glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    glUniform1f(glGetUniformLocation(mID, name.c_str()), value);
 }
 
 //virtual void Shader::render(const Scene& scene, const Camera& camera) = 0;
 
 Shader::~Shader() {
-    glDeleteProgram(ID);
+    glDeleteProgram(mID);
 }

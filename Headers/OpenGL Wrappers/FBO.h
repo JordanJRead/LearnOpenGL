@@ -21,4 +21,9 @@ public:
 	operator unsigned int() const {
 		return mID;
 	}
+
+	void recreate() {
+		if (!mHasMoved) { glDeleteFramebuffers(1, &mID); }
+		glGenFramebuffers(1, &mID);
+	}
 };

@@ -25,6 +25,11 @@ public:
 	TEX() { glGenTextures(1, &mID); }
 	~TEX() { if (!mHasMoved) glDeleteTextures(1, &mID); }
 
+	void recreate() {
+		if (!mHasMoved) { glDeleteTextures(1, &mID); }
+		glGenTextures(1, &mID);
+	}
+
 	operator unsigned int() const {
 		return mID;
 	}

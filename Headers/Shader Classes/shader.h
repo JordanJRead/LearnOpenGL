@@ -12,7 +12,7 @@ class Model;
 class Shader {
 
 protected:
-    unsigned int ID;
+    unsigned int mID;
     Shader(std::string_view vertPath, std::string_view fragPath);
     virtual void renderModel(const Model& model) {}
     virtual void use() const final;

@@ -8,6 +8,8 @@
 #include "model.h"
 #include "pointLight.h"
 #include "OpenGL Wrappers/TEX.h"
+#include "OpenGL Wrappers/FBO.h"
+#include "OpenGL Wrappers/RBO.h"
 
 class DirLight;
 class MultiColors;
@@ -21,8 +23,13 @@ private:
 	std::vector<PointLight> mPointLights{};
 	std::vector<SpotLight> mSpotLights{};
 	DirLight mDirLight{};
+	RBO mFBODepthStencilRBO;
+	TEX mSkyBoxTex;
 
 public:
+	FBO mFBO;
+	TEX mFBOColorTex;
+	Scene(int screenWidth, int screenHeight);
 	void setDirLight(const DirLight& dirLight);
 
 	//template <class... SpotLight>
@@ -46,6 +53,8 @@ public:
 	const std::vector<Model>&      getModels()            const;
 	const std::vector<Model>&      getTransparentModels() const;
 	void sortTransparent(const glm::vec3& cameraPos);
+	void updateFramebufferSize(int width, int height);
+	void createFramebuffer(int screenWidth, int screenHeight);
 };
 
 #endif
