@@ -18,6 +18,7 @@ class Attenuation;
 
 class Scene {
 private:
+	void createFramebuffer(int screenWidth, int screenHeight);
 	std::vector<Model> mModels{};
 	std::vector<Model> mTransparentModels{};
 	std::vector<PointLight> mPointLights{};
@@ -54,7 +55,6 @@ public:
 	const std::vector<Model>&      getTransparentModels() const;
 	void sortTransparent(const glm::vec3& cameraPos);
 	void updateFramebufferSize(int width, int height);
-	void createFramebuffer(int screenWidth, int screenHeight);
 };
 
 #endif
