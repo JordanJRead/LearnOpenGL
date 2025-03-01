@@ -20,7 +20,7 @@ class App {
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
             effectShader.startEffect();
         }
-        float moveMag{ mCamera.mSpeed * (float)mDeltaTime };
+        float moveMag{ mCamera.getSpeed() * (float)mDeltaTime };
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             mCamera.moveBy(moveMag * mCamera.getForward());
         }
@@ -28,16 +28,16 @@ class App {
             mCamera.moveBy(-moveMag * mCamera.getForward());
         }
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-            mCamera.moveBy(moveMag * glm::normalize(glm::cross(mCamera.getForward(), mCamera.mUp)));
+            mCamera.moveBy(moveMag * glm::normalize(glm::cross(mCamera.getForward(), mCamera.getUp())));
         }
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-            mCamera.moveBy(-moveMag * glm::normalize(glm::cross(mCamera.getForward(), mCamera.mUp)));
+            mCamera.moveBy(-moveMag * glm::normalize(glm::cross(mCamera.getForward(), mCamera.getUp())));
         }
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            mCamera.moveBy(moveMag * mCamera.mUp);
+            mCamera.moveBy(moveMag * mCamera.getUp());
         }
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-            mCamera.moveBy(-moveMag * mCamera.mUp);
+            mCamera.moveBy(-moveMag * mCamera.getUp());
         }
     }
 
@@ -182,7 +182,7 @@ public:
     }
 
     void runFrame() {
-        mScene.sortTransparent(mCamera.mPos);
+        mScene.sortTransparent(mCamera.getPos());
         //glfwSwapInterval(0); // show true fps
         //std::cout << 1.0f / g_deltaTime << "\n";
         mCurrentFrame = glfwGetTime();

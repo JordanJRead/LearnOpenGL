@@ -50,9 +50,9 @@ void LightingShader::renderModel(const Model& model) {
 
 void LightingShader::render(const Scene& scene, const Camera& camera) {
 	use();
-	setUniformView(camera.mView);
-	setUniformProjection(camera.mProjection); // is once per frame best?
-	setUniformViewPos(camera.mPos);
+	setUniformView(camera.getView());
+	setUniformProjection(camera.getProjection()); // is once per frame best?
+	setUniformViewPos(camera.getPos());
 	setUniformViewDir(camera.getForward());
 
 	setUniformPointLights(scene.getPointLights());
