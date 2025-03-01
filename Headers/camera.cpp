@@ -21,6 +21,13 @@ Camera::Camera(int width, int height, const glm::vec3& pos, float fov, float yaw
     mView = glm::lookAt(mPos, mPos + mForward, mUp);
 }
 
+void Camera::calcProjection() {
+    mProjection = glm::perspective(glm::radians(mFov), static_cast<float>(mScreenWidth) / mScreenHeight, 0.1f, 100.0f);
+}
+void Camera::calcView() {
+    mView = glm::lookAt(mPos, mPos + mForward, mUp);
+}
+
 void Camera::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
     if (mIsFirstMouse) {
         mPrevMouseX = xPos;
@@ -65,14 +72,43 @@ void Camera::moveBy(const glm::vec3& v) {
 void Camera::setScreenDimensions(int width, int height) {
     mScreenWidth = width;
     mScreenHeight = height;
-    mProjection = glm::perspective(glm::radians(mFov), static_cast<float>(mScreenWidth) / mScreenHeight, 0.1f, 100.0f);
-}
-
-void Camera::setForward(const glm::vec3& forward) {
-    mForward = forward;
-    mView = glm::lookAt(mPos, mPos + mForward, mUp);
+    calcProjection();
 }
 
 const glm::vec3& Camera::getForward() const {
     return mForward;
+}
+void Camera::setForward(const glm::vec3& forward) {
+    mForward = forward;
+    calcView();
+}
+
+const glm::vec3& Camera::getPos() const {
+    return mPos;
+}
+void Camera::setPos(const glm::vec3& pos) {
+    mPos = pos;
+    calcView();
+}
+
+const glm::vec3& Camera::getUp() const {
+    return mUp;
+}
+void Camera::setUp(const glm::vec3& up) {
+    mUp = up;
+    calcView();
+}
+
+const glm::mat4& Camera::getProjection() const {
+    return mProjection;
+}
+const glm::mat4& Camera::getView() const {
+    return mView;
+}
+
+float Camera::getSpeed() const {
+    return mSpeed;
+}
+void Camera::setSpeed(float speed) {
+    mSpeed = speed;
 }

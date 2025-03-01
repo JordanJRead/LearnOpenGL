@@ -29,8 +29,8 @@ LightSourceShader::LightSourceShader(std::string_view vertPath, std::string_view
 
 void LightSourceShader::render(const Scene& scene, const Camera& camera) {
 	use();
-	setUniformView(camera.mView);
-	setUniformProjection(camera.mProjection); // is once per frame best?
+	setUniformView(camera.getView());
+	setUniformProjection(camera.getProjection()); // is once per frame best?
 
 	for (const PointLight& pointLight : scene.getPointLights()) {
 		pointLight.modelInfo.use();

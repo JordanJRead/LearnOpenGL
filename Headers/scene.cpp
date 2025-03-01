@@ -58,7 +58,7 @@ void Scene::createFramebuffer(int screenWidth, int screenHeight) {
 }
 
 Scene::Scene(int screenWidth, int screenHeight) {
-
+	createFramebuffer(screenWidth, screenHeight);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTex);
 }
 
