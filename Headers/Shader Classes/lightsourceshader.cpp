@@ -26,22 +26,3 @@ LightSourceShader::LightSourceShader(std::string_view vertPath, std::string_view
 	: Shader{ vertPath, fragPath }
 {
 }
-
-void LightSourceShader::render(const Scene& scene, const Camera& camera) {
-	use();
-	setUniformView(camera.getView());
-	setUniformProjection(camera.getProjection()); // is once per frame best?
-
-	for (const PointLight& pointLight : scene.getPointLights()) {
-		pointLight.modelInfo.use();
-		setUniformModel(pointLight.modelInfo.model);
-		setUniformLightColor(pointLight.colors.diffuse);
-		glDrawArrays(GL_TRIANGLES, 0, pointLight.modelInfo.vertexCount);
-	}
-	for (const SpotLight& spotLight : scene.getSpotLights()) {
-		spotLight.modelInfo.use();
-		setUniformModel(spotLight.modelInfo.model);
-		setUniformLightColor(spotLight.colors.diffuse);
-		glDrawArrays(GL_TRIANGLES, 0, spotLight.modelInfo.vertexCount);
-	}
-}

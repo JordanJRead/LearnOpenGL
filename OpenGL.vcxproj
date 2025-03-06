@@ -149,7 +149,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Headers\app.cpp" />
     <ClCompile Include="Headers\camera.cpp" />
+    <ClCompile Include="Headers\renderer.cpp" />
     <ClCompile Include="Headers\Shader Classes\bordershader.cpp" />
     <ClCompile Include="Headers\Shader Classes\lightingshader.cpp" />
     <ClCompile Include="Headers\mesh.cpp" />
@@ -181,6 +183,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Downloads\modelinfo.h" />
     <ClInclude Include="..\..\..\Downloads\vertexarraywrapper.h" />
+    <ClInclude Include="Headers\app.h" />
     <ClInclude Include="Headers\cubemap.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\EBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\FBO.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="Headers\OpenGL Wrappers\TEX.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\VAO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\VBO.h" />
+    <ClInclude Include="Headers\renderer.h" />
     <ClInclude Include="Headers\Shader Classes\bordershader.h" />
     <ClInclude Include="Headers\Shader Classes\screenquadshader.h" />
     <ClInclude Include="Headers\Shader Classes\skyboxshader.h" />

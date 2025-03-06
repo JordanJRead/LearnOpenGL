@@ -74,26 +74,26 @@ void BorderShader::setUniformMaxSpotLights(int count) const {
 	setInt("maxSpotLights", count);
 }
 void BorderShader::renderModel(const Model& model) {
-	setUniformModel(model.mModel);
-	for (const Mesh& mesh : model.getMeshes()) {
-		setUniformMaterialShininess(mesh.mShininess);
-		glBindVertexArray(mesh.mVAO);
+	//setUniformModel(model.mModel);
+	//for (const Mesh& mesh : model.getMeshes()) {
+	//	setUniformMaterialShininess(mesh.mShininess);
+	//	glBindVertexArray(mesh.mVAO);
 
-		glActiveTexture(GL_TEXTURE0);
-		int diffuseMap{ mesh.getFirstDiffuse(model.mLoadedTextures) };
-		if (diffuseMap >= 0) {
-			glBindTexture(GL_TEXTURE_2D, diffuseMap);
-		}
+	//	glActiveTexture(GL_TEXTURE0);
+	//	int diffuseMap{ mesh.getFirstDiffuseMap(model.mLoadedTextures) };
+	//	if (diffuseMap >= 0) {
+	//		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+	//	}
 
-		glActiveTexture(GL_TEXTURE1);
-		int specularMap{ mesh.getFirstSpecular(model.mLoadedTextures) };
-		if (specularMap >= 0) {
-			glBindTexture(GL_TEXTURE_2D, specularMap);
-		}
+	//	glActiveTexture(GL_TEXTURE1);
+	//	int specularMap{ mesh.getFirstSpecularMap(model.mLoadedTextures) };
+	//	if (specularMap >= 0) {
+	//		glBindTexture(GL_TEXTURE_2D, specularMap);
+	//	}
 
-		glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-	}
+	//	glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
+	//	glBindVertexArray(0);
+	//}
 }
 void BorderShader::render(const Scene& scene, const Camera& camera) {
 	use();

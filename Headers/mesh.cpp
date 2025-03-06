@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "modeltexture.h"
 #include <iostream>
+#include "textureutils.h"
 
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
 	glBindVertexArray(mVAO);
@@ -35,21 +36,39 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>&
 	setupMesh(vertices, indices);
 }
 
-int Mesh::getFirstDiffuse(const std::vector<ModelTexture>& textures) const {
+unsigned int Mesh::getFirstDiffuseMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
 	for (size_t textureIndex : mTextureIndices) {
 		const ModelTexture& texture = textures[textureIndex];
 		if (texture.mType == ModelTexture::diffuse) {
-			return texture.mTex.mID; // TODO return TEX instead maybe?
+			return texture.mTex.mID;
 		}
 	}
-	return -1;
+	return defaultTextures.diffuse.mTex.mID;
 }
-int Mesh::getFirstSpecular(const std::vector<ModelTexture>& textures) const {
+unsigned int Mesh::getFirstSpecularMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
 	for (size_t textureIndex : mTextureIndices) {
 		const ModelTexture& texture = textures[textureIndex];
 		if (texture.mType == ModelTexture::specular) {
 			return texture.mTex.mID;
 		}
 	}
-	return -1;
+	return defaultTextures.specular.mTex.mID;
+}
+unsigned int Mesh::getFirstEmissionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
+	for (size_t textureIndex : mTextureIndices) {
+		const ModelTexture& texture = textures[textureIndex];
+		if (texture.mType == ModelTexture::emission) {
+			return texture.mTex.mID;
+		}
+	}
+	return defaultTextures.emission.mTex.mID;
+}
+unsigned int Mesh::getFirstReflectionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
+	for (size_t textureIndex : mTextureIndices) {
+		const ModelTexture& texture = textures[textureIndex];
+		if (texture.mType == ModelTexture::reflection) {
+			return texture.mTex.mID;
+		}
+	}
+	return defaultTextures.reflection.mTex.mID;
 }

@@ -6,6 +6,7 @@
 #include "OpenGL Wrappers/VAO.h"
 #include "OpenGL Wrappers/VBO.h"
 #include "OpenGL Wrappers/EBO.h"
+#include "textureutils.h"
 
 class ModelTexture;
 
@@ -23,8 +24,10 @@ public:
 
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<size_t>& textureIndices, float shininess);
 
-	int getFirstDiffuse(const std::vector<ModelTexture>& textures) const;
-	int getFirstSpecular(const std::vector<ModelTexture>& textures) const;
+	unsigned int getFirstDiffuseMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
+	unsigned int getFirstSpecularMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
+	unsigned int getFirstEmissionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
+	unsigned int getFirstReflectionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
 };
 
 #endif
