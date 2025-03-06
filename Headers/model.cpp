@@ -11,8 +11,7 @@
 #include "model.h"
 #include <iostream>
 #include <glad/glad.h>
-#include "texture.h"
-#include <iostream>
+#include "modeltexture.h"
 
 void Model::loadModel(const std::string& path) {
 	Assimp::Importer importer{};
@@ -76,9 +75,9 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	float shininess{ 32 };
 	if (mesh->mMaterialIndex >= 0) { // ?
 		aiMaterial* material{ scene->mMaterials[mesh->mMaterialIndex] };
-		std::vector<size_t> diffuseMapIndices = loadMaterialTextureIndices(material, aiTextureType_DIFFUSE, Texture::diffuse);
+		std::vector<size_t> diffuseMapIndices = loadMaterialTextureIndices(material, aiTextureType_DIFFUSE, ModelTexture::diffuse);
 		textureIndices.insert(textureIndices.end(), diffuseMapIndices.begin(), diffuseMapIndices.end());
-		std::vector<size_t> specularMapIndices = loadMaterialTextureIndices(material, aiTextureType_SPECULAR, Texture::specular);
+		std::vector<size_t> specularMapIndices = loadMaterialTextureIndices(material, aiTextureType_SPECULAR, ModelTexture::specular);
 		textureIndices.insert(textureIndices.end(), specularMapIndices.begin(), specularMapIndices.end());
 		if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess)) {
 			shininess = 32;
@@ -87,14 +86,14 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	return Mesh{ vertices, indices, textureIndices, shininess };
 }
 
-std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, Texture::Type typeName) {
+std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, ModelTexture::Type typeName) {
 	std::vector<size_t> textureIndices;
 	for (size_t i{ 0 }; i < mat->GetTextureCount(type); ++i) {
 		aiString texturePath;
 		mat->GetTexture(type, i, &texturePath);
 		bool alreadyLoaded{ false };
 		for (size_t loadedTextureIndex{ 0 }; loadedTextureIndex < mLoadedTextures.size(); ++loadedTextureIndex) {
-			const Texture& loadedTexture = mLoadedTextures[loadedTextureIndex];
+			const ModelTexture& loadedTexture = mLoadedTextures[loadedTextureIndex];
 			if (std::strcmp(loadedTexture.mPath.data(), (mDirectory + '/' + texturePath.C_Str()).data()) == 0) {
 				textureIndices.push_back(loadedTextureIndex);
 				alreadyLoaded = true;

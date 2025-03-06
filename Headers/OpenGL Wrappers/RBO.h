@@ -2,7 +2,7 @@
 #include "glad/glad.h"
 class RBO {
 public:
-	unsigned int mID{};
+	unsigned int mID;
 	bool mHasMoved{ false };
 
 	// Move constructor

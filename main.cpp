@@ -5,6 +5,7 @@
 #include "Headers/Shader Classes/lightsourceshader.h"
 #include "Headers/Shader Classes/bordershader.h"
 #include "Headers/Shader Classes/screenquadshader.h"
+#include "Headers/Shader Classes/skyboxshader.h"
 #include "Headers/camera.h"
 #include "Headers/scene.h"
 #include "Headers/structs.h"
@@ -65,6 +66,8 @@ class App {
     LightSourceShader mLightSourceShader;
     BorderShader mBorderShader;
     ScreenQuadShader mScreenQuadShader;
+    SkyBoxShader mSkyBoxShader;
+
     double mCurrentFrame{};
     double mDeltaTime{};
     double mLastFrame{};
@@ -76,11 +79,12 @@ public:
         , mScreenWidth{ screenWidth }
         , mScreenHeight{ screenHeight }
         , mCamera{ screenWidth, screenHeight, { 0, 0, 3 } }
-        , mScene{ screenWidth, screenHeight }
+        , mScene{ screenWidth, screenHeight, {"images/skybox/blue.png", "images/skybox/green.png", "images/skybox/white.png", "images/skybox/yellow.png", "images/skybox/red.png", "images/skybox/orange.png"}}
         , mLightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" }
         , mLightSourceShader{ "shaders/lightSource.vert", "shaders/lightsource.frag" }
         , mBorderShader{ "shaders/border.vert", "shaders/border.frag" }
         , mScreenQuadShader{ "shaders/screenquad.vert", "shaders/screenquad.frag" }
+        , mSkyBoxShader{ "shaders/skybox.vert", "shaders/skybox.frag" }
     {   
         glfwSetWindowUserPointer(mWindow, this);
 
@@ -196,11 +200,13 @@ public:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         mLightingShader.render(mScene, mCamera);
         mLightSourceShader.render(mScene, mCamera);
+        mSkyBoxShader.render(mScene, mCamera);
 
         glBindFramebuffer(GL_FRAMEBUFFER, mScene.mFBO);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         mCamera.setForward(mCamera.getForward() * -1.0f);
         mLightingShader.render(mScene, mCamera);
+        mSkyBoxShader.render(mScene, mCamera);
 
         mLightSourceShader.render(mScene, mCamera);
         mCamera.setForward(mCamera.getForward() * -1.0f);
@@ -209,6 +215,7 @@ public:
         //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //
 
         mScreenQuadShader.render(mScene, mCamera);
+        
 
         glfwSwapBuffers(mWindow);
         glfwPollEvents();

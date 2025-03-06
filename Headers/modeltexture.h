@@ -3,9 +3,7 @@
 #include "glad/glad.h"
 #include "OpenGL Wrappers/TEX.h"
 
-class Texture {
-private:
-	void textureFromFile(std::string_view imagePath);
+class ModelTexture {
 public:
 	enum Type {
 		diffuse,
@@ -16,5 +14,5 @@ public:
 	TEX mTex;
 	Type mType;
 
-	Texture(const std::string& path, Type type);
+	ModelTexture(const std::string& path, Type type);
 };

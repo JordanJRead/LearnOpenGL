@@ -10,6 +10,7 @@
 #include "OpenGL Wrappers/TEX.h"
 #include "OpenGL Wrappers/FBO.h"
 #include "OpenGL Wrappers/RBO.h"
+#include "cubemap.h"
 
 class DirLight;
 class MultiColors;
@@ -25,12 +26,13 @@ private:
 	std::vector<SpotLight> mSpotLights{};
 	DirLight mDirLight{};
 	RBO mFBODepthStencilRBO;
-	TEX mSkyBoxTex;
+	CubeMap mSkyBoxCubeMap;
 
 public:
 	FBO mFBO;
 	TEX mFBOColorTex;
-	Scene(int screenWidth, int screenHeight);
+	const CubeMap& getCubeMap() const;
+	Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths);
 	void setDirLight(const DirLight& dirLight);
 
 	//template <class... SpotLight>

@@ -3,7 +3,7 @@
 #include <vector>
 #include <glad/glad.h>
 #include "mesh.h"
-#include "texture.h"
+#include "modeltexture.h"
 #include <iostream>
 
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
@@ -35,19 +35,19 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>&
 	setupMesh(vertices, indices);
 }
 
-int Mesh::getFirstDiffuse(const std::vector<Texture>& textures) const {
+int Mesh::getFirstDiffuse(const std::vector<ModelTexture>& textures) const {
 	for (size_t textureIndex : mTextureIndices) {
-		const Texture& texture = textures[textureIndex];
-		if (texture.mType == Texture::diffuse) {
+		const ModelTexture& texture = textures[textureIndex];
+		if (texture.mType == ModelTexture::diffuse) {
 			return texture.mTex.mID; // TODO return TEX instead maybe?
 		}
 	}
 	return -1;
 }
-int Mesh::getFirstSpecular(const std::vector<Texture>& textures) const {
+int Mesh::getFirstSpecular(const std::vector<ModelTexture>& textures) const {
 	for (size_t textureIndex : mTextureIndices) {
-		const Texture& texture = textures[textureIndex];
-		if (texture.mType == Texture::specular) {
+		const ModelTexture& texture = textures[textureIndex];
+		if (texture.mType == ModelTexture::specular) {
 			return texture.mTex.mID;
 		}
 	}

@@ -39,12 +39,6 @@
     <ClCompile Include="Headers\Shader Classes\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Headers\texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Headers\texture.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Headers\Shader Classes\bordershader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -52,6 +46,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Headers\Shader Classes\screenquadshader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Headers\modeltexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Headers\modeltexture.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Headers\textureutils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Headers\Shader Classes\skyboxshader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,6 +112,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\OpenGL Wrappers\RBO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\texturedata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\textureutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\cubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Shader Classes\skyboxshader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

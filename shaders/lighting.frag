@@ -52,25 +52,35 @@ struct SpotLight {
 uniform SpotLight spotLights[N_SPOT_LIGHTS];
 uniform int maxSpotLights;
 
+uniform samplerCube skybox;
+
 vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcSpotLight  (SpotLight  spotLight , vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 void main() {
-	vec3 resultColor = vec3(0);
+	vec3 resultColor = vec3(0, 0, 0);
+	vec3 resultColor2 = vec3(0, 0, 0);
 
 	vec3 normal = normalize(fragNormal);
 	vec3 objectColor = vec3(texture(material.diffuseMap, fragTexCoords));
 	vec3 objectSpecularColor = vec3(texture(material.specularMap, fragTexCoords));
 
 	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
-
+	
 	for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
 		resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor);
+		resultColor2 += objectColor;
 	}
 	for (int i = 0; i < min(N_SPOT_LIGHTS, maxSpotLights); i++) {
 		resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
 	}
-	FragColor = vec4(resultColor, texture(material.diffuseMap, fragTexCoords).w);
+
+	vec3 reflectDir = reflect(normalize(fragWorldPos - viewPos), normalize(normal));
+	vec3 reflectColor = vec3(texture(skybox, reflectDir).rgb);
+
+	vec3 finalColor = reflectColor * 0.2 + resultColor * 0.8;
+
+	FragColor = vec4(finalColor, texture(material.diffuseMap, fragTexCoords).w);
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {
@@ -101,7 +111,7 @@ vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 objectColor, vec3 o
 
 	float lightDist = length(pointLight.pos - fragWorldPos);
 	float attenuation = 1.0 / (pointLight.attConst + pointLight.attLinear * lightDist + pointLight.attQuad * lightDist * lightDist);
-
+	
 	return (ambientColor + diffuseColor + specularColor) * attenuation;
 }
 

@@ -53,7 +53,7 @@ void Camera::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
     direction.y = sin(glm::radians(mPitch));
     direction.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
     mForward = glm::normalize(direction);
-    mView = glm::lookAt(mPos, mPos + mForward, mUp);
+    calcView();
 }
 
 void Camera::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {

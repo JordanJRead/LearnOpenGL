@@ -7,7 +7,7 @@
 #include "OpenGL Wrappers/VBO.h"
 #include "OpenGL Wrappers/EBO.h"
 
-class Texture;
+class ModelTexture;
 
 class Mesh {
 private:
@@ -23,8 +23,8 @@ public:
 
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<size_t>& textureIndices, float shininess);
 
-	int getFirstDiffuse(const std::vector<Texture>& textures) const;
-	int getFirstSpecular(const std::vector<Texture>& textures) const;
+	int getFirstDiffuse(const std::vector<ModelTexture>& textures) const;
+	int getFirstSpecular(const std::vector<ModelTexture>& textures) const;
 };
 
 #endif

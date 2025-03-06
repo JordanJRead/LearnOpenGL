@@ -1,7 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "texture.h"
+#include "modeltexture.h"
 #include "mesh.h"
 
 class Mesh;
@@ -19,13 +19,10 @@ private:
 	void loadModel(const std::string& path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-
-	unsigned int textureFromFile(std::string_view imagePath);
-
-	std::vector<size_t> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, Texture::Type typeName);
+	std::vector<size_t> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, ModelTexture::Type typeName);
 
 public:
-	std::vector<Texture> mLoadedTextures;
+	std::vector<ModelTexture> mLoadedTextures;
 	glm::mat4 mModel;
 	Transform mTransform;
 	Model(const std::string& path, const Transform& transform);

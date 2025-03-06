@@ -8,31 +8,7 @@
 #include <iostream>
 #include <algorithm>
 #include "OpenGL Wrappers/TEX.h"
-
-TEX textureFromFile(std::string_view imagePath) {
-	TEX tex;
-	glBindTexture(GL_TEXTURE_2D, tex);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	int width, height, channelCount;
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(imagePath.data(), &width, &height, &channelCount, 0);
-
-	if (data) {
-		auto internalFormat{ channelCount == 3 ? GL_RGB : GL_RGBA };
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		stbi_image_free(data);
-	}
-	else {
-		std::cerr << "Failed to load texture data " << imagePath << "\n";
-	}
-	return tex;
-}
+#include "cubemap.h"
 
 void Scene::createFramebuffer(int screenWidth, int screenHeight) {
 	glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
@@ -57,9 +33,8 @@ void Scene::createFramebuffer(int screenWidth, int screenHeight) {
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-Scene::Scene(int screenWidth, int screenHeight) {
+Scene::Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths) : mSkyBoxCubeMap{ skyBoxFilePaths } {
 	createFramebuffer(screenWidth, screenHeight);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTex);
 }
 
 void Scene::updateFramebufferSize(int screenWidth, int screenHeight) {
@@ -103,4 +78,7 @@ void Scene::sortTransparent(const glm::vec3& cameraPos) {
 		return (glm::length(model1.mTransform.pos - cameraPos)) > (glm::length(model2.mTransform.pos - cameraPos));
 	};
 	std::sort(mTransparentModels.begin(), mTransparentModels.end(), compare);
+}
+const CubeMap& Scene::getCubeMap() const {
+	return mSkyBoxCubeMap;
 }

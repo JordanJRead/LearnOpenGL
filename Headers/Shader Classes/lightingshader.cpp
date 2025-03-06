@@ -22,6 +22,7 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	setInt("material.diffuseMap", 0);
 	setInt("material.specularMap", 1);
 	setInt("material.emissionMap", 2);
+	setInt("skybox", 3);
 	setFloat("material.shininess", 32);
 }
 
@@ -50,6 +51,8 @@ void LightingShader::renderModel(const Model& model) {
 
 void LightingShader::render(const Scene& scene, const Camera& camera) {
 	use();
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, scene.getCubeMap().mTEX);
 	setUniformView(camera.getView());
 	setUniformProjection(camera.getProjection()); // is once per frame best?
 	setUniformViewPos(camera.getPos());

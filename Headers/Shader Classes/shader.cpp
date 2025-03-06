@@ -35,7 +35,7 @@ Shader::Shader(std::string_view vertPath, std::string_view fragPath) {
         fragSource = fragTemp.c_str();
     }
     catch (std::ifstream::failure e) {
-        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ\n";
+        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ " << vertPath << " : " << fragPath << "\n";
     }
 
     // Compile vertex
