@@ -5,43 +5,15 @@
 #include <GLFW/glfw3.h>
 
 ScreenQuadShader::ScreenQuadShader(const std::string& vertPath, const std::string& fragPath): Shader{ vertPath, fragPath } {
-	glBindVertexArray(mVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-
-	float vertices[]{
-		-1, -1, 0,  0, 0,
-		 1, -1, 0,  1, 0,
-		-1,  1, 0,  0, 1,
-
-		 1,  1, 0,  1, 1,
-		-1,  1, 0,  0, 1,
-		 1, -1, 0,  1, 0
-	};
-
-	// Top middle small
-	for (int i{ 0 }; i < std::size(vertices); ++i) {
-		if (i % 5 == 0) { // x pos
-			vertices[i] *= 0.2;
-		}
-		else if (i % 5 == 1) {
-			vertices[i] *= 0.2;
-			vertices[i] += 0.8;
-		}
-	}
-
-	glBufferData(GL_ARRAY_BUFFER, std::size(vertices) * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	glUseProgram(mID);
 	setInt("screenTex", 0);
+}
+
+void ScreenQuadShader::setUniformModel(const glm::mat4& model) {
+	setMatrix4("model", model);
+}
+void ScreenQuadShader::setUniformOffset(float offset) {
+	setFloat("offset", offset);
 }
 
 double easeOutBounce(double x) {
@@ -80,22 +52,6 @@ float ScreenQuadShader::getOffset(double time) {
 	return effectStartValue - (effectStartValue * easingInput);
 }
 
-void ScreenQuadShader::render(const Scene& scene, const Camera& camera) {
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	glUseProgram(mID);
-
-	setFloat("offset", getOffset(mEffectStartTime));
-
-	glBindVertexArray(mVAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, scene.mFBOColorTex);
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-}
 void ScreenQuadShader::startEffect() {
 	mEffectStartTime = glfwGetTime();
 }

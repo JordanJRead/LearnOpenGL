@@ -103,9 +103,3 @@ void Shader::setMatrix4(const std::string& name, const glm::mat4& matrix) const 
 void Shader::setFloat(const std::string& name, float value) const {
     glUniform1f(glGetUniformLocation(mID, name.c_str()), value);
 }
-
-//virtual void Shader::render(const Scene& scene, const Camera& camera) = 0;
-
-Shader::~Shader() {
-    glDeleteProgram(mID);
-}

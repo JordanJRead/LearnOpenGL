@@ -19,59 +19,12 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	: Shader{ vertPath, fragPath }
 {
 	use();
-	setInt("material.diffuseMap", 0);
-	setInt("material.specularMap", 1);
-	setInt("material.emissionMap", 2);
-	setInt("skybox", 3);
+	setInt("material.diffuseMap", mDiffuseTextureIndex);
+	setInt("material.specularMap", mSpecularTextureIndex);
+	setInt("material.emissionMap", mEmissionTextureIndex);
+	setInt("material.reflectionMap", mReflectionTextureIndex);
+	setInt("skybox", mSkyboxTextureIndex);
 	setFloat("material.shininess", 32);
-}
-
-void LightingShader::renderModel(const Model& model) {
-	setUniformModel(model.mModel);
-	for (const Mesh& mesh : model.getMeshes()) {
-		setUniformMaterialShininess(mesh.mShininess);
-		glBindVertexArray(mesh.mVAO);
-
-		glActiveTexture(GL_TEXTURE0);
-		int diffuseMap{ mesh.getFirstDiffuse(model.mLoadedTextures) };
-		if (diffuseMap >= 0) {
-			glBindTexture(GL_TEXTURE_2D, diffuseMap);
-		}
-
-		glActiveTexture(GL_TEXTURE1);
-		int specularMap{ mesh.getFirstSpecular(model.mLoadedTextures) };
-		if (specularMap >= 0) {
-			glBindTexture(GL_TEXTURE_2D, specularMap);
-		}
-
-		glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-	}
-}
-
-void LightingShader::render(const Scene& scene, const Camera& camera) {
-	use();
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, scene.getCubeMap().mTEX);
-	setUniformView(camera.getView());
-	setUniformProjection(camera.getProjection()); // is once per frame best?
-	setUniformViewPos(camera.getPos());
-	setUniformViewDir(camera.getForward());
-
-	setUniformPointLights(scene.getPointLights());
-	setUniformMaxPointLights(scene.getPointLights().size());
-	setUniformDirLight(scene.getDirLight());
-	setUniformSpotLights(scene.getSpotLights());
-	setUniformMaxSpotLights(scene.getSpotLights().size());
-	for (const Model& model : scene.getModels()) {
-		renderModel(model);
-	}
-
-	for (const Model& model : scene.getTransparentModels()) {
-		renderModel(model);
-	}
-
-	glBindVertexArray(0);
 }
 
 void LightingShader::setUniformModel(const glm::mat4& model) const {

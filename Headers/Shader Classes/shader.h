@@ -4,6 +4,7 @@
 #include <string_view>
 #include <glm/glm.hpp>
 #include <string>
+#include "glad/glad.h"
 
 class Scene;
 class Camera;
@@ -14,7 +15,6 @@ class Shader {
 protected:
     unsigned int mID;
     Shader(std::string_view vertPath, std::string_view fragPath);
-    virtual void renderModel(const Model& model) {}
     virtual void use() const final;
 
     void setBool   (const std::string& name, bool  value)                const;
@@ -25,8 +25,9 @@ protected:
     void setFloat  (const std::string& name, float value)               const;
 
 public:
-    virtual void render(const Scene& scene, const Camera& camera) {} //=0
-    ~Shader();
+    ~Shader() {
+        glDeleteProgram(mID);
+    }
 };
 
 #endif

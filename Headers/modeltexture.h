@@ -7,7 +7,9 @@ class ModelTexture {
 public:
 	enum Type {
 		diffuse,
-		specular
+		specular,
+		emission,
+		reflection
 	};
 
 	std::string  mPath;

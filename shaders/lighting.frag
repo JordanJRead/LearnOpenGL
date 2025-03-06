@@ -11,6 +11,8 @@ uniform vec3 viewDir;
 struct Material {
 	sampler2D diffuseMap;
 	sampler2D specularMap;
+	sampler2D emissionMap;
+	sampler2D reflectionMap;
 	float shininess;
 };
 uniform Material material;
@@ -58,8 +60,7 @@ vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcSpotLight  (SpotLight  spotLight , vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 void main() {
-	vec3 resultColor = vec3(0, 0, 0);
-	vec3 resultColor2 = vec3(0, 0, 0);
+	vec3 resultColor = vec3(texture(material.emissionMap, fragTexCoords));
 
 	vec3 normal = normalize(fragNormal);
 	vec3 objectColor = vec3(texture(material.diffuseMap, fragTexCoords));
@@ -69,18 +70,24 @@ void main() {
 	
 	for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
 		resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor);
-		resultColor2 += objectColor;
 	}
 	for (int i = 0; i < min(N_SPOT_LIGHTS, maxSpotLights); i++) {
 		resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
 	}
 
-	vec3 reflectDir = reflect(normalize(fragWorldPos - viewPos), normalize(normal));
-	vec3 reflectColor = vec3(texture(skybox, reflectDir).rgb);
+	vec3 incomingRayDir = normalize(fragWorldPos - viewPos);
 
-	vec3 finalColor = reflectColor * 0.2 + resultColor * 0.8;
+	vec3 reflectDir = reflect(incomingRayDir, normalize(normal));
+	vec3 reflectColor = texture(skybox, reflectDir).rgb;
+	vec3 reflectMapSample = vec3(texture(material.reflectionMap, fragTexCoords));
+
+	//vec3 refractDir = refract(incomingRayDir, normal, 1.0 / 1.52);
+	//vec3 refractColor = texture(skybox, refractDir).rgb;
+
+	vec3 finalColor = reflectColor * reflectMapSample + resultColor * (1 - reflectMapSample);
 
 	FragColor = vec4(finalColor, texture(material.diffuseMap, fragTexCoords).w);
+	//FragColor = vec4(refractColor, texture(material.diffuseMap, fragTexCoords).w);
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {

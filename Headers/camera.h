@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 class Camera {
 private:

@@ -3,6 +3,7 @@
 #include "textureutils.h"
 #include "texturedata.h"
 #include <iostream>
+#include "modeltexture.h"
 
 TEX TextureUtils::texture2DFromFile(const std::string& filePath) {
 	TEX tex;

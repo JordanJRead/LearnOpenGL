@@ -75,10 +75,20 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	float shininess{ 32 };
 	if (mesh->mMaterialIndex >= 0) { // ?
 		aiMaterial* material{ scene->mMaterials[mesh->mMaterialIndex] };
+
 		std::vector<size_t> diffuseMapIndices = loadMaterialTextureIndices(material, aiTextureType_DIFFUSE, ModelTexture::diffuse);
 		textureIndices.insert(textureIndices.end(), diffuseMapIndices.begin(), diffuseMapIndices.end());
+
 		std::vector<size_t> specularMapIndices = loadMaterialTextureIndices(material, aiTextureType_SPECULAR, ModelTexture::specular);
 		textureIndices.insert(textureIndices.end(), specularMapIndices.begin(), specularMapIndices.end());
+
+		std::vector<size_t> emissionMapIndices = loadMaterialTextureIndices(material, aiTextureType_EMISSIVE, ModelTexture::emission);
+		textureIndices.insert(textureIndices.end(), emissionMapIndices.begin(), emissionMapIndices.end());
+
+		// assimp doesn't support reflection maps, so we load reflection maps under the ambient label
+		std::vector<size_t> reflectionMapIndices = loadMaterialTextureIndices(material, aiTextureType_AMBIENT, ModelTexture::reflection);
+		textureIndices.insert(textureIndices.end(), reflectionMapIndices.begin(), reflectionMapIndices.end());
+
 		if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess)) {
 			shininess = 32;
 		}

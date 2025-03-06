@@ -9,12 +9,17 @@
 #include "../pointLight.h"
 #include "../spotLight.h"
 
-class Scene;
-class Camera;
 class DirLight;
 
 class LightingShader : public Shader {
+	friend class Renderer;
 protected:
+	int mDiffuseTextureIndex{ 0 };
+	int mSpecularTextureIndex{ 1 };
+	int mEmissionTextureIndex{ 2 };
+	int mReflectionTextureIndex{ 3 };
+	int mSkyboxTextureIndex{ 4 };
+
 	void setUniformModel(const glm::mat4& model) const;
 	void setUniformView(const glm::mat4& model) const;
 	void setUniformProjection(const glm::mat4& model) const;
@@ -31,11 +36,8 @@ protected:
 
 	void setUniformSpotLights(const std::vector<SpotLight>& spotLights) const;
 	void setUniformMaxSpotLights(int count) const;
-
-	void renderModel(const Model& model) override;
 public:
 	LightingShader(std::string_view vertPath, std::string_view fragPath);
-	void render(const Scene& scene, const Camera& camera) override;
 };
 
 #endif

@@ -10,6 +10,7 @@ class Scene;
 class Camera;
 
 class LightSourceShader : public Shader {
+	friend class Renderer;
 private:
 	void setUniformModel(const glm::mat4& model) const;
 	void setUniformView(const glm::mat4& view) const;
@@ -18,7 +19,5 @@ private:
 
 public:
 	LightSourceShader(std::string_view vertPath, std::string_view fragPath);
-
-	void render(const Scene& scene, const Camera& camera) override;
 };
 #endif
