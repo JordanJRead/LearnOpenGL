@@ -13,7 +13,7 @@
 #include "../model.h"
 #include "../mesh.h"
 #include "../OpenGL Wrappers/VAO.h"
-#include "../OpenGL Wrappers/VBO.h"
+#include "../OpenGL Wrappers/BUF.h"
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }

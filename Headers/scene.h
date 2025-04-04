@@ -42,10 +42,11 @@ public:
 		const Transform& transform);
 
 	const std::vector<Model>& getModels()            const;
-	void addModel           (const std::string& filePath, const Transform& transform);
+	Model& getModel(size_t i);
+	void addModel(const std::string& filePath, const Transform& transform, bool usesDynamicEnvironmentMapping = false, bool hasBorder = false);
 
 	const std::vector<Model>& getTransparentModels() const;
-	void addTransparentModel(const std::string& filePath, const Transform& transform);
+	void addTransparentModel(const std::string& filePath, const Transform& transform, bool usesDynamicEnvironmentMapping = false, bool hasBorder = false);
 
 	void sortTransparent(const glm::vec3& cameraPos);
 };

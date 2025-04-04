@@ -66,6 +66,9 @@
     <ClCompile Include="Headers\app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Headers\rendererinit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\lighting.vert" />
@@ -90,19 +93,13 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\vertexarraywrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Downloads\modelinfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\Shader Classes\bordershader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\OpenGL Wrappers\VAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\OpenGL Wrappers\VBO.h">
+    <ClInclude Include="Headers\OpenGL Wrappers\BUF.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\OpenGL Wrappers\TEX.h">
@@ -136,6 +133,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\dynamiccubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -22,10 +22,13 @@ private:
 	std::vector<size_t> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, ModelTexture::Type typeName);
 
 public:
+	bool mHasBorder{ false };
+	bool mUsesDynamicEnvironment{ false };
+	int mDynamicEnvironmentIndex{ -1 };
 	std::vector<ModelTexture> mLoadedTextures;
 	glm::mat4 mModel;
 	Transform mTransform;
-	Model(const std::string& path, const Transform& transform);
+	Model(const std::string& path, const Transform& transform, bool usesDynamicEnvironment = false, bool hasBorder = false);
 	const std::vector<Mesh>& getMeshes() const;
 };
 

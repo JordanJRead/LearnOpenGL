@@ -1,5 +1,7 @@
-#pragma once
-#include "glad/glad.h"
+#ifndef VAO_H
+#define VAO_H
+
+#include <glad/glad.h>
 class VAO {
 public:
 	unsigned int mID;
@@ -22,3 +24,5 @@ public:
 		 return mID;
 	 }
 };
+
+#endif

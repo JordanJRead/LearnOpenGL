@@ -1,5 +1,7 @@
-#pragma once
-#include "glad/glad.h"
+#ifndef RBO_H
+#define RBO_H
+
+#include <glad/glad.h>
 class RBO {
 public:
 	unsigned int mID;
@@ -27,3 +29,5 @@ public:
 		glGenRenderbuffers(1, &mID);
 	}
 };
+
+#endif

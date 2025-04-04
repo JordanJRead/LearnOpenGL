@@ -1,5 +1,7 @@
-#pragma once
-#include "glad/glad.h"
+#ifndef EBO_H
+#define EBO_H
+
+#include <glad/glad.h>
 class EBO {
 public:
 	unsigned int mID;
@@ -22,3 +24,5 @@ public:
 		return mID;
 	}
 };
+
+#endif

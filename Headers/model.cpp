@@ -118,7 +118,10 @@ std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTexture
 	return textureIndices;
 }
 
-Model::Model(const std::string& path, const Transform& transform) : mTransform{ transform } {
+Model::Model(const std::string& path, const Transform& transform, bool usesDynamicEnvironment, bool hasBorder)
+	: mTransform{ transform }
+	, mHasBorder{ hasBorder }
+	, mUsesDynamicEnvironment{ usesDynamicEnvironment } {
 	loadModel(path);
 	mModel = glm::mat4(1.0);
 	mModel = glm::translate(mModel, transform.pos);

@@ -1,5 +1,7 @@
-#pragma once
-#include "glad/glad.h"
+#ifndef TEX_H
+#define TEX_H
+
+#include <glad/glad.h>
 class TEX {
 public:
 	unsigned int mID;
@@ -10,14 +12,15 @@ public:
 		mID = other.mID;
 		other.mHasMoved = true;
 	}
-	TEX& operator=(TEX&&) = delete; // move assignment
-	//TEX& operator=(TEX&& other) noexcept {
-	//	other.mHasMoved = true;
-	//	if (!mHasMoved) {
-	//		glDeleteTextures(1, &mID);
-	//	}
-	//	mID = other.mID;
-	//}
+	//TEX& operator=(TEX&&) = delete; // move assignment
+	TEX& operator=(TEX&& other) noexcept {
+		other.mHasMoved = true;
+		if (!mHasMoved) {
+			glDeleteTextures(1, &mID);
+		}
+		mID = other.mID;
+		return *this;
+	}
 
 	TEX& operator=(const TEX&) = delete; // copy assignment
 
@@ -34,3 +37,5 @@ public:
 		return mID;
 	}
 };
+
+#endif

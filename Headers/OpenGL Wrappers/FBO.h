@@ -1,5 +1,7 @@
-#pragma once
-#include "glad/glad.h"
+#ifndef FBO_H
+#define FBO_H
+
+#include <glad/glad.h>
 class FBO {
 public:
 	unsigned int mID;
@@ -27,3 +29,5 @@ public:
 		glGenFramebuffers(1, &mID);
 	}
 };
+
+#endif

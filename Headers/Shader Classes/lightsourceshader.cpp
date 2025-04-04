@@ -7,7 +7,7 @@
 #include "shader.h"
 #include "../pointLight.h"
 #include "../spotLight.h"
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 void LightSourceShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);

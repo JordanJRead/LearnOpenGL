@@ -1,10 +1,6 @@
 #version 460 core
 out vec4 FragColor;
 
-in vec3 fragNormal;
-in vec3 fragWorldPos;
-in vec2 fragTexCoords;
-
 uniform vec3 viewPos;
 uniform vec3 viewDir;
 
@@ -56,15 +52,21 @@ uniform int maxSpotLights;
 
 uniform samplerCube skybox;
 
+in VS_OUT {
+	vec3 normal;
+	vec3 worldPos;
+	vec2 texCoords;
+} frag_in;
+
 vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 vec3 CalcSpotLight  (SpotLight  spotLight , vec3 normal, vec3 objectColor, vec3 objectSpecularColor);
 void main() {
-	vec3 resultColor = vec3(texture(material.emissionMap, fragTexCoords));
+	vec3 resultColor = vec3(texture(material.emissionMap, frag_in.texCoords));
 
-	vec3 normal = normalize(fragNormal);
-	vec3 objectColor = vec3(texture(material.diffuseMap, fragTexCoords));
-	vec3 objectSpecularColor = vec3(texture(material.specularMap, fragTexCoords));
+	vec3 normal = normalize(frag_in.normal);
+	vec3 objectColor = vec3(texture(material.diffuseMap, frag_in.texCoords));
+	vec3 objectSpecularColor = vec3(texture(material.specularMap, frag_in.texCoords));
 
 	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
 	
@@ -75,18 +77,18 @@ void main() {
 		resultColor += CalcSpotLight(spotLights[i], normal, objectColor, objectSpecularColor);
 	}
 
-	vec3 incomingRayDir = normalize(fragWorldPos - viewPos);
+	vec3 incomingRayDir = normalize(frag_in.worldPos - viewPos);
 
 	vec3 reflectDir = reflect(incomingRayDir, normalize(normal));
 	vec3 reflectColor = texture(skybox, reflectDir).rgb;
-	vec3 reflectMapSample = vec3(texture(material.reflectionMap, fragTexCoords));
+	vec3 reflectMapSample = vec3(texture(material.reflectionMap, frag_in.texCoords));
 
 	//vec3 refractDir = refract(incomingRayDir, normal, 1.0 / 1.52);
 	//vec3 refractColor = texture(skybox, refractDir).rgb;
 
 	vec3 finalColor = reflectColor * reflectMapSample + resultColor * (1 - reflectMapSample);
 
-	FragColor = vec4(finalColor, texture(material.diffuseMap, fragTexCoords).w);
+	FragColor = vec4(finalColor, texture(material.diffuseMap, frag_in.texCoords).w);
 	//FragColor = vec4(refractColor, texture(material.diffuseMap, fragTexCoords).w);
 }
 
@@ -105,7 +107,7 @@ vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectS
 }
 
 vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {
-	vec3 lightDir = normalize(pointLight.pos - fragWorldPos);
+	vec3 lightDir = normalize(pointLight.pos - frag_in.worldPos);
 	
 	vec3 ambientColor = pointLight.ambient * objectColor;
 
@@ -116,7 +118,7 @@ vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 objectColor, vec3 o
 	float specularFactor = pow(max(dot(-viewDir, reflectDir), 0.0), material.shininess);
 	vec3 specularColor = pointLight.specular * objectSpecularColor * specularFactor;
 
-	float lightDist = length(pointLight.pos - fragWorldPos);
+	float lightDist = length(pointLight.pos - frag_in.worldPos);
 	float attenuation = 1.0 / (pointLight.attConst + pointLight.attLinear * lightDist + pointLight.attQuad * lightDist * lightDist);
 	
 	return (ambientColor + diffuseColor + specularColor) * attenuation;
@@ -124,7 +126,7 @@ vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 objectColor, vec3 o
 
  // consider adding attenuation to spot lights?
 vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {
-	vec3 lightDir = normalize(spotLight.pos - fragWorldPos);
+	vec3 lightDir = normalize(spotLight.pos - frag_in.worldPos);
 	
 	vec3 ambientColor = spotLight.ambient * objectColor;
 

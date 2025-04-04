@@ -1,13 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "../LIBRARIES/Include/GLFW/glfw3.h"
+#include "../LIBRARIES/Include/glm/glm.hpp"
 
 class Camera {
 private:
     void calcProjection();
     void calcView();
+    void calcFroward();
     bool mIsFirstMouse{ true };
     float mPrevMouseX{ 0 };
     float mPrevMouseY{ 0 };
@@ -48,6 +49,9 @@ public:
 
     float getSpeed() const;
     void setSpeed(float speed);
+
+    void setPitch(float pitch);
+    void setYaw(float yaw);
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 #include "shader.h"
 #include "../OpenGL Wrappers/VAO.h"
-#include "../OpenGL Wrappers/VBO.h"
+#include "../OpenGL Wrappers/BUF.h"
 
 class SkyBoxShader : public Shader {
 	friend class Renderer;

@@ -33,4 +33,5 @@ void main() {
 
 	//FragColor = vec4(texture(screenTex, fragTexCoords));
 	FragColor = vec4(resultColor, 1);
+	//FragColor = vec4(fragTexCoords, 0, 1);
 }

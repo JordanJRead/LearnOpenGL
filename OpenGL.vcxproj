@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\LIBRARIES\Include;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\LIBRARIES\Lib;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\LIBRARIES\Include;$(SolutionDir)\LIBRARIES\Include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\LIBRARIES\Lib;$(SolutionDir)\LIBRARIES\Lib;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\LIBRARIES\Include;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\LIBRARIES\Lib;</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\LIBRARIES\Include;$(SolutionDir)\LIBRARIES\Include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\LIBRARIES\Lib;$(SolutionDir)\LIBRARIES\Lib;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -152,6 +152,7 @@
     <ClCompile Include="Headers\app.cpp" />
     <ClCompile Include="Headers\camera.cpp" />
     <ClCompile Include="Headers\renderer.cpp" />
+    <ClCompile Include="Headers\rendererinit.cpp" />
     <ClCompile Include="Headers\Shader Classes\bordershader.cpp" />
     <ClCompile Include="Headers\Shader Classes\lightingshader.cpp" />
     <ClCompile Include="Headers\mesh.cpp" />
@@ -181,16 +182,15 @@
     <Image Include="images\imagetwo.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\modelinfo.h" />
-    <ClInclude Include="..\..\..\Downloads\vertexarraywrapper.h" />
     <ClInclude Include="Headers\app.h" />
     <ClInclude Include="Headers\cubemap.h" />
+    <ClInclude Include="Headers\dynamiccubemap.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\EBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\FBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\RBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\TEX.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\VAO.h" />
-    <ClInclude Include="Headers\OpenGL Wrappers\VBO.h" />
+    <ClInclude Include="Headers\OpenGL Wrappers\BUF.h" />
     <ClInclude Include="Headers\renderer.h" />
     <ClInclude Include="Headers\Shader Classes\bordershader.h" />
     <ClInclude Include="Headers\Shader Classes\screenquadshader.h" />

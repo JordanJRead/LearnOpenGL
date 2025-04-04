@@ -35,17 +35,18 @@ void Scene::addPointLight(const MultiColors& colors, const Attenuation& attenuat
 	mPointLights.emplace_back(colors, attenuation, vertices, transform);
 }
 
-void Scene::addModel(const std::string& filePath, const Transform& transform) {
-	mModels.emplace_back(filePath, transform);
+void Scene::addModel(const std::string& filePath, const Transform& transform, bool usesDynamicEnvironmentMapping, bool hasBorder) {
+	mModels.emplace_back(filePath, transform, usesDynamicEnvironmentMapping, hasBorder);
 }
-void Scene::addTransparentModel(const std::string& filePath, const Transform& transform) {
-	mTransparentModels.emplace_back(filePath, transform);
+void Scene::addTransparentModel(const std::string& filePath, const Transform& transform, bool usesDynamicEnvironmentMapping, bool hasBorder) {
+	mTransparentModels.emplace_back(filePath, transform, usesDynamicEnvironmentMapping, hasBorder);
 }
 
 const DirLight&                Scene::getDirLight()          const { return mDirLight; }
 const std::vector<SpotLight>&  Scene::getSpotLights()        const { return mSpotLights; }
 const std::vector<PointLight>& Scene::getPointLights()       const { return mPointLights; };
 const std::vector<Model>&      Scene::getModels()            const { return mModels; }
+Model& Scene::getModel(size_t i) { return mModels[i]; }
 const std::vector<Model>&      Scene::getTransparentModels() const { return mTransparentModels; }
 void Scene::sortTransparent(const glm::vec3& cameraPos) {
 	auto compare = [cameraPos](const Model& model1, const Model& model2)->bool {

@@ -5,6 +5,8 @@
 #include "OpenGL Wrappers/TEX.h"
 #include <cassert>
 #include "texturedata.h"
+#include <array>
+#include <cstddef>
 
 class CubeMap {
 public:

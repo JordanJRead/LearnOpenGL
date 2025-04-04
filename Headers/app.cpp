@@ -17,7 +17,7 @@ void App::processInput(GLFWwindow* window, Renderer& renderer) {
         glfwSetWindowShouldClose(window, true);
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        renderer.mScreenQuadShader.startEffect();
+        renderer.startBlurEffect();
     }
     float moveMag{ mCamera.getSpeed() * (float)mDeltaTime };
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
@@ -61,7 +61,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     , mScreenHeight{ screenHeight }
     , mCamera{ screenWidth, screenHeight, { 0, 0, 3 } }
     , mScene{ screenWidth, screenHeight, {"images/skybox/blue.png", "images/skybox/green.png", "images/skybox/white.png", "images/skybox/yellow.png", "images/skybox/red.png", "images/skybox/orange.png"} }
-    , mRenderer{ screenWidth, screenHeight }
+    , mRenderer{ screenWidth, screenHeight, *this }
 {
     glfwSetWindowUserPointer(mWindow, this);
 
@@ -151,17 +151,20 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     mScene.addTransparentModel("Objects/Window/window.obj", transform);
     transform = { {3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
     mScene.addModel("Objects/Backpack/backpack.obj", transform);
-    transform = { {-3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/Cube/cube.obj", transform);
+    transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
+    transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
-    //scene.addModel("C:/Users/Jordan/Downloads/backpack/backpack.obj", transform);
+    mRenderer.createDynamicEnvironments(*this);
+    mRenderer.createDynamicEnvironments(*this);
 }
 
 void App::runFrame() {
     mScene.sortTransparent(mCamera.getPos());
     //glfwSwapInterval(0); // show true fps
-    //std::cout << 1.0f / g_deltaTime << "\n";
+    //std::cout << 1.0f / mDeltaTime << "\n";
     mCurrentFrame = glfwGetTime();
     mDeltaTime = mCurrentFrame - mLastFrame;
     mLastFrame = mCurrentFrame;
@@ -169,7 +172,6 @@ void App::runFrame() {
     processInput(mWindow, mRenderer);
 
     mRenderer.render(*this, Renderer::Option::complete);
-
 
     glfwSwapBuffers(mWindow);
     glfwPollEvents();

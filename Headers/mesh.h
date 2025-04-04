@@ -4,7 +4,7 @@
 #include <vector>
 #include "structs.h"
 #include "OpenGL Wrappers/VAO.h"
-#include "OpenGL Wrappers/VBO.h"
+#include "OpenGL Wrappers/BUF.h"
 #include "OpenGL Wrappers/EBO.h"
 #include "textureutils.h"
 
@@ -17,7 +17,7 @@ private:
 
 public:
 	VAO mVAO;
-	VBO mVBO;
+	BUF mVBO;
 	EBO mEBO;
 	unsigned int mVertexCount;
 	float mShininess;

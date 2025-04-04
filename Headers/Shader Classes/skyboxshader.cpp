@@ -1,6 +1,6 @@
 #include "skyboxshader.h"
 #include "../OpenGL Wrappers/VAO.h"
-#include "../OpenGL Wrappers/VBO.h"
+#include "../OpenGL Wrappers/BUF.h"
 #include <string_view>
 #include <vector>
 #include "../camera.h"

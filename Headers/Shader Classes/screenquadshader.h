@@ -3,7 +3,7 @@
 #include "shader.h"
 #include <string>
 #include "../OpenGL Wrappers/VAO.h"
-#include "../OpenGL Wrappers/VBO.h"
+#include "../OpenGL Wrappers/BUF.h"
 
 class ScreenQuadShader : public Shader {
 	friend class Renderer;
