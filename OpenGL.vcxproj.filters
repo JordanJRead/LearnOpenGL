@@ -69,14 +69,17 @@
     <ClCompile Include="Headers\rendererinit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Headers\Shader Classes\gouraudshader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\lighting.vert" />
     <None Include="shaders\oldlighting.frag" />
     <None Include="shaders\lightSource.vert" />
     <None Include="shaders\lightSource.frag" />
-    <None Include="shaders\gourand.frag" />
-    <None Include="shaders\gourand.vert" />
+    <None Include="shaders\gouraud.frag" />
+    <None Include="shaders\gouraud.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\directions.png">
@@ -136,6 +139,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\dynamiccubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\texturetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Shader Classes\gouraudshader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,7 @@
 #include "../scene.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "lightingshader.h"
+#include "gouraudshader.h"
 #include <glad/glad.h>
 #include "shader.h"
 #include <iostream>
@@ -17,7 +17,7 @@
 #include "../texturetype.h"
 #include "../textureutils.h"
 
-LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
+GouraudShader::GouraudShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }
 {
 	use();
@@ -29,7 +29,7 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	setFloat("material.shininess", 32);
 }
 
-void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scene) const {
+void GouraudShader::setPerFrameUniforms(const Camera& camera, const Scene& scene) const {
 	setUniformView(camera.getView());
 	setUniformProjection(camera.getProjection());
 	setUniformViewPos(camera.getPos());
@@ -41,28 +41,28 @@ void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scen
 	setUniformMaxSpotLights(scene.getSpotLights().size());
 }
 
-void LightingShader::setUniformModel(const glm::mat4& model) const {
+void GouraudShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);
 }
-void LightingShader::setUniformView(const glm::mat4& view) const {
+void GouraudShader::setUniformView(const glm::mat4& view) const {
 	setMatrix4("view", view);
 }
-void LightingShader::setUniformProjection(const glm::mat4& projection) const {
+void GouraudShader::setUniformProjection(const glm::mat4& projection) const {
 	setMatrix4("projection", projection);
 }
-void LightingShader::setUniformViewPos(const glm::vec3& viewPos) const {
+void GouraudShader::setUniformViewPos(const glm::vec3& viewPos) const {
 	setVector3("viewPos", viewPos);
 }
-void LightingShader::setUniformViewDir(const glm::vec3& viewDir) const {
+void GouraudShader::setUniformViewDir(const glm::vec3& viewDir) const {
 	setVector3("viewDir", viewDir);
 }
-void LightingShader::setUniformMaterialShininess(float shininess) const {
+void GouraudShader::setUniformMaterialShininess(float shininess) const {
 	setFloat("material.shininess", shininess);
 }
-void LightingShader::setUniformMaxPointLights(int count) const {
+void GouraudShader::setUniformMaxPointLights(int count) const {
 	setInt("maxPointLights", count);
 }
-void LightingShader::setUniformPointLights(const std::vector<PointLight>& pointLights) const {
+void GouraudShader::setUniformPointLights(const std::vector<PointLight>& pointLights) const {
 	std::size_t iMax{ pointLights.size() < 4 ? pointLights.size() : 4 };
 	for (std::size_t i{ 0 }; i < iMax; ++i) {
 		std::string prefix{ "pointLights[" };
@@ -77,13 +77,13 @@ void LightingShader::setUniformPointLights(const std::vector<PointLight>& pointL
 		setFloat(prefix + "attQuad", pointLights[i].attenuation.attQuad);
 	}
 }
-void LightingShader::setUniformDirLight(const DirLight& dirLight) const {
+void GouraudShader::setUniformDirLight(const DirLight& dirLight) const {
 	setVector3("dirLight.dir", dirLight.dir);
 	setVector3("dirLight.ambient", dirLight.colors.ambient);
 	setVector3("dirLight.diffuse", dirLight.colors.diffuse);
 	setVector3("dirLight.specular", dirLight.colors.specular);
 }
-void LightingShader::setUniformSpotLights(const std::vector<SpotLight>& spotLights) const {
+void GouraudShader::setUniformSpotLights(const std::vector<SpotLight>& spotLights) const {
 	std::size_t iMax{ spotLights.size() < 4 ? spotLights.size() : 4 };
 	for (std::size_t i{ 0 }; i < iMax; ++i) {
 		std::string prefix{ "spotLights[" };
@@ -99,11 +99,11 @@ void LightingShader::setUniformSpotLights(const std::vector<SpotLight>& spotLigh
 		setVector3(prefix + "specular", spotLights[i].colors.specular);
 	}
 }
-void LightingShader::setUniformMaxSpotLights(int count) const {
+void GouraudShader::setUniformMaxSpotLights(int count) const {
 	setInt("maxSpotLights", count);
 }
 
-void LightingShader::setTexture(unsigned int textureIndex, TextureType type) {
+void GouraudShader::setTexture(unsigned int textureIndex, TextureType type) {
 	glActiveTexture(GL_TEXTURE0 + (int)type);
 	if (type == TextureType::skybox) {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureIndex);
@@ -113,7 +113,7 @@ void LightingShader::setTexture(unsigned int textureIndex, TextureType type) {
 	}
 }
 
-void LightingShader::renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures& defaultTextures) {
+void GouraudShader::renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures& defaultTextures) {
 	setUniformModel(model.mModel);
 	setTexture(environmentCubeMapTex, TextureType::skybox);
 	for (const Mesh& mesh : model.getMeshes()) {

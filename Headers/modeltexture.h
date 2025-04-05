@@ -1,20 +1,18 @@
-#pragma once
+#ifndef MODEL_TEXTURE_H
+#define MODEL_TEXTURE_H
+
 #include <string>
 #include <glad/glad.h>
 #include "OpenGL Wrappers/TEX.h"
+#include "texturetype.h"
 
 class ModelTexture {
 public:
-	enum Type {
-		diffuse,
-		specular,
-		emission,
-		reflection
-	};
-
 	std::string  mPath;
 	TEX mTex;
-	Type mType;
+	TextureType mType;
 
-	ModelTexture(const std::string& path, Type type);
+	ModelTexture(const std::string& path, TextureType type);
 };
+
+#endif

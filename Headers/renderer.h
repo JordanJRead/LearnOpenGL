@@ -15,18 +15,12 @@
 #include "dynamiccubemap.h"
 #include <array>
 #include "cubemap.h"
+#include "Shader Classes/gouraudshader.h"
 
 class App;
 class Model;
 
 class Renderer {
-public:
-    enum Option {
-        complete,
-        testTexture,
-        border
-    };
-
 private:
     BUF mMatricesBuffer;
 
@@ -51,25 +45,23 @@ private:
     BorderShader mBorderShader;
     ScreenQuadShader mScreenQuadShader;
     SkyBoxShader mSkyBoxShader;
-    FBO mReverseFBO;
-    TEX mReverseColorTex;
-    RBO mReverseDepthStencilRBO;
+    GouraudShader mGouraudShader;
     TextureUtils::DefaultTextures mDefaultTextures;
 
     DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex);
 
-    void renderLightingModel(const Model& model, const TEX& environmentCubeMapTex);
-    void renderLighting(const Camera& camera, const Scene& scene, Option option = Option::complete, int ignoreModelIndex = -1);
+    void renderEntireSceneLighting(const Camera& camera, const Scene& scene, bool drawBorders, int ignoreModelIndex);
 
-    void renderLightSources(App& app);
+    void renderEntireSceneGouraud(const Camera& camera, const Scene& scene);
 
-    void renderSkyBox(App& app, unsigned int skyBoxTexID);
+    void renderLightSources(const Camera& camera, const Scene& scene);
 
-    void renderScreenQuad(unsigned int texID, bool rearView);
+    void renderSkyBox(const Camera& camera, unsigned int skyBoxTexID);
+
+    void renderScreenQuad(unsigned int texID, bool quadAtTopOfScreen);
 
     void renderBorders(const Camera& camera, const Scene& scene);
 
-    void initReverseFBO(int screenWidth, int screenHeight);
     void initCubeVertices();
     void initScreenQuad();
     void initDynamicEnvironment();
@@ -77,7 +69,7 @@ private:
 
 public:
     void startBlurEffect();
-    void createDynamicEnvironments(App& app);
+    void createDynamicCubeMaps(Scene& scene);
     Renderer(int screenWidth, int screenHeight, App& app);
-	void render(App&, Option renderOption);
+	void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
 };

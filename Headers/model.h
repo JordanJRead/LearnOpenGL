@@ -3,6 +3,7 @@
 
 #include "modeltexture.h"
 #include "mesh.h"
+#include "texturetype.h"
 
 class Mesh;
 class aiScene;
@@ -19,7 +20,7 @@ private:
 	void loadModel(const std::string& path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<size_t> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, ModelTexture::Type typeName);
+	std::vector<size_t> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, TextureType typeName);
 
 public:
 	bool mHasBorder{ false };

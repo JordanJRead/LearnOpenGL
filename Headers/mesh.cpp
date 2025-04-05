@@ -6,6 +6,7 @@
 #include "modeltexture.h"
 #include <iostream>
 #include "textureutils.h"
+#include "texturetype.h"
 
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
 	glBindVertexArray(mVAO);
@@ -39,7 +40,7 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>&
 unsigned int Mesh::getFirstDiffuseMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
 	for (size_t textureIndex : mTextureIndices) {
 		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == ModelTexture::diffuse) {
+		if (texture.mType == TextureType::diffuse) {
 			return texture.mTex.mID;
 		}
 	}
@@ -48,7 +49,7 @@ unsigned int Mesh::getFirstDiffuseMap(const std::vector<ModelTexture>& textures,
 unsigned int Mesh::getFirstSpecularMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
 	for (size_t textureIndex : mTextureIndices) {
 		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == ModelTexture::specular) {
+		if (texture.mType == TextureType::specular) {
 			return texture.mTex.mID;
 		}
 	}
@@ -57,7 +58,7 @@ unsigned int Mesh::getFirstSpecularMap(const std::vector<ModelTexture>& textures
 unsigned int Mesh::getFirstEmissionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
 	for (size_t textureIndex : mTextureIndices) {
 		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == ModelTexture::emission) {
+		if (texture.mType == TextureType::emission) {
 			return texture.mTex.mID;
 		}
 	}
@@ -66,7 +67,7 @@ unsigned int Mesh::getFirstEmissionMap(const std::vector<ModelTexture>& textures
 unsigned int Mesh::getFirstReflectionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
 	for (size_t textureIndex : mTextureIndices) {
 		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == ModelTexture::reflection) {
+		if (texture.mType == TextureType::reflection) {
 			return texture.mTex.mID;
 		}
 	}

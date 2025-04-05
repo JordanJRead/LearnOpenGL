@@ -1,5 +1,5 @@
-#ifndef LIGHTING_SHADER_H
-#define LIGHTING_SHADER_H
+#ifndef GOURAUD_SHADER_H
+#define GOURAUD_SHADER_H
 
 #include "shader.h"
 #include "glm/glm.hpp"
@@ -13,7 +13,7 @@
 enum class TextureType;
 class DirLight;
 
-class LightingShader : public Shader {
+class GouraudShader : public Shader {
 	friend class Renderer;
 protected:
 	void setPerFrameUniforms(const Camera& camera, const Scene& scene) const;
@@ -40,7 +40,7 @@ protected:
 	void renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures& defaultTextures);
 
 public:
-	LightingShader(std::string_view vertPath, std::string_view fragPath);
+	GouraudShader(std::string_view vertPath, std::string_view fragPath);
 };
 
 #endif
