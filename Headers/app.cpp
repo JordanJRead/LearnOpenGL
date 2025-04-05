@@ -134,7 +134,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
 
-    mScene.addSpotLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 0.7, 0, 0 }, { 0.5, 0.5, 0.5 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
+    mScene.addSpotLight(MultiColors{ { 0, 0.2, 0 }, { 0, 0.7, 0 }, { 0, 0.3, 0 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
     mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
 
@@ -157,8 +157,8 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
-    mRenderer.createDynamicEnvironments(*this);
-    mRenderer.createDynamicEnvironments(*this);
+    mRenderer.createDynamicCubeMaps(mScene);
+    mRenderer.createDynamicCubeMaps(mScene);
 }
 
 void App::runFrame() {
@@ -171,7 +171,7 @@ void App::runFrame() {
 
     processInput(mWindow, mRenderer);
 
-    mRenderer.render(*this, Renderer::Option::complete);
+    mRenderer.renderScene(mCamera, mScene, true);
 
     glfwSwapBuffers(mWindow);
     glfwPollEvents();

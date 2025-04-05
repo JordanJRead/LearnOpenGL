@@ -154,6 +154,7 @@
     <ClCompile Include="Headers\renderer.cpp" />
     <ClCompile Include="Headers\rendererinit.cpp" />
     <ClCompile Include="Headers\Shader Classes\bordershader.cpp" />
+    <ClCompile Include="Headers\Shader Classes\gouraudshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\lightingshader.cpp" />
     <ClCompile Include="Headers\mesh.cpp" />
     <ClCompile Include="Headers\model.cpp" />
@@ -168,8 +169,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\gourand.frag" />
-    <None Include="shaders\gourand.vert" />
+    <None Include="shaders\gouraud.frag" />
+    <None Include="shaders\gouraud.vert" />
     <None Include="shaders\lightSource.frag" />
     <None Include="shaders\lightSource.vert" />
     <None Include="shaders\oldlighting.frag" />
@@ -193,9 +194,11 @@
     <ClInclude Include="Headers\OpenGL Wrappers\BUF.h" />
     <ClInclude Include="Headers\renderer.h" />
     <ClInclude Include="Headers\Shader Classes\bordershader.h" />
+    <ClInclude Include="Headers\Shader Classes\gouraudshader.h" />
     <ClInclude Include="Headers\Shader Classes\screenquadshader.h" />
     <ClInclude Include="Headers\Shader Classes\skyboxshader.h" />
     <ClInclude Include="Headers\texturedata.h" />
+    <ClInclude Include="Headers\texturetype.h" />
     <ClInclude Include="Headers\textureutils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

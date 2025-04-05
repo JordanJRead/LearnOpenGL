@@ -6,12 +6,10 @@
 #include "modeltexture.h"
 #include "OpenGL Wrappers/TEX.h"
 #include "textureutils.h"
+#include "texturetype.h"
 
-enum Type {
-	diffuse,
-	specular
-};
-
-ModelTexture::ModelTexture(const std::string& path, Type type) : mPath{ path }, mType{ type }, mTex{ TextureUtils::texture2DFromFile(path) } {
-
+ModelTexture::ModelTexture(const std::string& path, TextureType type)
+	: mPath{ path }
+	, mType{ type }
+	, mTex{ TextureUtils::texture2DFromFile(path) } {
 }
