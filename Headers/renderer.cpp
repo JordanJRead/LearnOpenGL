@@ -245,6 +245,7 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mSkyBoxShader{ "shaders/skybox.vert", "shaders/skybox.frag" }
     , mBlackCubeMap{ {"images/black.png", "images/black.png", "images/black.png", "images/black.png", "images/black.png", "images/black.png"}}
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
+    , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
 {
     initCubeVertices();
     initScreenQuad();
@@ -276,4 +277,12 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 
     renderLightSources(camera, scene);
     renderSkyBox(camera, scene.getCubeMap().mTEX);
+}
+
+void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    mInstancedShader.use();
+    mInstancedShader.setPerFrameUniforms(camera);
+    mInstancedShader.renderModel(300, scene.getInstancedModel(), mDefaultTextures);
 }

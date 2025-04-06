@@ -23,6 +23,7 @@ private:
 	std::vector<Model> mTransparentModels{};
 	std::vector<PointLight> mPointLights{};
 	std::vector<SpotLight> mSpotLights{};
+	Model mInstancedModel;
 	DirLight mDirLight{};
 	CubeMap mSkyBoxCubeMap;
 
@@ -33,7 +34,7 @@ public:
 	const DirLight& getDirLight() const;
 	void setDirLight(const DirLight& dirLight);
 
-	const std::vector<SpotLight>& getSpotLights()        const;
+	const std::vector<SpotLight>& getSpotLights() const;
 	void addSpotLight(const MultiColors& colors, const glm::vec3& dir, float cutoffDot, float outerDot,
 		const std::vector<float>& vertices, const Transform& transform);
 
@@ -41,7 +42,7 @@ public:
 	void addPointLight(const MultiColors& colors, const Attenuation& attenuation, const std::vector<float>& vertices,
 		const Transform& transform);
 
-	const std::vector<Model>& getModels()            const;
+	const std::vector<Model>& getModels() const;
 	Model& getModel(size_t i);
 	void addModel(const std::string& filePath, const Transform& transform, bool usesDynamicEnvironmentMapping = false, bool hasBorder = false);
 
@@ -49,6 +50,8 @@ public:
 	void addTransparentModel(const std::string& filePath, const Transform& transform, bool usesDynamicEnvironmentMapping = false, bool hasBorder = false);
 
 	void sortTransparent(const glm::vec3& cameraPos);
+
+	const Model& getInstancedModel() const;
 };
 
 #endif

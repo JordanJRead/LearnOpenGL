@@ -12,10 +12,11 @@
 #include "Shader Classes/lightsourceshader.h"
 #include "Shader Classes/screenquadshader.h"
 #include "Shader Classes/skyboxshader.h"
+#include "Shader Classes/gouraudshader.h"
+#include "Shader Classes/instancedshader.h"
 #include "dynamiccubemap.h"
 #include <array>
 #include "cubemap.h"
-#include "Shader Classes/gouraudshader.h"
 
 class App;
 class Model;
@@ -46,6 +47,8 @@ private:
     ScreenQuadShader mScreenQuadShader;
     SkyBoxShader mSkyBoxShader;
     GouraudShader mGouraudShader;
+    InstancedShader mInstancedShader;
+
     TextureUtils::DefaultTextures mDefaultTextures;
 
     DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex);
@@ -72,4 +75,5 @@ public:
     void createDynamicCubeMaps(Scene& scene);
     Renderer(int screenWidth, int screenHeight, App& app);
 	void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
+    void renderInstanced(const Camera& camera, const Scene& scene);
 };

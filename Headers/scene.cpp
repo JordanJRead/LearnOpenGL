@@ -11,7 +11,10 @@
 #include "cubemap.h"
 
 
-Scene::Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths) : mSkyBoxCubeMap{ skyBoxFilePaths } {
+Scene::Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths)
+	: mSkyBoxCubeMap{ skyBoxFilePaths }
+	, mInstancedModel{ "Objects/Cube/cube.obj", {} }
+{
 }
 
 
@@ -56,4 +59,8 @@ void Scene::sortTransparent(const glm::vec3& cameraPos) {
 }
 const CubeMap& Scene::getCubeMap() const {
 	return mSkyBoxCubeMap;
+}
+
+const Model& Scene::getInstancedModel() const {
+	return mInstancedModel;
 }
