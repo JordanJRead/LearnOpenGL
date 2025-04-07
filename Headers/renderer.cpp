@@ -284,5 +284,5 @@ void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     mInstancedShader.use();
     mInstancedShader.setPerFrameUniforms(camera);
-    mInstancedShader.renderModel(300, scene.getInstancedModel(), mDefaultTextures);
+    mInstancedShader.renderModel(10, scene.getInstancedModel(), mDefaultTextures);
 }
