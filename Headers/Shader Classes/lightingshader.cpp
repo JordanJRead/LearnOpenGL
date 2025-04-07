@@ -30,8 +30,6 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 }
 
 void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scene) const {
-	setUniformView(camera.getView());
-	setUniformProjection(camera.getProjection());
 	setUniformViewPos(camera.getPos());
 	setUniformViewDir(camera.getForward());
 	setUniformPointLights(scene.getPointLights());
@@ -43,12 +41,6 @@ void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scen
 
 void LightingShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);
-}
-void LightingShader::setUniformView(const glm::mat4& view) const {
-	setMatrix4("view", view);
-}
-void LightingShader::setUniformProjection(const glm::mat4& projection) const {
-	setMatrix4("projection", projection);
 }
 void LightingShader::setUniformViewPos(const glm::vec3& viewPos) const {
 	setVector3("viewPos", viewPos);

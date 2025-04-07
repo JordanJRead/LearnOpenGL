@@ -68,10 +68,8 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
 /// <summary>
 /// Creates borders around objects that use them and have already drew in the stencil buffer
 /// </summary>
-void Renderer::renderBorders(const Camera& camera, const Scene& scene) {
+void Renderer::renderBorders(const Scene& scene) {
     mBorderShader.use();
-    mBorderShader.setUniformView(camera.getView());
-    mBorderShader.setUniformProjection(camera.getProjection());
     for (const Model& model : scene.getModels()) {
         if (model.mHasBorder) {
             mBorderShader.setUniformModel(model.mModel);
@@ -144,10 +142,8 @@ void Renderer::renderEntireSceneLighting(const Camera& camera, const Scene& scen
 /// <summary>
 /// Renders every light source as a cube
 /// </summary>
-void Renderer::renderLightSources(const Camera& camera, const Scene& scene) {
+void Renderer::renderLightSources(const Scene& scene) {
     mLightSourceShader.use();
-    mLightSourceShader.setUniformView(camera.getView());
-    mLightSourceShader.setUniformProjection(camera.getProjection());
 
     for (const PointLight& pointLight : scene.getPointLights()) {
         glBindVertexArray(mCubeVAO);
@@ -198,15 +194,13 @@ void Renderer::renderEntireSceneGouraud(const Camera& camera, const Scene& scene
     glBindVertexArray(0);
 }
 
-void Renderer::renderSkyBox(const Camera& camera, unsigned int skyBoxTexID) {
+void Renderer::renderSkyBox(unsigned int skyBoxTexID) {
     mSkyBoxShader.use();
     //glDisable(GL_CULL_FACE); // todo
     glDepthFunc(GL_LEQUAL);
     glBindVertexArray(mCubeVAO);    
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, skyBoxTexID);
-    mSkyBoxShader.setUniformView(glm::mat4(glm::mat3(camera.getView())));
-    mSkyBoxShader.setUniformProjection(camera.getProjection());
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
 }
@@ -246,17 +240,20 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mBlackCubeMap{ {"images/black.png", "images/black.png", "images/black.png", "images/black.png", "images/black.png", "images/black.png"}}
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
+    , mMatrixUniformBuffer{ 0 }
 {
     initCubeVertices();
     initScreenQuad();
     initDynamicEnvironment();
-    initMatricesBuffer();
     mRearViewMatrix = glm::mat4(1);
     mRearViewMatrix = glm::translate(mRearViewMatrix, { 0, 0.8, 0 });
     mRearViewMatrix = glm::scale(mRearViewMatrix, { 0.2, 0.2, 1 });
 }
 
 void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBorders) {
+    mMatrixUniformBuffer.setViewMatrix(camera.getView());
+    mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glStencilMask(0xFF);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -271,18 +268,19 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
     glStencilMask(0x00);
     //glDisable(GL_DEPTH_TEST);
-    renderBorders(camera, scene);
+    renderBorders(scene);
     //glEnable(GL_DEPTH_TEST);
     glDisable(GL_STENCIL_TEST);
 
-    renderLightSources(camera, scene);
-    renderSkyBox(camera, scene.getCubeMap().mTEX);
+    renderLightSources(scene);
+    renderSkyBox(scene.getCubeMap().mTEX);
 }
 
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
+    mMatrixUniformBuffer.setViewMatrix(camera.getView());
+    mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     mInstancedShader.use();
-    mInstancedShader.setPerFrameUniforms(camera);
     mInstancedShader.renderModel(300, scene.getInstancedModel(), mDefaultTextures);
 }

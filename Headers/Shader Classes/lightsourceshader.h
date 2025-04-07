@@ -13,8 +13,6 @@ class LightSourceShader : public Shader {
 	friend class Renderer;
 private:
 	void setUniformModel(const glm::mat4& model) const;
-	void setUniformView(const glm::mat4& view) const;
-	void setUniformProjection(const glm::mat4& projection) const;
 	void setUniformLightColor(const glm::vec3& lightColor) const;
 
 public:

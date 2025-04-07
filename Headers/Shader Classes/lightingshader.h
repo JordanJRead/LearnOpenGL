@@ -19,8 +19,6 @@ protected:
 	void setPerFrameUniforms(const Camera& camera, const Scene& scene) const;
 
 	void setUniformModel(const glm::mat4& model) const;
-	void setUniformView(const glm::mat4& model) const;
-	void setUniformProjection(const glm::mat4& model) const;
 
 	void setUniformViewPos(const glm::vec3& viewPos) const;
 	void setUniformViewDir(const glm::vec3& viewPos) const;

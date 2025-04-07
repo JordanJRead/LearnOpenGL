@@ -7,8 +7,6 @@
 class SkyBoxShader : public Shader {
 	friend class Renderer;
 private:
-	void setUniformView(const glm::mat4& view) const;
-	void setUniformProjection(const glm::mat4& projection) const;
 	void setUniformSkyBoxTexture(int unit) const;
 
 public:

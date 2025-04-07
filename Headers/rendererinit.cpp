@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include <vector>
+#include <glm/glm.hpp>
 
 void Renderer::initDynamicEnvironment() {
     glBindRenderbuffer(GL_RENDERBUFFER, mDynamicCubeMapDepthStencilRBO);
@@ -106,10 +107,4 @@ void Renderer::initScreenQuad() {
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void Renderer::initMatricesBuffer() {
-    glBindBuffer(GL_UNIFORM_BUFFER, mMatricesBuffer);
-    glBufferData(GL_UNIFORM_BUFFER, 128, nullptr, GL_STATIC_DRAW);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, mMatricesBuffer);
 }

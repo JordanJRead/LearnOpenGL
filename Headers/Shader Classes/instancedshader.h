@@ -12,17 +12,6 @@ class InstancedShader : public Shader {
 	friend class Renderer;
 
 protected:
-	void setUniformView(const glm::mat4& view) const {
-		setMatrix4("view", view);
-	}
-	void setUniformProjection(const glm::mat4& projection) const {
-		setMatrix4("projection", projection);
-	}
-
-	void setPerFrameUniforms(const Camera& camera) const {
-		setUniformView(camera.getView());
-		setUniformProjection(camera.getProjection());
-	}
 
 	void setTexture(unsigned int textureIndex, TextureType type) {
 		glActiveTexture(GL_TEXTURE0 + (int)type);

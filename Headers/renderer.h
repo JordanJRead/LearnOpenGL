@@ -17,13 +17,14 @@
 #include "dynamiccubemap.h"
 #include <array>
 #include "cubemap.h"
+#include "matrixuniformbuffer.h"
 
 class App;
 class Model;
 
 class Renderer {
 private:
-    BUF mMatricesBuffer;
+    MatrixUniformBuffer mMatrixUniformBuffer;
 
     FBO mDynamicCubeMapFBO;
     TEX mDynamicCubeMapColorTex;
@@ -57,18 +58,17 @@ private:
 
     void renderEntireSceneGouraud(const Camera& camera, const Scene& scene);
 
-    void renderLightSources(const Camera& camera, const Scene& scene);
+    void renderLightSources(const Scene& scene);
 
-    void renderSkyBox(const Camera& camera, unsigned int skyBoxTexID);
+    void renderSkyBox(unsigned int skyBoxTexID);
 
     void renderScreenQuad(unsigned int texID, bool quadAtTopOfScreen);
 
-    void renderBorders(const Camera& camera, const Scene& scene);
+    void renderBorders(const Scene& scene);
 
     void initCubeVertices();
     void initScreenQuad();
     void initDynamicEnvironment();
-    void initMatricesBuffer();
 
 public:
     void startBlurEffect();

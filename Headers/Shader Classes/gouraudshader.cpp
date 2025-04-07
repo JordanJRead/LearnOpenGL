@@ -30,9 +30,7 @@ GouraudShader::GouraudShader(std::string_view vertPath, std::string_view fragPat
 }
 
 void GouraudShader::setPerFrameUniforms(const Camera& camera, const Scene& scene) const {
-	setUniformView(camera.getView());
-	setUniformProjection(camera.getProjection());
-	setUniformViewPos(camera.getPos());
+	setUniformViewPos(camera.getPos()); //todo viewspace calculations
 	setUniformViewDir(camera.getForward());
 	setUniformPointLights(scene.getPointLights());
 	setUniformMaxPointLights(scene.getPointLights().size());
@@ -43,12 +41,6 @@ void GouraudShader::setPerFrameUniforms(const Camera& camera, const Scene& scene
 
 void GouraudShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);
-}
-void GouraudShader::setUniformView(const glm::mat4& view) const {
-	setMatrix4("view", view);
-}
-void GouraudShader::setUniformProjection(const glm::mat4& projection) const {
-	setMatrix4("projection", projection);
 }
 void GouraudShader::setUniformViewPos(const glm::vec3& viewPos) const {
 	setVector3("viewPos", viewPos);

@@ -6,8 +6,11 @@ layout (location = 1) in vec3 vNorm;
 layout (location = 2) in vec2 vTexCoord;
 
 uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+
+layout(std140, binding = 0) uniform Matrices {
+	uniform mat4 view;
+	uniform mat4 projection;
+};
 
 // Lighting information
 out vec4 fragColor;

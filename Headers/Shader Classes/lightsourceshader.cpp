@@ -12,12 +12,6 @@
 void LightSourceShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);
 }
-void LightSourceShader::setUniformView(const glm::mat4& view) const {
-	setMatrix4("view", view);
-}
-void LightSourceShader::setUniformProjection(const glm::mat4& projection) const {
-	setMatrix4("projection", projection);
-}
 void LightSourceShader::setUniformLightColor(const glm::vec3& lightColor) const {
 	setVector3("lightColor", lightColor);
 }

@@ -72,6 +72,9 @@
     <ClCompile Include="Headers\Shader Classes\gouraudshader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Headers\matrixuniformbuffer.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\lighting.vert" />
@@ -145,6 +148,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Shader Classes\gouraudshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Shader Classes\instancedshader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

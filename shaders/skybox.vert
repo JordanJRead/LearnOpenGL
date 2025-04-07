@@ -3,8 +3,10 @@ layout (location = 0) in vec3 vPos;
 
 out vec3 fragTexDir;
 
-uniform mat4 view;
-uniform mat4 projection;
+layout(std140, binding = 0) uniform Matrices {
+	uniform mat4 view;
+	uniform mat4 projection;
+};
 
 void main() {
 	fragTexDir = vPos;

@@ -11,12 +11,10 @@ out VS_OUT {
 
 uniform mat4 model;
 
-//layout(std140, binding = 0) uniform Matrices {
-//	uniform mat4 view;
-//	uniform mat4 projection;
-//};
-uniform mat4 view;
-uniform mat4 projection;
+layout(std140, binding = 0) uniform Matrices {
+	uniform mat4 view;
+	uniform mat4 projection;
+};
 
 void main() {
 	vs_out.normal = normalize(mat3(transpose(inverse(model))) * vNorm); // transposing is expensive

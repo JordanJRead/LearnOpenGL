@@ -6,12 +6,6 @@
 #include "../camera.h"
 #include "../scene.h"
 
-void SkyBoxShader::setUniformView(const glm::mat4& view) const {
-	setMatrix4("view", view);
-}
-void SkyBoxShader::setUniformProjection(const glm::mat4& projection) const {
-	setMatrix4("projection", projection);
-}
 void SkyBoxShader::setUniformSkyBoxTexture(int unit) const {
 	setInt("cubeMap", unit);
 }

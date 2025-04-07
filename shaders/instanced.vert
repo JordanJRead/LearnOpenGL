@@ -8,8 +8,11 @@ out vec2 fragTexCoord;
 out vec3 fragNormal;
 out vec3 fragWorldPos;
 
-uniform mat4 view;
-uniform mat4 projection;
+layout(std140, binding = 0) uniform Matrices {
+	uniform mat4 view;
+	uniform mat4 projection;
+};
+
 uniform int dim;
 
 vec4 getWorldPos(int id) {
