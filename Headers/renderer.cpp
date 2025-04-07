@@ -1,6 +1,8 @@
 #include "renderer.h"
 #include "app.h"
 #include "texturetype.h"
+#include "OpenGL Wrappers/VAO.h";
+#include "OpenGL Wrappers/BUF.h";
 
 void Renderer::startBlurEffect() {
     mScreenQuadShader.startEffect();
@@ -283,4 +285,34 @@ void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     mInstancedShader.use();
     mInstancedShader.renderModel(300, scene.getInstancedModel(), mDefaultTextures);
+}
+
+void Renderer::renderGeometry() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    static float points[] = {
+        -0.5f, 0.5, 1, 0, 0,
+        0.5, 0.5, 0, 1, 0,
+        0.5f, -0.5f, 0, 0, 1,
+        -0.5f, -0.5f, 1, 1, 1
+    };
+
+    static Shader shader{ "shaders/geometry.vert", "shaders/geometry.geom", "shaders/geometry.frag" };
+
+    VAO vao;
+    glBindVertexArray(vao);
+
+    BUF vbo;
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, std::size(points) * sizeof(float), &(points[0]), GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(sizeof(float) * 2));
+
+    shader.use();
+    glDrawArrays(GL_POINTS, 0, 4);
 }

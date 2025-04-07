@@ -14,8 +14,6 @@ class Shader {
 
 protected:
     unsigned int mID;
-    Shader(std::string_view vertPath, std::string_view fragPath);
-    virtual void use() const final;
 
     void setBool   (const std::string& name, bool  value)                const;
     void setInt    (const std::string& name, int   value)                 const;
@@ -25,6 +23,9 @@ protected:
     void setFloat  (const std::string& name, float value)               const;
 
 public:
+    virtual void use() const final;
+    Shader(std::string_view vertPath, std::string_view fragPath);
+    Shader(std::string_view vertPath, std::string_view geomPath, std::string_view fragPath);
     ~Shader() {
         glDeleteProgram(mID);
     }

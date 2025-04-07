@@ -76,4 +76,5 @@ public:
     Renderer(int screenWidth, int screenHeight, App& app);
 	void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
     void renderInstanced(const Camera& camera, const Scene& scene);
+    void renderGeometry();
 };

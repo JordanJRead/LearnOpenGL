@@ -176,7 +176,8 @@ void App::runFrame() {
     processInput(mWindow, mRenderer);
 
     //mRenderer.renderScene(mCamera, mScene, true);
-    mRenderer.renderInstanced(mCamera, mScene);
+    //mRenderer.renderInstanced(mCamera, mScene);
+    mRenderer.renderGeometry();
 
     glfwSwapBuffers(mWindow);
     glfwPollEvents();
