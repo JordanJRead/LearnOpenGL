@@ -52,7 +52,7 @@ private:
 
     TextureUtils::DefaultTextures mDefaultTextures;
 
-    DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex);
+    DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera);
 
     void renderEntireSceneLighting(const Camera& camera, const Scene& scene, bool drawBorders, int ignoreModelIndex);
 
@@ -72,7 +72,7 @@ private:
 
 public:
     void startBlurEffect();
-    void createDynamicCubeMaps(Scene& scene);
+    void createDynamicCubeMaps(Scene& scene, const Camera& mainCamera);
     Renderer(int screenWidth, int screenHeight, App& app);
 	void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
     void renderInstanced(const Camera& camera, const Scene& scene);

@@ -133,34 +133,34 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     using Direction = glm::vec3;
 
-    //mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
+    mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
 
-    //mScene.addSpotLight(MultiColors{ { 0, 0.2, 0 }, { 0, 0.7, 0 }, { 0, 0.3, 0 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
+    mScene.addSpotLight(MultiColors{ { 0, 0.2, 0 }, { 0, 0.7, 0 }, { 0, 0.3, 0 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    //mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
+    mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
 
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
     Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
 
-    //mScene.addModel("Objects/Room/room.obj", transform);
-    //transform.pos += glm::vec3{ 0, 0, 7 };
-    //mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    //transform.pos -= glm::vec3{ 0, 0, 1 };
-    //mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    //transform.pos -= glm::vec3{ 0, 0, 1 };
-    //mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    //transform = { {3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
-    //mScene.addModel("Objects/Backpack/backpack.obj", transform);
-    //transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
-    //mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
-    //transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
-    //mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
+    mScene.addModel("Objects/Room/room.obj", transform);
+    transform.pos += glm::vec3{ 0, 0, 7 };
+    mScene.addTransparentModel("Objects/Window/window.obj", transform);
+    transform.pos -= glm::vec3{ 0, 0, 1 };
+    mScene.addTransparentModel("Objects/Window/window.obj", transform);
+    transform.pos -= glm::vec3{ 0, 0, 1 };
+    mScene.addTransparentModel("Objects/Window/window.obj", transform);
+    transform = { {3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/Backpack/backpack.obj", transform);
+    transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
+    transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
-    mRenderer.createDynamicCubeMaps(mScene);
-    mRenderer.createDynamicCubeMaps(mScene);
+    mRenderer.createDynamicCubeMaps(mScene, mCamera);
+    mRenderer.createDynamicCubeMaps(mScene, mCamera);
 }
 
 void App::runFrame() {
@@ -175,9 +175,9 @@ void App::runFrame() {
 
     processInput(mWindow, mRenderer);
 
-    //mRenderer.renderScene(mCamera, mScene, true);
+    mRenderer.renderScene(mCamera, mScene, true);
     //mRenderer.renderInstanced(mCamera, mScene);
-    mRenderer.renderGeometry();
+    //mRenderer.renderGeometry();
 
     glfwSwapBuffers(mWindow);
     glfwPollEvents();

@@ -29,6 +29,18 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	setFloat("material.shininess", 32);
 }
 
+LightingShader::LightingShader(std::string_view vertPath, std::string_view geomPath, std::string_view fragPath)
+	: Shader{ vertPath, geomPath, fragPath }
+{
+	use();
+	setInt("material.diffuseMap", (int)TextureType::diffuse);
+	setInt("material.specularMap", (int)TextureType::specular);
+	setInt("material.emissionMap", (int)TextureType::emission);
+	setInt("material.reflectionMap", (int)TextureType::reflection);
+	setInt("skybox", (int)TextureType::skybox);
+	setFloat("material.shininess", 32);
+}
+
 void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scene) const {
 	setUniformViewPos(camera.getPos());
 	setUniformViewDir(camera.getForward());
@@ -37,8 +49,15 @@ void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scen
 	setUniformDirLight(scene.getDirLight());
 	setUniformSpotLights(scene.getSpotLights());
 	setUniformMaxSpotLights(scene.getSpotLights().size());
+	setUniformTime(glfwGetTime());
 }
 
+void LightingShader::setUniformDoExploding(bool b) const {
+	setBool("doExploding", b);
+}
+void LightingShader::setUniformTime(float time) const {
+	setFloat("time", time);
+}
 void LightingShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);
 }

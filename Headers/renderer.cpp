@@ -11,11 +11,11 @@ void Renderer::startBlurEffect() {
 /// <summary>
 /// Sets up dynamic cube maps for each object in the scene which requires it
 /// </summary>
-void Renderer::createDynamicCubeMaps(Scene& scene) {
+void Renderer::createDynamicCubeMaps(Scene& scene, const Camera& mainCamera) {
     for (size_t i{ 0 }; i < scene.getModels().size(); ++i) {
         Model& model = scene.getModel(i);
         if (model.mUsesDynamicEnvironment) {
-            DynamicCubeMap dynamicCubeMap = createDynamicCubeMap(model.mTransform.pos, scene, i);
+            DynamicCubeMap dynamicCubeMap = createDynamicCubeMap(model.mTransform.pos, scene, i, mainCamera);
             if (model.mDynamicEnvironmentIndex == -1) {
                 mDynamicCubeMaps.push_back(std::move(dynamicCubeMap));
                 model.mDynamicEnvironmentIndex = mDynamicCubeMaps.size() - 1;
@@ -30,11 +30,11 @@ void Renderer::createDynamicCubeMaps(Scene& scene) {
 /// <summary>
 /// Creates a dynamic cube map
 /// </summary>
-DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex) {
+DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera) {
     DynamicCubeMap cubeMap;
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMap.mTEX);
-    glBindFramebuffer(GL_FRAMEBUFFER, mDynamicCubeMapFBO);
-    Camera mockCamera{ 1024, 1024, pos, 90, 0, 0 };
+    glBindFramebuffer(GL_FRAMEBUFFER, mDynamicCubeMapFBO); // also render the skybox in this function too
+    Camera mockCamera{ 1024, 1024, pos, 90, 0, 0 }; //fixme todo set in the matrix buffer
     glViewport(0, 0, 1024, 1024);
     mockCamera.setUp({ 0, -1, 0 }); // not sure why
     for (int i{ 0 }; i < 6; ++i) {
@@ -59,9 +59,12 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         else if (i == 5) {
             mockCamera.setYaw(-90);
         }
+        mMatrixUniformBuffer.setAllMatrices(mockCamera);
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
+        renderSkyBox(scene.getCubeMap().mTEX);
         cubeMap.setFace(mDynamicCubeMapColorTex, i);
     }
+    mMatrixUniformBuffer.setAllMatrices(mainCamera);
     glViewport(0, 0, 800, 600); // todo
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     return cubeMap;
@@ -234,7 +237,7 @@ void Renderer::renderScreenQuad(unsigned int texID, bool quadAtTopOfScreen = fal
 }
 
 Renderer::Renderer(int screenWidth, int screenHeight, App& app)
-    : mLightingShader{ "shaders/lighting.vert", "shaders/lighting.frag" }
+    : mLightingShader{ "shaders/lighting.vert", "shaders/lighting.geom", "shaders/lighting.frag"}
     , mLightSourceShader{ "shaders/lightSource.vert", "shaders/lightsource.frag" }
     , mBorderShader{ "shaders/border.vert", "shaders/border.frag" }
     , mScreenQuadShader{ "shaders/screenquad.vert", "shaders/screenquad.frag" }
@@ -244,6 +247,8 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
     , mMatrixUniformBuffer{ 0 }
 {
+    mLightingShader.use();
+    //mLightingShader.setUniformDoExploding(true);
     initCubeVertices();
     initScreenQuad();
     initDynamicEnvironment();
@@ -269,9 +274,7 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 
     glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
     glStencilMask(0x00);
-    //glDisable(GL_DEPTH_TEST);
     renderBorders(scene);
-    //glEnable(GL_DEPTH_TEST);
     glDisable(GL_STENCIL_TEST);
 
     renderLightSources(scene);

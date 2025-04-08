@@ -52,7 +52,7 @@ uniform int maxSpotLights;
 
 uniform samplerCube skybox;
 
-in VS_OUT {
+in GEOM_OUT {
 	vec3 normal;
 	vec3 worldPos;
 	vec2 texCoords;

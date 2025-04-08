@@ -10,6 +10,5 @@ layout(std140, binding = 0) uniform Matrices {
 
 void main() {
 	fragTexDir = vPos;
-	gl_Position = projection * view * vec4(vPos, 1);
-	gl_Position = (projection * view * vec4(vPos, 1)).xyww;
+	gl_Position = (projection * mat4(mat3(view)) * vec4(vPos, 1)).xyww;
 }

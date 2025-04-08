@@ -105,7 +105,7 @@ std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTexture
 		bool alreadyLoaded{ false };
 		for (size_t loadedTextureIndex{ 0 }; loadedTextureIndex < mLoadedTextures.size(); ++loadedTextureIndex) {
 			const ModelTexture& loadedTexture = mLoadedTextures[loadedTextureIndex];
-			if (std::strcmp(loadedTexture.mPath.data(), (mDirectory + '/' + texturePath.C_Str()).data()) == 0) {
+			if (std::strcmp(loadedTexture.mPath.data(), (mDirectory + '/' + texturePath.C_Str()).data()) == 0 && typeName == loadedTexture.mType) {
 				textureIndices.push_back(loadedTextureIndex);
 				alreadyLoaded = true;
 				break;

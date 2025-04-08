@@ -16,7 +16,10 @@ class DirLight;
 class LightingShader : public Shader {
 	friend class Renderer;
 protected:
+	void setUniformDoExploding(bool b) const;
 	void setPerFrameUniforms(const Camera& camera, const Scene& scene) const;
+
+	void setUniformTime(float time) const;
 
 	void setUniformModel(const glm::mat4& model) const;
 
@@ -39,6 +42,7 @@ protected:
 
 public:
 	LightingShader(std::string_view vertPath, std::string_view fragPath);
+	LightingShader(std::string_view vertPath, std::string_view geomPath, std::string_view fragPath);
 };
 
 #endif

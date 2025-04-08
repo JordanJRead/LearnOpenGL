@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "camera.h"
 
 class MatrixUniformBuffer {
 	BUF mBuffer;
@@ -28,6 +29,11 @@ public:
 
 	void setProjectionMatrix(const glm::mat4& projection) {
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(projection));
+	}
+
+	void setAllMatrices(const Camera& camera) {
+		setViewMatrix(camera.getView());
+		setProjectionMatrix(camera.getProjection());
 	}
 };
 
