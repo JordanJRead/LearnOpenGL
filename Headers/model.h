@@ -1,9 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "modeltexture.h"
+#include "texture2d.h"
 #include "mesh.h"
-#include "texturetype.h"
+#include "textureutils.h"
 
 class Mesh;
 class aiScene;
@@ -20,13 +20,12 @@ private:
 	void loadModel(const std::string& path);
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<size_t> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, TextureType typeName);
+	std::vector<int> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, TextureUtils::Type typeName);
 
 public:
 	bool mHasBorder{ false };
 	bool mUsesDynamicEnvironment{ false };
 	int mDynamicEnvironmentIndex{ -1 };
-	std::vector<ModelTexture> mLoadedTextures;
 	glm::mat4 mModel;
 	Transform mTransform;
 	Model(const std::string& path, const Transform& transform, bool usesDynamicEnvironment = false, bool hasBorder = false);

@@ -9,11 +9,15 @@
 #include "Headers/camera.h"
 #include "Headers/scene.h"
 #include "Headers/structs.h"
+#include "Headers/texture2dmanager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Headers/stb_image.h"
 
 #include "Headers/app.h"
+#include <memory>
+
+Texture2DManager* gTexture2DManager;
 
 float sinRange(float x, float y) {
     if (x > y) std::swap(x, y);
@@ -43,9 +47,11 @@ int main() {
         return 1;
     }
 
+    gTexture2DManager = new Texture2DManager;
     App app{ 800, 600, window };
     while (!glfwWindowShouldClose(app.mWindow)) {
         app.runFrame();
     }
+    delete gTexture2DManager;
     return 0;
 }

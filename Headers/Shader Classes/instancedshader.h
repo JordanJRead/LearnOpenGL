@@ -2,7 +2,6 @@
 #define INSTANCED_SHADER_H
 
 #include "shader.h"
-#include "../texturetype.h"
 #include "../camera.h"
 #include "../model.h"
 #include "../mesh.h"
@@ -13,9 +12,9 @@ class InstancedShader : public Shader {
 
 protected:
 
-	void setTexture(unsigned int textureIndex, TextureType type) {
+	void setTexture(unsigned int textureIndex, TextureUtils::Type type) {
 		glActiveTexture(GL_TEXTURE0 + (int)type);
-		if (type == TextureType::skybox) {
+		if (type == TextureUtils::Type::skybox) {
 			glBindTexture(GL_TEXTURE_CUBE_MAP, textureIndex);
 		}
 		else {
@@ -23,11 +22,11 @@ protected:
 		}
 	}
 
-	void renderModel(int dim, const Model& model, const TextureUtils::DefaultTextures& defaultTextures) {
+	void renderModel(int dim, const Model& model, const TextureUtils::DefaultTextures2D& defaultTextures) {
 		setInt("dim", dim);
 		for (const Mesh& mesh : model.getMeshes()) {
 			glBindVertexArray(mesh.mVAO);
-			setTexture(mesh.getFirstDiffuseMap(model.mLoadedTextures, defaultTextures), TextureType::diffuse);
+			setTexture(mesh.getFirstDiffuseMap(), TextureUtils::Type::diffuse);
 			glDrawElementsInstanced(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0, dim * dim);
 		}
 	}
@@ -35,7 +34,7 @@ protected:
 public:
 	InstancedShader(std::string_view vertPath, std::string_view fragPath) : Shader{ vertPath, fragPath } {
 		use();
-		setInt("diffuseMap", (int)TextureType::diffuse);
+		setInt("diffuseMap", (int)TextureUtils::Type::diffuse);
 	}
 };
 
