@@ -14,18 +14,17 @@
 #include "../mesh.h"
 #include "../OpenGL Wrappers/VAO.h"
 #include "../OpenGL Wrappers/BUF.h"
-#include "../texturetype.h"
 #include "../textureutils.h"
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }
 {
 	use();
-	setInt("material.diffuseMap", (int)TextureType::diffuse);
-	setInt("material.specularMap", (int)TextureType::specular);
-	setInt("material.emissionMap", (int)TextureType::emission);
-	setInt("material.reflectionMap", (int)TextureType::reflection);
-	setInt("skybox", (int)TextureType::skybox);
+	setInt("material.diffuseMap", (int)TextureUtils::Type::diffuse);
+	setInt("material.specularMap", (int)TextureUtils::Type::specular);
+	setInt("material.emissionMap", (int)TextureUtils::Type::emission);
+	setInt("material.reflectionMap", (int)TextureUtils::Type::reflection);
+	setInt("skybox", (int)TextureUtils::Type::skybox);
 	setFloat("material.shininess", 32);
 }
 
@@ -33,11 +32,11 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view geomP
 	: Shader{ vertPath, geomPath, fragPath }
 {
 	use();
-	setInt("material.diffuseMap", (int)TextureType::diffuse);
-	setInt("material.specularMap", (int)TextureType::specular);
-	setInt("material.emissionMap", (int)TextureType::emission);
-	setInt("material.reflectionMap", (int)TextureType::reflection);
-	setInt("skybox", (int)TextureType::skybox);
+	setInt("material.diffuseMap", (int)TextureUtils::Type::diffuse);
+	setInt("material.specularMap", (int)TextureUtils::Type::specular);
+	setInt("material.emissionMap", (int)TextureUtils::Type::emission);
+	setInt("material.reflectionMap", (int)TextureUtils::Type::reflection);
+	setInt("skybox", (int)TextureUtils::Type::skybox);
 	setFloat("material.shininess", 32);
 }
 
@@ -114,9 +113,9 @@ void LightingShader::setUniformMaxSpotLights(int count) const {
 	setInt("maxSpotLights", count);
 }
 
-void LightingShader::setTexture(unsigned int textureIndex, TextureType type) {
+void LightingShader::setTexture(unsigned int textureIndex, TextureUtils::Type type) {
 	glActiveTexture(GL_TEXTURE0 + (int)type);
-	if (type == TextureType::skybox) {
+	if (type == TextureUtils::Type::skybox) {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureIndex);
 	}
 	else {
@@ -124,17 +123,17 @@ void LightingShader::setTexture(unsigned int textureIndex, TextureType type) {
 	}
 }
 
-void LightingShader::renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures& defaultTextures) {
+void LightingShader::renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures2D& defaultTextures) {
 	setUniformModel(model.mModel);
-	setTexture(environmentCubeMapTex, TextureType::skybox);
+	setTexture(environmentCubeMapTex, TextureUtils::Type::skybox);
 	for (const Mesh& mesh : model.getMeshes()) {
 		setUniformMaterialShininess(mesh.mShininess == 0 ? 1 : mesh.mShininess);
 		glBindVertexArray(mesh.mVAO);
 
-		setTexture(mesh.getFirstDiffuseMap(model.mLoadedTextures, defaultTextures), TextureType::diffuse);
-		setTexture(mesh.getFirstSpecularMap(model.mLoadedTextures, defaultTextures), TextureType::specular);
-		setTexture(mesh.getFirstEmissionMap(model.mLoadedTextures, defaultTextures), TextureType::emission);
-		setTexture(mesh.getFirstReflectionMap(model.mLoadedTextures, defaultTextures), TextureType::reflection);
+		setTexture(mesh.getFirstDiffuseMap(), TextureUtils::Type::diffuse);
+		setTexture(mesh.getFirstSpecularMap(), TextureUtils::Type::specular);
+		setTexture(mesh.getFirstEmissionMap(), TextureUtils::Type::emission);
+		setTexture(mesh.getFirstReflectionMap(), TextureUtils::Type::reflection);
 
 		glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);

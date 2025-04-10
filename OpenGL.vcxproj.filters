@@ -48,10 +48,10 @@
     <ClCompile Include="Headers\Shader Classes\screenquadshader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Headers\modeltexture.cpp">
+    <ClCompile Include="Headers\texture2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Headers\modeltexture.h">
+    <ClCompile Include="Headers\texture2d.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Headers\textureutils.cpp">
@@ -73,6 +73,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Headers\matrixuniformbuffer.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Headers\texture2dmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,13 +147,13 @@
     <ClInclude Include="Headers\dynamiccubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\texturetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\Shader Classes\gouraudshader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Shader Classes\instancedshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\texture2dmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

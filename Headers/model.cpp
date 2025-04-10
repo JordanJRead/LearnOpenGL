@@ -11,8 +11,10 @@
 #include "model.h"
 #include <iostream>
 #include <glad/glad.h>
-#include "modeltexture.h"
-#include "texturetype.h"
+#include "texture2d.h"
+#include "texture2dmanager.h"
+#include <filesystem>
+extern Texture2DManager* gTexture2DManager;
 
 void Model::loadModel(const std::string& path) {
 	Assimp::Importer importer{};
@@ -39,7 +41,7 @@ void Model::processNode(aiNode* node, const aiScene* scene) {
 Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<size_t> textureIndices;
+	TextureUtils::Texture2DIndices texture2DIndices;
 
 	for (size_t vertI{ 0 }; vertI < mesh->mNumVertices; ++vertI) {
 		Vertex vertex;
@@ -77,44 +79,27 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 	if (mesh->mMaterialIndex >= 0) { // ?
 		aiMaterial* material{ scene->mMaterials[mesh->mMaterialIndex] };
 
-		std::vector<size_t> diffuseMapIndices = loadMaterialTextureIndices(material, aiTextureType_DIFFUSE, TextureType::diffuse);
-		textureIndices.insert(textureIndices.end(), diffuseMapIndices.begin(), diffuseMapIndices.end());
-
-		std::vector<size_t> specularMapIndices = loadMaterialTextureIndices(material, aiTextureType_SPECULAR, TextureType::specular);
-		textureIndices.insert(textureIndices.end(), specularMapIndices.begin(), specularMapIndices.end());
-
-		std::vector<size_t> emissionMapIndices = loadMaterialTextureIndices(material, aiTextureType_EMISSIVE, TextureType::emission);
-		textureIndices.insert(textureIndices.end(), emissionMapIndices.begin(), emissionMapIndices.end());
+		texture2DIndices.diffuse = loadMaterialTextureIndices(material, aiTextureType_DIFFUSE, TextureUtils::Type::diffuse);
+		texture2DIndices.specular = loadMaterialTextureIndices(material, aiTextureType_SPECULAR, TextureUtils::Type::diffuse);
+		texture2DIndices.emission = loadMaterialTextureIndices(material, aiTextureType_EMISSIVE, TextureUtils::Type::diffuse);
 
 		// assimp doesn't support reflection maps, so we load reflection maps under the ambient label
-		std::vector<size_t> reflectionMapIndices = loadMaterialTextureIndices(material, aiTextureType_AMBIENT, TextureType::reflection);
-		textureIndices.insert(textureIndices.end(), reflectionMapIndices.begin(), reflectionMapIndices.end());
+		texture2DIndices.reflection = loadMaterialTextureIndices(material, aiTextureType_AMBIENT, TextureUtils::Type::diffuse);
 
 		if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shininess)) {
 			shininess = 32;
 		}
 	}
-	return Mesh{ vertices, indices, textureIndices, shininess };
+	return Mesh{ vertices, indices, texture2DIndices, shininess };
 }
 
-std::vector<size_t> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, TextureType typeName) {
-	std::vector<size_t> textureIndices;
+std::vector<int> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, TextureUtils::Type typeName) {
+	std::vector<int> textureIndices;
 	for (size_t i{ 0 }; i < mat->GetTextureCount(type); ++i) {
 		aiString texturePath;
 		mat->GetTexture(type, i, &texturePath);
-		bool alreadyLoaded{ false };
-		for (size_t loadedTextureIndex{ 0 }; loadedTextureIndex < mLoadedTextures.size(); ++loadedTextureIndex) {
-			const ModelTexture& loadedTexture = mLoadedTextures[loadedTextureIndex];
-			if (std::strcmp(loadedTexture.mPath.data(), (mDirectory + '/' + texturePath.C_Str()).data()) == 0 && typeName == loadedTexture.mType) {
-				textureIndices.push_back(loadedTextureIndex);
-				alreadyLoaded = true;
-				break;
-			}
-		}
-		if (!alreadyLoaded) {
-			mLoadedTextures.emplace_back(mDirectory + '/' + texturePath.C_Str(), typeName);
-			textureIndices.push_back(mLoadedTextures.size() - 1);
-		}
+		std::filesystem::path filePath{ texturePath.C_Str() };
+		textureIndices.push_back(gTexture2DManager->loadTexture(filePath.filename().string()));
 	}
 	return textureIndices;
 }

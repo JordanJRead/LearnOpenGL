@@ -163,9 +163,10 @@
     <ClCompile Include="Headers\Shader Classes\lightsourceshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\screenquadshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\shader.cpp" />
-    <ClCompile Include="Headers\modeltexture.cpp" />
-    <ClCompile Include="Headers\modeltexture.h" />
+    <ClCompile Include="Headers\texture2d.cpp" />
+    <ClCompile Include="Headers\texture2d.h" />
     <ClCompile Include="Headers\Shader Classes\skyboxshader.cpp" />
+    <ClCompile Include="Headers\texture2dmanager.cpp" />
     <ClCompile Include="Headers\textureutils.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -200,7 +201,7 @@
     <ClInclude Include="Headers\Shader Classes\screenquadshader.h" />
     <ClInclude Include="Headers\Shader Classes\skyboxshader.h" />
     <ClInclude Include="Headers\texturedata.h" />
-    <ClInclude Include="Headers\texturetype.h" />
+    <ClInclude Include="Headers\texture2dmanager.h" />
     <ClInclude Include="Headers\textureutils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,5 @@
 #include "renderer.h"
 #include "app.h"
-#include "texturetype.h"
 #include "OpenGL Wrappers/VAO.h";
 #include "OpenGL Wrappers/BUF.h";
 

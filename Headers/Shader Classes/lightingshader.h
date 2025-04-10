@@ -10,7 +10,6 @@
 #include "../spotLight.h"
 #include "../textureutils.h"
 
-enum class TextureType;
 class DirLight;
 
 class LightingShader : public Shader {
@@ -36,9 +35,9 @@ protected:
 	void setUniformSpotLights(const std::vector<SpotLight>& spotLights) const;
 	void setUniformMaxSpotLights(int count) const;
 
-	void setTexture(unsigned int textureIndex, TextureType type);
+	void setTexture(unsigned int textureIndex, TextureUtils::Type type);
 
-	void renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures& defaultTextures);
+	void renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures2D& defaultTextures);
 
 public:
 	LightingShader(std::string_view vertPath, std::string_view fragPath);

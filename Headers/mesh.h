@@ -8,11 +8,12 @@
 #include "OpenGL Wrappers/EBO.h"
 #include "textureutils.h"
 
-class ModelTexture;
+class Texture2DManager;
+class Texture2D;
 
 class Mesh {
 private:
-	std::vector<size_t> mTextureIndices;
+	TextureUtils::Texture2DIndices mTexture2DIndices;
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 
 public:
@@ -22,12 +23,12 @@ public:
 	unsigned int mVertexCount;
 	float mShininess;
 
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<size_t>& textureIndices, float shininess);
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const TextureUtils::Texture2DIndices& texture2DIndices, float shininess);
 
-	unsigned int getFirstDiffuseMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
-	unsigned int getFirstSpecularMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
-	unsigned int getFirstEmissionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
-	unsigned int getFirstReflectionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const;
+	const TEX& getFirstDiffuseMap() const;
+	const TEX& getFirstSpecularMap() const;
+	const TEX& getFirstEmissionMap() const;
+	const TEX& getFirstReflectionMap() const;
 };
 
 #endif

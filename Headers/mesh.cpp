@@ -3,10 +3,11 @@
 #include <vector>
 #include <glad/glad.h>
 #include "mesh.h"
-#include "modeltexture.h"
+#include "texture2d.h"
 #include <iostream>
 #include "textureutils.h"
-#include "texturetype.h"
+#include "texture2dmanager.h"
+extern Texture2DManager* gTexture2DManager;
 
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
 	glBindVertexArray(mVAO);
@@ -29,47 +30,27 @@ void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsi
 	glBindVertexArray(0);
 }
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const std::vector<size_t>& textureIndices, float shininess)
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const TextureUtils::Texture2DIndices& texture2DIndices, float shininess)
 	: mVertexCount{ static_cast<unsigned int>(indices.size()) }
-	, mTextureIndices{ textureIndices }
+	, mTexture2DIndices{ texture2DIndices }
 	, mShininess{ shininess }
 {
 	setupMesh(vertices, indices);
 }
 
-unsigned int Mesh::getFirstDiffuseMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
-	for (size_t textureIndex : mTextureIndices) {
-		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == TextureType::diffuse) {
-			return texture.mTex.mID;
-		}
-	}
-	return defaultTextures.diffuse.mTex.mID;
+const TEX& Mesh::getFirstDiffuseMap() const {
+	int textureIndex = mTexture2DIndices.diffuse.size() > 0 ? mTexture2DIndices.diffuse[0] : -1;
+	return gTexture2DManager->getTexture(textureIndex, TextureUtils::Type::diffuse);
 }
-unsigned int Mesh::getFirstSpecularMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
-	for (size_t textureIndex : mTextureIndices) {
-		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == TextureType::specular) {
-			return texture.mTex.mID;
-		}
-	}
-	return defaultTextures.specular.mTex.mID;
+const TEX& Mesh::getFirstSpecularMap() const {
+	int textureIndex = mTexture2DIndices.specular.size() > 0 ? mTexture2DIndices.specular[0] : -1;
+	return gTexture2DManager->getTexture(textureIndex, TextureUtils::Type::specular);
 }
-unsigned int Mesh::getFirstEmissionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
-	for (size_t textureIndex : mTextureIndices) {
-		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == TextureType::emission) {
-			return texture.mTex.mID;
-		}
-	}
-	return defaultTextures.emission.mTex.mID;
+const TEX& Mesh::getFirstEmissionMap() const {
+	int textureIndex = mTexture2DIndices.emission.size() > 0 ? mTexture2DIndices.emission[0] : -1;
+	return gTexture2DManager->getTexture(textureIndex, TextureUtils::Type::emission);
 }
-unsigned int Mesh::getFirstReflectionMap(const std::vector<ModelTexture>& textures, const TextureUtils::DefaultTextures& defaultTextures) const {
-	for (size_t textureIndex : mTextureIndices) {
-		const ModelTexture& texture = textures[textureIndex];
-		if (texture.mType == TextureType::reflection) {
-			return texture.mTex.mID;
-		}
-	}
-	return defaultTextures.reflection.mTex.mID;
+const TEX& Mesh::getFirstReflectionMap() const {
+	int textureIndex = mTexture2DIndices.reflection.size() > 0 ? mTexture2DIndices.reflection[0] : -1;
+	return gTexture2DManager->getTexture(textureIndex, TextureUtils::Type::reflection);
 }

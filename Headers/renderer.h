@@ -50,7 +50,7 @@ private:
     GouraudShader mGouraudShader;
     InstancedShader mInstancedShader;
 
-    TextureUtils::DefaultTextures mDefaultTextures;
+    TextureUtils::DefaultTextures2D mDefaultTextures;
 
     DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera);
 
