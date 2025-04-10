@@ -156,5 +156,8 @@
     <ClInclude Include="Headers\texture2dmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Shader Classes\shownormalsshader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

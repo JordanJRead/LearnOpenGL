@@ -199,6 +199,7 @@
     <ClInclude Include="Headers\Shader Classes\gouraudshader.h" />
     <ClInclude Include="Headers\Shader Classes\instancedshader.h" />
     <ClInclude Include="Headers\Shader Classes\screenquadshader.h" />
+    <ClInclude Include="Headers\Shader Classes\shownormalsshader.h" />
     <ClInclude Include="Headers\Shader Classes\skyboxshader.h" />
     <ClInclude Include="Headers\texturedata.h" />
     <ClInclude Include="Headers\texture2dmanager.h" />

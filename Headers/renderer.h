@@ -14,6 +14,7 @@
 #include "Shader Classes/skyboxshader.h"
 #include "Shader Classes/gouraudshader.h"
 #include "Shader Classes/instancedshader.h"
+#include "Shader Classes/shownormalsshader.h"
 #include "dynamiccubemap.h"
 #include <array>
 #include "cubemap.h"
@@ -49,6 +50,7 @@ private:
     SkyBoxShader mSkyBoxShader;
     GouraudShader mGouraudShader;
     InstancedShader mInstancedShader;
+    ShowNormalsShader mShowNormalsShader{ "shaders/shownormals.vert", "shaders/shownormals.geom", "shaders/shownormals.frag" };
 
     TextureUtils::DefaultTextures2D mDefaultTextures;
 
@@ -77,4 +79,5 @@ public:
 	void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
     void renderInstanced(const Camera& camera, const Scene& scene);
     void renderGeometry();
+    void renderNormals(const Scene& scene);
 };

@@ -14,6 +14,12 @@ out GEOM_OUT {
 	vec2 texCoords;
 } geom_out;
 
+
+layout(std140, binding = 0) uniform Matrices {
+	uniform mat4 view;
+	uniform mat4 projection;
+};
+
 uniform float time;
 uniform bool doExploding;
 
@@ -24,26 +30,26 @@ vec4 explode(vec4 pos, vec3 normal) {
 vec3 getNormal() {
 	vec3 a = vec3(gl_in[0].gl_Position) - vec3(gl_in[1].gl_Position);
 	vec3 b = vec3(gl_in[2].gl_Position) - vec3(gl_in[1].gl_Position);
-	return normalize(cross(a, b));
+	return normalize(cross(b, a));
 }
 
 void main() {
 	if (doExploding) {
 		vec3 normal = getNormal();
 
-		gl_Position = explode(gl_in[0].gl_Position, normal);
+		gl_Position = projection * view * explode(gl_in[0].gl_Position, normal);
 		geom_out.normal = geom_in[0].normal;
 		geom_out.worldPos = geom_in[0].worldPos;
 		geom_out.texCoords = geom_in[0].texCoords;
 		EmitVertex();
 	
-		gl_Position = explode(gl_in[1].gl_Position, normal);
+		gl_Position = projection * view * explode(gl_in[1].gl_Position, normal);
 		geom_out.normal = geom_in[1].normal;
 		geom_out.worldPos = geom_in[1].worldPos;
 		geom_out.texCoords = geom_in[1].texCoords;
 		EmitVertex();
 	
-		gl_Position = explode(gl_in[2].gl_Position, normal);
+		gl_Position = projection * view * explode(gl_in[2].gl_Position, normal);
 		geom_out.normal = geom_in[2].normal;
 		geom_out.worldPos = geom_in[2].worldPos;
 		geom_out.texCoords = geom_in[2].texCoords;
@@ -52,19 +58,19 @@ void main() {
 		EndPrimitive();
 	}
 	else {
-		gl_Position = gl_in[0].gl_Position;
+		gl_Position = projection * view * gl_in[0].gl_Position;
 		geom_out.normal = geom_in[0].normal;
 		geom_out.worldPos = geom_in[0].worldPos;
 		geom_out.texCoords = geom_in[0].texCoords;
 		EmitVertex();
 	
-		gl_Position = gl_in[1].gl_Position;
+		gl_Position = projection * view * gl_in[1].gl_Position;
 		geom_out.normal = geom_in[1].normal;
 		geom_out.worldPos = geom_in[1].worldPos;
 		geom_out.texCoords = geom_in[1].texCoords;
 		EmitVertex();
 	
-		gl_Position = gl_in[2].gl_Position;
+		gl_Position = projection * view * gl_in[2].gl_Position;
 		geom_out.normal = geom_in[2].normal;
 		geom_out.worldPos = geom_in[2].worldPos;
 		geom_out.texCoords = geom_in[2].texCoords;

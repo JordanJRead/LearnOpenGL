@@ -256,6 +256,13 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     mRearViewMatrix = glm::scale(mRearViewMatrix, { 0.2, 0.2, 1 });
 }
 
+void Renderer::renderNormals(const Scene& scene) {
+    mShowNormalsShader.use();
+    for (const Model& model : scene.getModels()) {
+        mShowNormalsShader.renderModel(model);
+    }
+}
+
 void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBorders) {
     mMatrixUniformBuffer.setViewMatrix(camera.getView());
     mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
@@ -278,6 +285,8 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 
     renderLightSources(scene);
     renderSkyBox(scene.getCubeMap().mTEX);
+
+    renderNormals(scene);
 }
 
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
