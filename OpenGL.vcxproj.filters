@@ -159,5 +159,8 @@
     <ClInclude Include="Headers\Shader Classes\shownormalsshader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\guidedcamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

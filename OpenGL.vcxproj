@@ -188,6 +188,7 @@
     <ClInclude Include="Headers\app.h" />
     <ClInclude Include="Headers\cubemap.h" />
     <ClInclude Include="Headers\dynamiccubemap.h" />
+    <ClInclude Include="Headers\guidedcamera.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\EBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\FBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\RBO.h" />
