@@ -2,6 +2,11 @@
 #include "app.h"
 #include "OpenGL Wrappers/VAO.h";
 #include "OpenGL Wrappers/BUF.h";
+#include "uc_apng_loader.h"
+#include "texture2dmanager.h"
+#include "textureutils.h"
+#include "cstdint"
+extern Texture2DManager* gTexture2DManager;
 
 void Renderer::startBlurEffect() {
     mScreenQuadShader.startEffect();
@@ -325,4 +330,39 @@ void Renderer::renderGeometry() {
 
     shader.use();
     glDrawArrays(GL_POINTS, 0, 4);
+}
+
+void Renderer::renderGif() {
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+    //auto loader = uc::apng::create_file_loader("C:/Users/jorda/source/repos/JordanJRead/LearnOpenGL/images/gifs/earth2.png");
+    //std::vector<uc::apng::frame> frames;
+    //while (loader.has_frame()) {
+    //    frames.push_back(loader.next_frame());
+    //}
+    //TEX frameOne;
+    //glBindTexture(GL_TEXTURE_2D, frameOne);
+
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frames[0].image.width(), frames[0].image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, frames[0].image.data());
+
+    //unsigned char* testData = new uint8_t[3 * 1 * 4];
+
+    //for (int i = 0; i < 12; ++i) {
+    //    testData[i] = 255;
+    //    std::cerr << static_cast<int>(testData[i]) << "\n";
+    //}
+
+
+
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 3, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, testData);
+    //glGenerateMipmap(GL_TEXTURE_2D);
+    //delete[] testData;
+
+    //renderScreenQuad(frameOne);
 }

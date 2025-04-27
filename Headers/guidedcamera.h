@@ -13,6 +13,7 @@ struct Action {
 
 	Type type;
 	glm::vec3 position;
+	bool needsPermission = true;
 };
 
 class GuidedCamera : public Camera {

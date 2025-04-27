@@ -78,6 +78,9 @@
     <ClCompile Include="Headers\texture2dmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Headers\guidedcamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\lighting.vert" />
@@ -86,6 +89,14 @@
     <None Include="shaders\lightSource.frag" />
     <None Include="shaders\gouraud.frag" />
     <None Include="shaders\gouraud.vert" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\build.adoc" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\ChangeLog" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\control" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\COPYING" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\getversion" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\history.adoc" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\Makefile" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\NEWS" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\directions.png">
@@ -160,6 +171,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\guidedcamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\getarg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\gif_hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\gif_lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\gif_lib_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\video.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

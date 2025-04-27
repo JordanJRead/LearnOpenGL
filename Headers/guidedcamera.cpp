@@ -13,7 +13,7 @@ GuidedCamera::GuidedCamera(int width, int height, const glm::vec3& pos, float fo
 {
 	mActions = {
 		{Action::look, {-1, 0, 0} },
-		{Action ::move, {0, 10, 0,} }
+		{Action::move, {0, 10, 0,}, false }
 	};
 }
 
@@ -27,7 +27,7 @@ void GuidedCamera::update() {
 	}
 	Action& currentAction = mActions[mCurrentActionIndex];
 
-	if (!mIsActive && mHasPermission) {
+	if (!mIsActive && (mHasPermission || !currentAction.needsPermission)) {
 		mIsActive = true;
 		mHasPermission = false;
 		mActionStartTime = glfwGetTime();

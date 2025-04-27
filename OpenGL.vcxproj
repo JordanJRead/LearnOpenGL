@@ -72,11 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\LIBRARIES\Include;$(SolutionDir)\LIBRARIES\Include;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\LIBRARIES\Lib;$(SolutionDir)\LIBRARIES\Lib;</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)\LIBRARIES\Lib;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\LIBRARIES\Include;$(SolutionDir)\LIBRARIES\Include;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);C:\LIBRARIES\Lib;$(SolutionDir)\LIBRARIES\Lib;</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)\LIBRARIES\Lib;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -110,7 +110,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_INCLUDE_NONE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_INCLUDE_NONE;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/w44365 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -131,7 +131,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_INCLUDE_NONE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_INCLUDE_NONE;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/w44365 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
@@ -172,6 +172,14 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LIBRARIES\Include\giflib-5.2.2\build.adoc" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\ChangeLog" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\control" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\COPYING" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\getversion" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\history.adoc" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\Makefile" />
+    <None Include="LIBRARIES\Include\giflib-5.2.2\NEWS" />
     <None Include="shaders\gouraud.frag" />
     <None Include="shaders\gouraud.vert" />
     <None Include="shaders\lightSource.frag" />
@@ -206,6 +214,11 @@
     <ClInclude Include="Headers\texturedata.h" />
     <ClInclude Include="Headers\texture2dmanager.h" />
     <ClInclude Include="Headers\textureutils.h" />
+    <ClInclude Include="Headers\video.h" />
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\getarg.h" />
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\gif_hash.h" />
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\gif_lib.h" />
+    <ClInclude Include="LIBRARIES\Include\giflib-5.2.2\gif_lib_private.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

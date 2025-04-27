@@ -181,7 +181,7 @@ void App::runFrame() {
 
     processInput(mWindow, mRenderer);
 
-    mRenderer.renderScene(mGuidedCamera, mScene, true);
+    mRenderer.renderScene(mCamera, mScene, true);
     //mRenderer.renderInstanced(mCamera, mScene);
     //mRenderer.renderGeometry();
 

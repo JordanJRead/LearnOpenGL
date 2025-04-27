@@ -6,15 +6,19 @@
 #include "texture2d.h"
 #include <string>
 #include "textureutils.h"
+#include "video.h"
 
 class Texture2DManager {
 private:
 	std::vector<Texture2D> mTextures;
 	TextureUtils::DefaultTextures2D mDefaultTextures;
+	std::vector<Video> mVideos;
+	const Video& getVideoWithIndex(int index) const;
 
 public:
 	int loadTexture(const std::string& path);
 	const TEX& getTexture(int i, TextureUtils::Type type) const;
+	Texture2DManager();
 };
 
 #endif

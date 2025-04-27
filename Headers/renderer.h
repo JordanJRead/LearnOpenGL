@@ -80,4 +80,5 @@ public:
     void renderInstanced(const Camera& camera, const Scene& scene);
     void renderGeometry();
     void renderNormals(const Scene& scene);
+    void renderGif();
 };

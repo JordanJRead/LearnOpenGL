@@ -10,6 +10,7 @@
 #include "Headers/scene.h"
 #include "Headers/structs.h"
 #include "Headers/texture2dmanager.h"
+#include "Headers/video.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Headers/stb_image.h"
@@ -48,6 +49,7 @@ int main() {
     }
 
     gTexture2DManager = new Texture2DManager;
+
     App app{ 800, 600, window };
     while (!glfwWindowShouldClose(app.mWindow)) {
         app.runFrame();
