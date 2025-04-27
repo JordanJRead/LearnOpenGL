@@ -35,31 +35,29 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
     glBindFramebuffer(GL_FRAMEBUFFER, mDynamicCubeMapFBO); // also render the skybox in this function too
     Camera mockCamera{ 1024, 1024, pos, 90, 0, 0 }; //fixme todo set in the matrix buffer
     glViewport(0, 0, 1024, 1024);
-    mockCamera.setUp({ 0, -1, 0 }); // not sure why
+    mockCamera.setUp({ 0, -1, 0 });
     for (int i{ 0 }; i < 6; ++i) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         if (i == 1) {
             mockCamera.setYaw(180);
         }
         else if (i == 2) {
-            mockCamera.setUp({ 0, 0, 1 });
-            mockCamera.setYaw(270);
+            mockCamera.setYaw(90);
             mockCamera.setPitch(90);
         }
         else if (i == 3) {
-            mockCamera.setUp({ 0, 0, -1 });
             mockCamera.setPitch(-90);
         }
         else if (i == 4) {
-            mockCamera.setUp({ 0, -1, 0 }); // not sure why
             mockCamera.setPitch(0);
-            mockCamera.setYaw(90);
+            mockCamera.setYaw(-90);
         }
         else if (i == 5) {
-            mockCamera.setYaw(-90);
+            mockCamera.setYaw(90);
         }
         mMatrixUniformBuffer.setAllMatrices(mockCamera);
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
+        renderLightSources(scene);
         renderSkyBox(scene.getCubeMap().mTEX);
         cubeMap.setFace(mDynamicCubeMapColorTex, i);
     }
@@ -284,7 +282,8 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     glDisable(GL_STENCIL_TEST);
 
     renderLightSources(scene);
-    renderSkyBox(scene.getCubeMap().mTEX);
+    //renderSkyBox(scene.getCubeMap().mTEX);
+    renderSkyBox(mDynamicCubeMaps[0].mTEX);
 
     renderNormals(scene);
 }

@@ -1,5 +1,8 @@
-#pragma once
+#ifndef APP_H
+#define APP_H
+
 #include "camera.h"
+#include "guidedcamera.h"
 #include "scene.h"
 #include "Shader Classes/lightingshader.h"
 #include "Shader Classes/lightsourceshader.h"
@@ -21,6 +24,7 @@ private:
     int mScreenWidth;
     int mScreenHeight;
     Camera mCamera;
+    GuidedCamera mGuidedCamera;
     Scene mScene;
     Renderer mRenderer;
 
@@ -36,3 +40,5 @@ public:
         glfwTerminate();
     }
 };
+
+#endif

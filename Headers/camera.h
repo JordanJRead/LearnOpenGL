@@ -5,7 +5,7 @@
 #include "../LIBRARIES/Include/glm/glm.hpp"
 
 class Camera {
-private:
+protected:
     void calcProjection();
     void calcView();
     void calcFroward();
@@ -29,7 +29,7 @@ private:
     float mSpeed{ 2.5 };
 
 public:
-    Camera(int width, int height, const glm::vec3& pos = { 0, 0, 0 }, float fov = 45, float yaw = -90, float pitch = 0);
+    Camera(int width, int height, const glm::vec3& pos = { 0, 0, 0 }, float fov = 45, float yaw = 90, float pitch = 0);
     void mouseCallback(GLFWwindow* window, double xPos, double yPos);
     void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
     void moveBy(const glm::vec3& v);
@@ -50,8 +50,12 @@ public:
     float getSpeed() const;
     void setSpeed(float speed);
 
+    float getPitch() { return mPitch; };
     void setPitch(float pitch);
+    float getYaw() { return mYaw; };
     void setYaw(float yaw);
+
+    void lookAt(const glm::vec3& pos);
 };
 
 #endif

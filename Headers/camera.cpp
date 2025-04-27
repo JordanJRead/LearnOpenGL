@@ -26,7 +26,11 @@ void Camera::calcProjection() {
 void Camera::calcFroward() {
     mForward.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
     mForward.y = sin(glm::radians(mPitch));
-    mForward.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+    mForward.z = -sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+}
+
+void Camera::lookAt(const glm::vec3& pos) {
+    mView = glm::lookAt(mPos, pos, mUp);
 }
 
 void Camera::calcView() {
@@ -47,7 +51,7 @@ void Camera::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
 
     deltaX *= mSensitivity;
     deltaY *= mSensitivity;
-    mYaw += deltaX;
+    mYaw -= deltaX;
     mPitch -= deltaY;
 
     if (mPitch > 80.0f) mPitch = 80.0f;

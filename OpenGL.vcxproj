@@ -151,6 +151,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="Headers\app.cpp" />
     <ClCompile Include="Headers\camera.cpp" />
+    <ClCompile Include="Headers\guidedcamera.cpp" />
     <ClCompile Include="Headers\matrixuniformbuffer.h" />
     <ClCompile Include="Headers\renderer.cpp" />
     <ClCompile Include="Headers\rendererinit.cpp" />

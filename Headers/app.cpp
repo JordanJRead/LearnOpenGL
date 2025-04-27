@@ -34,6 +34,7 @@ void App::processInput(GLFWwindow* window, Renderer& renderer) {
     }
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         mCamera.moveBy(moveMag * mCamera.getUp());
+        mGuidedCamera.givePermission();
     }
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
         mCamera.moveBy(-moveMag * mCamera.getUp());
@@ -60,6 +61,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     , mScreenWidth{ screenWidth }
     , mScreenHeight{ screenHeight }
     , mCamera{ screenWidth, screenHeight, { 0, 0, 3 } }
+    , mGuidedCamera{ screenWidth, screenHeight, { 0, 0, 3 } }
     //, mScene{ screenWidth, screenHeight, {"images/skybox/blue.png", "images/skybox/green.png", "images/skybox/white.png", "images/skybox/yellow.png", "images/skybox/red.png", "images/skybox/orange.png"} }
     , mScene{ screenWidth, screenHeight, {"images/skybox/space/px.png", "images/skybox/space/nx.png", "images/skybox/space/py.png", "images/skybox/space/ny.png", "images/skybox/space/pz.png", "images/skybox/space/nz.png"} }
     , mRenderer{ screenWidth, screenHeight, *this }
@@ -157,6 +159,8 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
     transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
     mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
+    transform = { { -4, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/Cube/cube.obj", transform, true);
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
     mRenderer.createDynamicCubeMaps(mScene, mCamera);
@@ -169,13 +173,15 @@ void App::runFrame() {
     glfwSwapInterval(0); // show true fps
     std::cout << 1.0f / mDeltaTime << "\n";
 
+    mGuidedCamera.update();
+
     mCurrentFrame = glfwGetTime();
     mDeltaTime = mCurrentFrame - mLastFrame;
     mLastFrame = mCurrentFrame;
 
     processInput(mWindow, mRenderer);
 
-    mRenderer.renderScene(mCamera, mScene, true);
+    mRenderer.renderScene(mGuidedCamera, mScene, true);
     //mRenderer.renderInstanced(mCamera, mScene);
     //mRenderer.renderGeometry();
 
