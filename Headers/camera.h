@@ -16,9 +16,6 @@ protected:
     float mPitch{ 0 };
     float mSensitivity{ 0.1 };
 
-    int mScreenWidth{};
-    int mScreenHeight{};
-
     float mFov{ 45 };
 
     glm::vec3 mForward{};
@@ -29,6 +26,8 @@ protected:
     float mSpeed{ 2.5 };
 
 public:
+    int mScreenWidth{};
+    int mScreenHeight{};
     Camera(int width, int height, const glm::vec3& pos = { 0, 0, 0 }, float fov = 45, float yaw = 90, float pitch = 0);
     void mouseCallback(GLFWwindow* window, double xPos, double yPos);
     void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);

@@ -24,7 +24,8 @@ protected:
 
 	void renderModel(int dim, const Model& model, const TextureUtils::DefaultTextures2D& defaultTextures) {
 		setInt("dim", dim);
-		for (const Mesh& mesh : model.getMeshes()) {
+		setFloat("time", glfwGetTime());
+;		for (const Mesh& mesh : model.getMeshes()) {
 			glBindVertexArray(mesh.mVAO);
 			setTexture(mesh.getFirstDiffuseMap(), TextureUtils::Type::diffuse);
 			glDrawElementsInstanced(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0, dim * dim);

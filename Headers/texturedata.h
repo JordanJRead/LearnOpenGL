@@ -16,7 +16,7 @@ public:
 	int getChannelCount() const { return mChannelCount; }
 
 	TextureData(const std::string& imagePath) {
-		stbi_set_flip_vertically_on_load(true);
+		stbi_set_flip_vertically_on_load(false);
 		mData = stbi_load(imagePath.data(), &mWidth, &mHeight, &mChannelCount, 0);
 	}
 	

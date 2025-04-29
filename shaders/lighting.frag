@@ -68,7 +68,7 @@ void main() {
 	vec3 objectColor = vec3(texture(material.diffuseMap, frag_in.texCoords));
 	vec3 objectSpecularColor = vec3(texture(material.specularMap, frag_in.texCoords));
 
-	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
+	resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
 	
 	for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
 		resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor);

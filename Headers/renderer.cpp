@@ -67,7 +67,7 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         cubeMap.setFace(mDynamicCubeMapColorTex, i);
     }
     mMatrixUniformBuffer.setAllMatrices(mainCamera);
-    glViewport(0, 0, 800, 600); // todo
+    glViewport(0, 0, mainCamera.mScreenWidth, mainCamera.mScreenHeight);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     return cubeMap;
 }
@@ -287,19 +287,23 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     glDisable(GL_STENCIL_TEST);
 
     renderLightSources(scene);
-    //renderSkyBox(scene.getCubeMap().mTEX);
-    renderSkyBox(mDynamicCubeMaps[0].mTEX);
+    renderSkyBox(scene.getCubeMap().mTEX);
+    //renderSkyBox(mDynamicCubeMaps[0].mTEX);
 
-    renderNormals(scene);
+    //renderNormals(scene);
 }
 
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     mMatrixUniformBuffer.setViewMatrix(camera.getView());
     mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
     mInstancedShader.use();
-    mInstancedShader.renderModel(300, scene.getInstancedModel(), mDefaultTextures);
+    mInstancedShader.renderModel(1000, scene.getInstancedModel(), mDefaultTextures);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
 }
 
 void Renderer::renderGeometry() {

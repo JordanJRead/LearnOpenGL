@@ -26,8 +26,8 @@ float sinRange(float x, float y) {
 }
 
 int main() {
-    int screenWidth{ 800 };
-    int screenHeight{ 600 };
+    int screenWidth{ 1920 };
+    int screenHeight{ 1080 };
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -50,7 +50,7 @@ int main() {
 
     gTexture2DManager = new Texture2DManager;
 
-    App app{ 800, 600, window };
+    App app{ screenWidth, screenHeight, window };
     while (!glfwWindowShouldClose(app.mWindow)) {
         app.runFrame();
     }

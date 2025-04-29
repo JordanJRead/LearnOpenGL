@@ -32,7 +32,7 @@ namespace TextureUtils {
 		std::vector<int> reflection;
 	};
 
-	TEX texture2DFromFile(const std::string& filePath);
+	TEX texture2DFromFile(const std::string& filePath, bool clamp = false);
 }
 
 #endif

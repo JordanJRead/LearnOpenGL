@@ -16,7 +16,12 @@ int Texture2DManager::loadTexture(const std::string& fileName) {
 			return i;
 		}
 	}
-	mTextures.emplace_back(path); //todo what if path is wrong?
+	if (fileName == "grass" || fileName == "grass.png") {
+		mTextures.emplace_back(path, true); //todo what if path is wrong?
+	}
+	else {
+		mTextures.emplace_back(path, false); //todo what if path is wrong?
+	}
 	return mTextures.size() - 1;
 }
 
@@ -71,7 +76,6 @@ Texture2DManager::Texture2DManager() {
 		int videoIndex = std::stoi(
 			videoDirectory.path().string().substr(videoDirectory.path().string().find_last_of('/') + 1)
 		);
-		std::cerr << videoIndex << "\n";
 
 		Video video{ videoIndex, 60, true };
 		mVideos.emplace_back(std::move(video));

@@ -9,7 +9,11 @@ uniform sampler2D diffuseMap;
 
 void main() {
 	vec3 lightPos = vec3(0, 5, 0);
-	vec3 objectColor = vec3(texture(diffuseMap, fragTexCoord));
-	vec3 lightDir = normalize(lightPos - fragWorldPos);
-	FragColor = vec4(objectColor * (dot(lightDir, fragNormal) + 1) / 2.0, 1);
+	vec4 objectColor = texture(diffuseMap, fragTexCoord);
+	if (objectColor.a < 0.1) {
+		discard;
+	}
+	//vec3 lightDir = normalize(lightPos - fragWorldPos);
+	//FragColor = vec4(vec3(objectColor) * (dot(lightDir, fragNormal) + 1) / 2.0, 1);
+	FragColor = objectColor;
 }
