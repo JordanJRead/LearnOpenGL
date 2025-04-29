@@ -54,6 +54,8 @@ public:
 
 	const Model& getInstancedModel() const;
 	const Model& getGouraudModel() const;
+
+	void spinSphere(double deltaTime);
 };
 
 #endif

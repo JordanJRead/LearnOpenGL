@@ -55,7 +55,6 @@ public:
 			size_t numIndex = filePath.find_last_of('-') + 1;
 			size_t len = filePath.find_last_of('.') - numIndex;
 			int frameIndex = std::stoi(filePath.substr(numIndex, len)) - 1;
-			std::cerr << frameIndex << "\n";
 
 			Frame frame{ Texture2D{ filePath }, frameIndex };
 			mFrames.emplace_back(std::move(frame));

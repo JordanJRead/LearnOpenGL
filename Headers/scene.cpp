@@ -68,3 +68,9 @@ const Model& Scene::getInstancedModel() const {
 const Model& Scene::getGouraudModel() const {
 	return mGouraudObject;
 }
+
+void Scene::spinSphere(double deltaTime) {
+	Transform transform = mGouraudObject.mTransform;
+	transform.rotation.y += deltaTime * 0.5;
+	mGouraudObject.changeTransform(transform);
+}

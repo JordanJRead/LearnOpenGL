@@ -30,6 +30,7 @@ public:
 	Transform mTransform;
 	Model(const std::string& path, const Transform& transform, bool usesDynamicEnvironment = false, bool hasBorder = false);
 	const std::vector<Mesh>& getMeshes() const;
+	void changeTransform(const Transform& transform);
 };
 
 #endif
