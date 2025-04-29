@@ -64,3 +64,7 @@ const CubeMap& Scene::getCubeMap() const {
 const Model& Scene::getInstancedModel() const {
 	return mInstancedModel;
 }
+
+const Model& Scene::getGouraudModel() const {
+	return mGouraudObject;
+}

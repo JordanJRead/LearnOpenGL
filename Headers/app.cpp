@@ -135,11 +135,9 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     using Direction = glm::vec3;
 
-    //mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
-
     //mScene.addSpotLight(MultiColors{ { 0, 0.2, 0 }, { 0, 0.7, 0 }, { 0, 0.3, 0 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    //mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
+    mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
 
     mScene.setDirLight({ glm::normalize( glm::vec3 { 0, -1, 0.3 } ), { {0.2, 0.2, 0.2}, {1, 1, 1}, {1, 1, 1}} });
 
@@ -159,8 +157,8 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     //mScene.addModel("Objects/Backpack/backpack.obj", transform);
     //transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
     //mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
-    //transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
-    //mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
+    transform = { { 4, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/ReflectSphere/sphere.obj", transform, true);
     transform = { { -4, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
     //mScene.addModel("Objects/Cube/cube.obj", transform, true);
     mScene.addModel("Objects/Scene/scene.obj", { {}, {1, 1, 1}, {} });

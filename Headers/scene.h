@@ -26,6 +26,7 @@ private:
 	Model mInstancedModel;
 	DirLight mDirLight{};
 	CubeMap mSkyBoxCubeMap;
+	Model mGouraudObject{ "objects/Sphere/sphere.obj", {{0, 3, 0}, {1, 1, 1}, {0, 0, 0}} };
 
 public:
 	Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths);
@@ -52,6 +53,7 @@ public:
 	void sortTransparent(const glm::vec3& cameraPos);
 
 	const Model& getInstancedModel() const;
+	const Model& getGouraudModel() const;
 };
 
 #endif

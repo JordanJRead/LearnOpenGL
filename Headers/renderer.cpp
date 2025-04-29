@@ -63,6 +63,12 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         mMatrixUniformBuffer.setAllMatrices(mockCamera);
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
         renderLightSources(scene);
+        renderInstanced(mockCamera, scene);
+
+        mGouraudShader.use();
+        mGouraudShader.setPerFrameUniforms(mockCamera, scene);
+        mGouraudShader.renderModel(scene.getGouraudModel(), scene.getCubeMap().mTEX, mDefaultTextures);
+
         renderSkyBox(scene.getCubeMap().mTEX);
         cubeMap.setFace(mDynamicCubeMapColorTex, i);
     }
@@ -288,7 +294,9 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 
     renderLightSources(scene);
     renderSkyBox(scene.getCubeMap().mTEX);
-    //renderSkyBox(mDynamicCubeMaps[0].mTEX);
+    mGouraudShader.use();
+    mGouraudShader.setPerFrameUniforms(camera, scene);
+    mGouraudShader.renderModel(scene.getGouraudModel(), scene.getCubeMap().mTEX, mDefaultTextures);
 
     //renderNormals(scene);
 }
@@ -296,7 +304,7 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     mMatrixUniformBuffer.setViewMatrix(camera.getView());
     mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);

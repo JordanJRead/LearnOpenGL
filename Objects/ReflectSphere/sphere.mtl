@@ -10,3 +10,4 @@ d 1.000000
 illum 2
 map_Kd red.png
 map_Ks white.png
+map_Ka grey.png

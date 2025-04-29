@@ -26,8 +26,8 @@ float sinRange(float x, float y) {
 }
 
 int main() {
-    int screenWidth{ 1920 };
-    int screenHeight{ 1080 };
+    int screenWidth{ 800 };
+    int screenHeight{ 600 };
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
