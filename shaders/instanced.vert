@@ -16,6 +16,9 @@ layout(std140, binding = 0) uniform Matrices {
 uniform int dim;
 uniform float time;
 
+out vec2 noiseCoords;
+uniform sampler2D perlinNoise;
+
 float rand(uint x)
 {
     x ^= x >> 16;
@@ -48,7 +51,7 @@ vec4 getWorldPos(int id) {
 	worldPos.y += 1;
 
 	if (vPos.y > 0.5) {
-		worldPos.y += 1 * random; // Height varience
+		worldPos.y += 3 * random; // Height varience
 		worldPos = rot * worldPos;
 		worldPos.x += 0.8 * sin(0.5 * time);
 		return worldPoint * 4 + worldPos;
@@ -65,4 +68,5 @@ void main() {
 	fragTexCoord = vTexCoord;
 	fragNormal = normalize(vNorm);
 	fragWorldPos = worldPos.xyz;
+	noiseCoords = worldPos.xz / 300.0; // bigger means more spread out
 }

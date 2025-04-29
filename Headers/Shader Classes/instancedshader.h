@@ -12,6 +12,9 @@ class InstancedShader : public Shader {
 
 protected:
 
+	Texture2D perlinNoise{ "images/perlin.png" };
+	Texture2D yellowGrass{ "images/grassyellow.png" };
+
 	void setTexture(unsigned int textureIndex, TextureUtils::Type type) {
 		glActiveTexture(GL_TEXTURE0 + (int)type);
 		if (type == TextureUtils::Type::skybox) {
@@ -28,6 +31,8 @@ protected:
 ;		for (const Mesh& mesh : model.getMeshes()) {
 			glBindVertexArray(mesh.mVAO);
 			setTexture(mesh.getFirstDiffuseMap(), TextureUtils::Type::diffuse);
+			setTexture(perlinNoise.mTex, TextureUtils::Type::emission);
+			setTexture(yellowGrass.mTex, TextureUtils::Type::specular);
 			glDrawElementsInstanced(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0, dim * dim);
 		}
 	}
@@ -36,6 +41,8 @@ public:
 	InstancedShader(std::string_view vertPath, std::string_view fragPath) : Shader{ vertPath, fragPath } {
 		use();
 		setInt("diffuseMap", (int)TextureUtils::Type::diffuse);
+		setInt("perlinNoise", (int)TextureUtils::Type::emission);
+		setInt("yellowTex", (int)TextureUtils::Type::specular);
 	}
 };
 

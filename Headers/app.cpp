@@ -141,7 +141,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     //mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
 
-    mScene.setDirLight({ { 0, -1, 0 }, { {0.2, 0.2, 0.2}, {1, 1, 1}, {1, 1, 1}} });
+    mScene.setDirLight({ glm::normalize( glm::vec3 { 0, -1, 0.3 } ), { {0.2, 0.2, 0.2}, {1, 1, 1}, {1, 1, 1}} });
 
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();

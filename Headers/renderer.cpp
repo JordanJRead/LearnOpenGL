@@ -301,7 +301,7 @@ void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     glDisable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     mInstancedShader.use();
-    mInstancedShader.renderModel(1000, scene.getInstancedModel(), mDefaultTextures);
+    mInstancedShader.renderModel(250, scene.getInstancedModel(), mDefaultTextures);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
 }
