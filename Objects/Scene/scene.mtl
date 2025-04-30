@@ -131,16 +131,6 @@ d 1.000000
 illum 2
 map_Kd C:/Users/Jordan/source/repos/OpenGL/images/green.png
 
-newmtl Material.017
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd C:/Users/Jordan/source/repos/OpenGL/images/grey.png
-
 newmtl Material.018
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
@@ -752,14 +742,14 @@ illum 2
 map_Kd C:/Users/Jordan/source/repos/OpenGL/images/green.png
 
 newmtl Material.080
-Ns 250.000000
+Ns 299.476074
 Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:/Users/Jordan/source/repos/OpenGL/images/red.png
+map_Ks C:/Users/Jordan/source/repos/OpenGL/images/white.png
 
 newmtl Material.092
 Ns 250.000000

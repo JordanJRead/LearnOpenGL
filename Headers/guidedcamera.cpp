@@ -8,40 +8,49 @@ void GuidedCamera::givePermission() {
 	}
 }
 
+constexpr glm::vec3 blenderDegToVector(double degree, bool positive = false) {
+	degree *= -1;
+	degree += 90;
+	return  glm::vec3 { cos(glm::radians(degree)), 0, sin(glm::radians(degree))} * (positive ? 1.0f : -1.0f);
+}
+
 GuidedCamera::GuidedCamera(int width, int height, const glm::vec3& pos, float fov, float yaw, float pitch)
 	: Camera(width, height, pos, fov, yaw, pitch)
 {
-	glm::vec3 slide1View{ -0.86742, 1.5, 7.6187 };
-	glm::vec3 slide1Pos{ -0.79, 0.88, 10.95 };
+	constexpr float dist{ 2.5 };
+	constexpr float eyeLevel{ 1.5 };
 
-	glm::vec3 slide2View{ -3.9088, 1.5, 5.9268 };
-	glm::vec3 slide2Pos{ -6.419, 0.94658, 8.128 };
+	glm::vec3 slide1Pos{ -0.79, eyeLevel, 10.95 };
+	glm::vec3 slide1View{ slide1Pos + dist * blenderDegToVector(0) };
 
-	glm::vec3 ballsView{ -4.0015, 1.5, 2.5674 };
-	glm::vec3 balls{ -8.5358, 1.399, 3.7274 };
+	glm::vec3 slide2Pos{ -6.419, eyeLevel, 8.128 };
+	glm::vec3 slide2View{ slide2Pos + dist * blenderDegToVector(-48.9) };
 
-	glm::vec3 slide3View{ -4.6167, 1.5, 0.8746 };
-	glm::vec3 slide3Pos{ -8.0443, 0.94658, -0.93984 };
+	glm::vec3 ballsView{ -4.0015, eyeLevel, 2.5674 };
+	glm::vec3 balls{ -8.5358, eyeLevel, 3.7274 };
 
-	glm::vec3 slide4View{ -1.0851, 1.5, -3.999 };
-	glm::vec3 slide4Pos{ -4.3403, 1.5, -6.6327 };
+	glm::vec3 slide3Pos{ -8.0443, eyeLevel, -0.93984 };
+	glm::vec3 slide3View{ slide3Pos + dist * blenderDegToVector(59.5, true) };
 
-	glm::vec3 video1View{ -2.524, 1.5, -6.1571 };
-	glm::vec3 videoPos1{ -1.0171, 1.1335, -7.3629 };
+	glm::vec3 slide4Pos{ -4.3403, eyeLevel, -6.6327 };
+	glm::vec3 slide4View{ slide4Pos + dist * blenderDegToVector(53.5, true) };
 
-	//glm::vec3 video2View{ -1.6883, 1.5, -4.2368 };
-	//glm::vec3 videoPos2{ 0.21566, 1.1335, -5.9206 };
+	glm::vec3 video1View{ -2.524, eyeLevel, -6.1571 };
+	glm::vec3 videoPos1{ -1.0171, eyeLevel, -7.3629 };
 
-	glm::vec3 pivotPos{ 0.7699, 1.5, -4.007 };
+	//glm::vec3 video2View{ -1.6883, eyeLevel, -4.2368 };
+	//glm::vec3 videoPos2{ 0.21566, eyeLevel, -5.9206 };
 
-	glm::vec3 slide5View{ 1.6049, 1.5, -8.9306 };
-	glm::vec3 slide5Pos{ 0.17257, 0.94658, -12.412 };
+	glm::vec3 pivotPos{ 0.7699, eyeLevel, -4.007 };
 
-	glm::vec3 slide6View{ 6.3715, 1.5, -10.002 };
-	glm::vec3 slide6Pos{ 7.8623, 0.94658, -13.225 };
+	glm::vec3 slide5Pos{ 0.17257, eyeLevel, -12.412 };
+	glm::vec3 slide5View{ slide5Pos + dist * blenderDegToVector(22, true) };
 
-	glm::vec3 slide7View{ 7.7583, 1.5, -7.733 };
-	glm::vec3 slide7Pos{ 11.06, 1.1335, -7.531 };
+	glm::vec3 slide6Pos{ 7.8623, eyeLevel, -13.225 };
+	glm::vec3 slide6View{ slide6Pos + dist * blenderDegToVector(-24, true) };
+
+	glm::vec3 slide7Pos{ 11.06, eyeLevel, -7.531 };
+	glm::vec3 slide7View{ slide7Pos + dist * blenderDegToVector(-92.2, true) };
 
 	mActions = {
 		{Action::look, slide1View},
