@@ -35,8 +35,9 @@ GuidedCamera::GuidedCamera(int width, int height, const glm::vec3& pos, float fo
 	glm::vec3 slide4Pos{ -4.3403, eyeLevel, -6.6327 };
 	glm::vec3 slide4View{ slide4Pos + dist * blenderDegToVector(53.5, true) };
 
-	glm::vec3 video1View{ -2.524, eyeLevel, -6.1571 };
+	//glm::vec3 video1View{ -2.524, eyeLevel, -6.1571 };
 	glm::vec3 videoPos1{ -1.0171, eyeLevel, -7.3629 };
+	glm::vec3 video1View{ videoPos1 + 1.2f * blenderDegToVector(131) };
 
 	//glm::vec3 video2View{ -1.6883, eyeLevel, -4.2368 };
 	//glm::vec3 videoPos2{ 0.21566, eyeLevel, -5.9206 };
