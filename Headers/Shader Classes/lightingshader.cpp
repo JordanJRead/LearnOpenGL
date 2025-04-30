@@ -26,6 +26,9 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	setInt("material.reflectionMap", (int)TextureUtils::Type::reflection);
 	setInt("skybox", (int)TextureUtils::Type::skybox);
 	setFloat("material.shininess", 32);
+
+	unsigned int lights_index = glGetUniformBlockIndex(mID, "Matrices");
+	glUniformBlockBinding(mID, lights_index, 0);
 }
 
 LightingShader::LightingShader(std::string_view vertPath, std::string_view geomPath, std::string_view fragPath)

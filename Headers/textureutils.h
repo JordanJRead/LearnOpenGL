@@ -19,7 +19,8 @@ namespace TextureUtils {
 	};
 
 	struct DefaultTextures2D {
-		Texture2D diffuse{ "images/defaultdiffuse.png" };
+		//Texture2D diffuse{ "images/defaultdiffuse.png" };
+		Texture2D diffuse{ "images/black.png" };
 		Texture2D specular{ "images/black.png" };
 		Texture2D emission{ "images/black.png" };
 		Texture2D reflection{ "images/black.png" };

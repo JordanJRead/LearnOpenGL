@@ -61,7 +61,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     , mScreenWidth{ screenWidth }
     , mScreenHeight{ screenHeight }
     , mCamera{ screenWidth, screenHeight, { 0, 0, 3 } }
-    , mGuidedCamera{ screenWidth, screenHeight, { 0, 1, 3 } }
+    , mGuidedCamera{ screenWidth, screenHeight, { 5.24, 1.5, -7.11 }, 45, 270 }
     //, mScene{ screenWidth, screenHeight, {"images/skybox/blue.png", "images/skybox/green.png", "images/skybox/white.png", "images/skybox/yellow.png", "images/skybox/red.png", "images/skybox/orange.png"} }
     , mScene{ screenWidth, screenHeight, {"images/skybox/sky/px.jpg", "images/skybox/sky/nx.jpg", "images/skybox/sky/py.jpg", "images/skybox/sky/ny.jpg", "images/skybox/sky/pz.jpg", "images/skybox/sky/nz.jpg"} }
     , mRenderer{ screenWidth, screenHeight, *this }
@@ -137,7 +137,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     //mScene.addSpotLight(MultiColors{ { 0, 0.2, 0 }, { 0, 0.7, 0 }, { 0, 0.3, 0 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
 
-    mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
+    mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { -8.5358, 3, 3.7274 }, { 0.2, 0.2, 0.2 } });
 
     mScene.setDirLight({ glm::normalize( glm::vec3 { 0, -1, 0.3 } ), { {0.2, 0.2, 0.2}, {1, 1, 1}, {1, 1, 1}} });
 
@@ -158,15 +158,8 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     //transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
     //mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
 
-    transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/Cube/cube.obj", transform);
-
-    transform = { {1, 1, 1}, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/Cube/cube.obj", transform);
-
-    transform = { { 4, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/ReflectSphere/sphere.obj", transform, true);
-    transform = { { -4, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
+    transform = { {-7.6287, 1.399, 4.954}, {0.498, 0.498, 0.498}, {0, 0, 0} };
+    //mScene.addModel("Objects/ReflectSphere/sphere.obj", transform, true);
     //mScene.addModel("Objects/Cube/cube.obj", transform, true);
     mScene.addModel("Objects/Scene/scene.obj", { {}, {1, 1, 1}, {} });
 

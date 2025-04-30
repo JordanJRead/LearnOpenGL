@@ -26,7 +26,7 @@ private:
 	Model mInstancedModel;
 	DirLight mDirLight{};
 	CubeMap mSkyBoxCubeMap;
-	Model mGouraudObject{ "objects/Sphere/sphere.obj", {{0, 3, 0}, {1, 1, 1}, {0, 0, 0}} };
+	Model mGouraudObject{ "objects/Sphere/sphere.obj", {{-7.9314, 1.399, 4.2955}, {0.498, 0.498, 0.498}, {0, 0, 0}} };
 
 public:
 	Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths);

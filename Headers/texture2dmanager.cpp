@@ -77,7 +77,7 @@ Texture2DManager::Texture2DManager() {
 			videoDirectory.path().string().substr(videoDirectory.path().string().find_last_of('/') + 1)
 		);
 
-		Video video{ videoIndex, 60, true };
+		Video video{ videoIndex, 10, true };
 		mVideos.emplace_back(std::move(video));
 	};
 }

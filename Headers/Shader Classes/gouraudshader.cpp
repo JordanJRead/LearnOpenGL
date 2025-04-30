@@ -26,6 +26,10 @@ GouraudShader::GouraudShader(std::string_view vertPath, std::string_view fragPat
 	setInt("material.reflectionMap", (int)TextureUtils::Type::reflection);
 	setInt("skybox", (int)TextureUtils::Type::skybox);
 	setFloat("material.shininess", 32);
+
+	unsigned int lights_index = glGetUniformBlockIndex(mID, "Matrices"); //todo chance var name
+	glUniformBlockBinding(mID, lights_index, 0);
+
 }
 
 void GouraudShader::setPerFrameUniforms(const Camera& camera, const Scene& scene) const {

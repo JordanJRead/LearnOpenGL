@@ -47,11 +47,11 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
             mockCamera.setYaw(180);
         }
         else if (i == 2) {
-            mockCamera.setYaw(90);
-            mockCamera.setPitch(90);
+            mockCamera.setYaw(89);
+            mockCamera.setPitch(89);
         }
         else if (i == 3) {
-            mockCamera.setPitch(-90);
+            mockCamera.setPitch(-89); // FIXME??? todo
         }
         else if (i == 4) {
             mockCamera.setPitch(0);

@@ -1,4 +1,4 @@
-#version 460 core
+#version 330 core
 
 layout (location = 0) in vec3 vPos;
 layout (location = 1) in vec3 vNorm;
@@ -8,7 +8,8 @@ out vec2 fragTexCoord;
 out vec3 fragNormal;
 out vec3 fragWorldPos;
 
-layout(std140, binding = 0) uniform Matrices {
+//layout(std140, binding = 0) uniform Matrices {
+layout(std140) uniform Matrices {
 	uniform mat4 view;
 	uniform mat4 projection;
 };
@@ -30,7 +31,7 @@ float rand(uint x)
 }
 
 vec4 getWorldPos(int id) {
-	float random = rand(id);
+	float random = rand(uint(id));
 	float density = 0.2f;
 
 	vec4 worldPoint = vec4(0, 0, 0, 1);

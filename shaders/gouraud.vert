@@ -1,4 +1,4 @@
-#version 460 core
+#version 330 core
 
 // Vertex information
 layout (location = 0) in vec3 vPos;
@@ -7,7 +7,8 @@ layout (location = 2) in vec2 vTexCoord;
 
 uniform mat4 model;
 
-layout(std140, binding = 0) uniform Matrices {
+//layout(std140, binding = 0) uniform Matrices {
+layout(std140) uniform Matrices {
 	uniform mat4 view;
 	uniform mat4 projection;
 };
@@ -83,7 +84,7 @@ void main() {
 	vec3 objectColor = vec3(texture(material.diffuseMap, vTexCoord));
 	vec3 objectSpecularColor = vec3(texture(material.specularMap, vTexCoord));
 
-	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
+	resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor);
 	
 	for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
 		resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor, worldPos);

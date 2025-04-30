@@ -19,4 +19,7 @@ void LightSourceShader::setUniformLightColor(const glm::vec3& lightColor) const 
 LightSourceShader::LightSourceShader(std::string_view vertPath, std::string_view fragPath)
 	: Shader{ vertPath, fragPath }
 {
+
+	unsigned int lights_index = glGetUniformBlockIndex(mID, "Matrices");
+	glUniformBlockBinding(mID, lights_index, 0);
 }

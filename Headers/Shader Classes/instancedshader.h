@@ -43,6 +43,9 @@ public:
 		setInt("diffuseMap", (int)TextureUtils::Type::diffuse);
 		setInt("perlinNoise", (int)TextureUtils::Type::emission);
 		setInt("yellowTex", (int)TextureUtils::Type::specular);
+
+		unsigned int lights_index = glGetUniformBlockIndex(mID, "Matrices");
+		glUniformBlockBinding(mID, lights_index, 0);
 	}
 };
 

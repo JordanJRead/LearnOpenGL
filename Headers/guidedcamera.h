@@ -24,7 +24,9 @@ private:
 	std::vector<Action> mActions;
 	int mCurrentActionIndex{ 0 };
 	double mMoveSpeed{ 5 };
-	double mAngleSpeed{ 90 };
+	//double mMoveSpeed{ 10 };
+	double mAngleSpeed{ 120 };
+	//double mAngleSpeed{ 360 };
 	glm::vec3 mStartingPos;
 
 	static double smooth(double t);
