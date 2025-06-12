@@ -5,10 +5,8 @@
 #include "../LIBRARIES/Include/glm/glm.hpp"
 
 class Camera {
+
 private:
-    void calcProjection();
-    void calcView();
-    void calcFroward();
     bool mIsFirstMouse{ true };
     float mPrevMouseX{ 0 };
     float mPrevMouseY{ 0 };
@@ -18,7 +16,6 @@ private:
 
     int mScreenWidth{};
     int mScreenHeight{};
-
     float mFov{ 45 };
 
     glm::vec3 mForward{};
@@ -27,6 +24,11 @@ private:
     glm::mat4 mProjection{};
     glm::mat4 mView{};
     float mSpeed{ 2.5 };
+
+private:
+    void calcProjection();
+    void calcView();
+    void calcFroward();
 
 public:
     Camera(int width, int height, const glm::vec3& pos = { 0, 0, 0 }, float fov = 45, float yaw = -90, float pitch = 0);
