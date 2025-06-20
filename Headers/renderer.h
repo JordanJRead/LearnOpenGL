@@ -24,6 +24,15 @@ class App;
 class Model;
 
 class Renderer {
+public:
+    Renderer(int screenWidth, int screenHeight, App& app);
+    void startBlurEffect();
+    void createDynamicCubeMaps(Scene& scene, const Camera& mainCamera);
+    void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
+    void renderInstanced(const Camera& camera, const Scene& scene);
+    void renderGeometry();
+    void renderNormals(const Scene& scene);
+
 private:
     MatrixUniformBuffer mMatrixUniformBuffer;
 
@@ -52,8 +61,6 @@ private:
     InstancedShader mInstancedShader;
     ShowNormalsShader mShowNormalsShader{ "shaders/shownormals.vert", "shaders/shownormals.geom", "shaders/shownormals.frag" };
 
-    TextureUtils::DefaultTextures2D mDefaultTextures;
-
     DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera);
 
     void renderEntireSceneLighting(const Camera& camera, const Scene& scene, bool drawBorders, int ignoreModelIndex);
@@ -71,13 +78,4 @@ private:
     void initCubeVertices();
     void initScreenQuad();
     void initDynamicEnvironment();
-
-public:
-    void startBlurEffect();
-    void createDynamicCubeMaps(Scene& scene, const Camera& mainCamera);
-    Renderer(int screenWidth, int screenHeight, App& app);
-	void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
-    void renderInstanced(const Camera& camera, const Scene& scene);
-    void renderGeometry();
-    void renderNormals(const Scene& scene);
 };

@@ -22,7 +22,7 @@ protected:
 		}
 	}
 
-	void renderModel(int dim, const Model& model, const TextureUtils::DefaultTextures2D& defaultTextures) {
+	void renderModel(int dim, const Model& model) {
 		setInt("dim", dim);
 		for (const Mesh& mesh : model.getMeshes()) {
 			glBindVertexArray(mesh.mVAO);

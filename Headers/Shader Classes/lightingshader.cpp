@@ -123,7 +123,7 @@ void LightingShader::setTexture(unsigned int textureIndex, TextureUtils::Type ty
 	}
 }
 
-void LightingShader::renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures2D& defaultTextures) {
+void LightingShader::renderModel(const Model& model, const TEX& environmentCubeMapTex) {
 	setUniformModel(model.mModel);
 	setTexture(environmentCubeMapTex, TextureUtils::Type::skybox);
 	for (const Mesh& mesh : model.getMeshes()) {

@@ -116,10 +116,10 @@ void Renderer::renderEntireSceneLighting(const Camera& camera, const Scene& scen
         // We don't want to render objects that should have a dynamic environment map, but don't.
         // This is so that when creating the dynamic environment map for an object, that object won't see itself
         if (model.mUsesDynamicEnvironment && model.mDynamicEnvironmentIndex >= 0) {
-            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else{// if (!model.mUsesDynamicEnvironment){
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
         }
     }
 
@@ -134,10 +134,10 @@ void Renderer::renderEntireSceneLighting(const Camera& camera, const Scene& scen
             glStencilMask(0x00);
         }
         if (model.mUsesDynamicEnvironment && model.mDynamicEnvironmentIndex >= 0) {
-            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else if (!model.mUsesDynamicEnvironment) {
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
         }
     }
     glBindVertexArray(0);
@@ -176,10 +176,10 @@ void Renderer::renderEntireSceneGouraud(const Camera& camera, const Scene& scene
         // We don't want to render objects that should have a dynamic environment map, but don't.
         // This is so that when creating the dynamic environment map for an object, that object won't see itself
         if (model.mUsesDynamicEnvironment && model.mDynamicEnvironmentIndex >= 0) {
-            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else {// if (!model.mUsesDynamicEnvironment){
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
         }
     }
 
@@ -189,10 +189,10 @@ void Renderer::renderEntireSceneGouraud(const Camera& camera, const Scene& scene
         const Model& model{ transparentModels[i] };
 
         if (model.mUsesDynamicEnvironment && model.mDynamicEnvironmentIndex >= 0) {
-            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else if (!model.mUsesDynamicEnvironment) {
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX, mDefaultTextures);
+            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
         }
     }
     glBindVertexArray(0);
@@ -295,7 +295,7 @@ void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     mInstancedShader.use();
-    mInstancedShader.renderModel(300, scene.getInstancedModel(), mDefaultTextures);
+    mInstancedShader.renderModel(300, scene.getInstancedModel());
 }
 
 void Renderer::renderGeometry() {

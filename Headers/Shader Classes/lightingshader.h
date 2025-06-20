@@ -37,7 +37,7 @@ protected:
 
 	void setTexture(unsigned int textureIndex, TextureUtils::Type type);
 
-	void renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures2D& defaultTextures);
+	void renderModel(const Model& model, const TEX& environmentCubeMapTex);
 
 public:
 	LightingShader(std::string_view vertPath, std::string_view fragPath);
