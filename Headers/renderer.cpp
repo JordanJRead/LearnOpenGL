@@ -285,6 +285,8 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 
     renderLightSources(scene);
     renderSkyBox(scene.getCubeMap().mTEX);
+
+    //renderNormals(scene);
 }
 
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
