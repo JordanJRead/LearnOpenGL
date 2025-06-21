@@ -1,30 +1,26 @@
 #ifndef SPOT_LIGHT_H
 #define SPOT_LIGHT_H
 #include <glm/glm.hpp>
-#include "modelinfo.h"
-#include <vector>
 
 class SpotLight {
 public:
-	// add attenuation?
-	glm::vec3 dir{};
-	float cutoffDot{};
-	float outerDot{};
-
-	MultiColors colors{};
-
-	ModelInfo modelInfo{};
-	Transform transform{};
-	SpotLight() = default;
-	SpotLight(const MultiColors& _colors, const glm::vec3& _dir, float _cutoffDot, float _outerDot, const std::vector<float>& vertices, const Transform& _transform)
-		: dir{ _dir }
-		, colors{ _colors }
-		, cutoffDot{ _cutoffDot }
-		, outerDot{ _outerDot }
-		, modelInfo{ vertices, _transform }
-		, transform{ _transform }
+	SpotLight(const glm::vec3& color, const glm::vec3& direction, float cutoffDot, float outerDot, const glm::vec3& position, float ambientScale = 0.2)
+		: mColor{ color }
+		, mDirection{ direction }
+		, mCutoffDot{ cutoffDot }
+		, mOuterDot{ outerDot }
+		, mPosition{ position }
+		, mAmbientScale{ ambientScale }
 	{
 	}
+
+	glm::vec3 mPosition{};
+	glm::vec3 mDirection{};
+	float mCutoffDot{};
+	float mOuterDot{};
+
+	glm::vec3 mColor;
+	float mAmbientScale{ 0.2 };
 };
 
 #endif

@@ -78,13 +78,12 @@ void LightingShader::setUniformPointLights(const std::vector<PointLight>& pointL
 		std::string prefix{ "pointLights[" };
 		prefix += std::to_string(i);
 		prefix += "].";
-		setVector3(prefix + "pos", pointLights[i].transform.pos);
-		setVector3(prefix + "ambient", pointLights[i].colors.ambient);
-		setVector3(prefix + "diffuse", pointLights[i].colors.diffuse);
-		setVector3(prefix + "specular", pointLights[i].colors.specular);
-		setFloat(prefix + "attConst", pointLights[i].attenuation.attConst);
-		setFloat(prefix + "attLinear", pointLights[i].attenuation.attLinear);
-		setFloat(prefix + "attQuad", pointLights[i].attenuation.attQuad);
+		setVector3(prefix + "pos", pointLights[i].mPosition);
+		setVector3(prefix + "color", pointLights[i].mColor);
+		setFloat(prefix + "ambientScale", pointLights[i].mAmbientScale);
+		setFloat(prefix + "attConst", pointLights[i].mAttenuation.attConst);
+		setFloat(prefix + "attLinear", pointLights[i].mAttenuation.attLinear);
+		setFloat(prefix + "attQuad", pointLights[i].mAttenuation.attQuad);
 	}
 }
 void LightingShader::setUniformDirLight(const DirLight& dirLight) const {
@@ -99,14 +98,13 @@ void LightingShader::setUniformSpotLights(const std::vector<SpotLight>& spotLigh
 		std::string prefix{ "spotLights[" };
 		prefix += std::to_string(i);
 		prefix += "].";
-		setVector3(prefix + "pos", spotLights[i].transform.pos);
-		setVector3(prefix + "dir", spotLights[i].dir);
-		setFloat(prefix + "cutoffDot", spotLights[i].cutoffDot);
-		setFloat(prefix + "outerDot", spotLights[i].outerDot);
+		setVector3(prefix + "pos", spotLights[i].mPosition);
+		setVector3(prefix + "dir", spotLights[i].mDirection);
+		setFloat(prefix + "cutoffDot", spotLights[i].mCutoffDot);
+		setFloat(prefix + "outerDot", spotLights[i].mOuterDot);
 
-		setVector3(prefix + "ambient", spotLights[i].colors.ambient);
-		setVector3(prefix + "diffuse", spotLights[i].colors.diffuse);
-		setVector3(prefix + "specular", spotLights[i].colors.specular);
+		setVector3(prefix + "color", spotLights[i].mColor);
+		setFloat(prefix + "ambientScale", spotLights[i].mAmbientScale);
 	}
 }
 void LightingShader::setUniformMaxSpotLights(int count) const {
@@ -124,7 +122,7 @@ void LightingShader::setTexture(unsigned int textureIndex, TextureUtils::Type ty
 }
 
 void LightingShader::renderModel(const Model& model, const TEX& environmentCubeMapTex) {
-	setUniformModel(model.mModel);
+	setUniformModel(model.mTransform.getModelMatrix());
 	setTexture(environmentCubeMapTex, TextureUtils::Type::skybox);
 	for (const Mesh& mesh : model.getMeshes()) {
 		setUniformMaterialShininess(mesh.mShininess == 0 ? 1 : mesh.mShininess);

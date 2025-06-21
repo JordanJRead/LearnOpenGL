@@ -16,9 +16,8 @@ uniform Material material;
 struct PointLight {
 	vec3 pos;
 
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
+	vec3 color;
+	float ambientScale;
 
 	float attConst;
 	float attLinear;
@@ -30,9 +29,9 @@ uniform int maxPointLights;
 
 struct DirLight {
 	vec3 dir;
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
+	
+	vec3 color;
+	float ambientScale;
 };
 uniform DirLight dirLight;
 
@@ -42,9 +41,8 @@ struct SpotLight {
 	float cutoffDot;
 	float outerDot;
 	
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
+	vec3 color;
+	float ambientScale;
 };
 #define N_SPOT_LIGHTS 4
 uniform SpotLight spotLights[N_SPOT_LIGHTS];
@@ -94,28 +92,28 @@ void main() {
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {
 	vec3 lightDir = normalize(-dirLight.dir);
 	
-	vec3 ambientColor = dirLight.ambient * objectColor;
+	vec3 ambientColor = dirLight.color * dirLight.ambientScale * objectColor;
 
 	float diffuseFactor = max(dot(lightDir, normal), 0);
-	vec3 diffuseColor = dirLight.diffuse * objectColor * diffuseFactor;
+	vec3 diffuseColor = dirLight.color * objectColor * diffuseFactor;
 
 	vec3 reflectDir = reflect(-lightDir, normal);
 	float specularFactor = pow(max(dot(-viewDir, reflectDir), 0.0), material.shininess);
-	vec3 specularColor = dirLight.specular * objectSpecularColor * specularFactor;
+	vec3 specularColor = dirLight.color * objectSpecularColor * specularFactor;
 	return diffuseColor + specularColor + ambientColor;
 }
 
 vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {
 	vec3 lightDir = normalize(pointLight.pos - frag_in.worldPos);
 	
-	vec3 ambientColor = pointLight.ambient * objectColor;
+	vec3 ambientColor = pointLight.color * pointLight.ambientScale * objectColor;
 
 	float diffuseFactor = max(dot(lightDir, normal), 0);
-	vec3 diffuseColor = pointLight.diffuse * objectColor * diffuseFactor;
+	vec3 diffuseColor = pointLight.color * objectColor * diffuseFactor;
 
 	vec3 reflectDir = reflect(-lightDir, normal);
 	float specularFactor = pow(max(dot(-viewDir, reflectDir), 0.0), material.shininess);
-	vec3 specularColor = pointLight.specular * objectSpecularColor * specularFactor;
+	vec3 specularColor = pointLight.color * objectSpecularColor * specularFactor;
 
 	float lightDist = length(pointLight.pos - frag_in.worldPos);
 	float attenuation = 1.0 / (pointLight.attConst + pointLight.attLinear * lightDist + pointLight.attQuad * lightDist * lightDist);
@@ -127,14 +125,14 @@ vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 objectColor, vec3 o
 vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {
 	vec3 lightDir = normalize(spotLight.pos - frag_in.worldPos);
 	
-	vec3 ambientColor = spotLight.ambient * objectColor;
+	vec3 ambientColor = spotLight.color * spotLight.ambientScale * objectColor;
 
 	float diffuseFactor = max(dot(lightDir, normal), 0);
-	vec3 diffuseColor = spotLight.diffuse * objectColor * diffuseFactor;
+	vec3 diffuseColor = spotLight.color * objectColor * diffuseFactor;
 
 	vec3 reflectDir = reflect(-lightDir, normal);
 	float specularFactor = pow(max(dot(-viewDir, reflectDir), 0.0), material.shininess);
-	vec3 specularColor = spotLight.specular * objectSpecularColor * specularFactor;
+	vec3 specularColor = spotLight.color * objectSpecularColor * specularFactor;
 
 	float intensity = clamp(((dot(lightDir, normalize(-spotLight.dir))) - spotLight.outerDot) / (spotLight.cutoffDot - spotLight.outerDot), 0.0, 1.0); // is not good
 	

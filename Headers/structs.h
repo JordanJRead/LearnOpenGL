@@ -16,12 +16,6 @@ struct Material {
 	float shininess;
 };
 
-struct Transform {
-	glm::vec3 pos;
-	glm::vec3 scale;
-	glm::vec3 rotation;
-};
-
 struct MultiColors {
 	glm::vec3 ambient;
 	glm::vec3 diffuse;

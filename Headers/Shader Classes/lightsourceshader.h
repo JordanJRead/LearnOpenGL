@@ -12,7 +12,7 @@ class Camera;
 class LightSourceShader : public Shader {
 	friend class Renderer;
 private:
-	void setUniformModel(const glm::mat4& model) const;
+	void setUniformPosition(const glm::vec3& position) const;
 	void setUniformLightColor(const glm::vec3& lightColor) const;
 
 public:

@@ -15,7 +15,7 @@ public:
 	}
 
 	void renderModel(const Model& model) {
-		setUniformModel(model.mModel);
+		setUniformModel(model.mTransform.getModelMatrix());
 		for (const Mesh& mesh : model.getMeshes()) {
 			glBindVertexArray(mesh.mVAO);
 			glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, nullptr);

@@ -4,6 +4,7 @@
 #include "texture2d.h"
 #include "mesh.h"
 #include "textureutils.h"
+#include "transform.h"
 
 class Mesh;
 class aiScene;
@@ -13,6 +14,14 @@ class aiMaterial;
 enum aiTextureType;
 
 class Model {
+public:
+	bool mHasBorder{ false };
+	bool mUsesDynamicEnvironment{ false };
+	int mDynamicEnvironmentIndex{ -1 };
+	Transform mTransform;
+	Model(const std::string& path, const Transform& transform, bool usesDynamicEnvironment = false, bool hasBorder = false);
+	const std::vector<Mesh>& getMeshes() const;
+
 private:
 	std::vector<Mesh> mMeshes;
 	std::string mDirectory;
@@ -22,14 +31,6 @@ private:
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 	std::vector<int> loadMaterialTextureIndices(aiMaterial* mat, aiTextureType type, TextureUtils::Type typeName);
 
-public:
-	bool mHasBorder{ false };
-	bool mUsesDynamicEnvironment{ false };
-	int mDynamicEnvironmentIndex{ -1 };
-	glm::mat4 mModel;
-	Transform mTransform;
-	Model(const std::string& path, const Transform& transform, bool usesDynamicEnvironment = false, bool hasBorder = false);
-	const std::vector<Mesh>& getMeshes() const;
 };
 
 #endif

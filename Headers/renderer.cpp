@@ -14,7 +14,7 @@ void Renderer::createDynamicCubeMaps(Scene& scene, const Camera& mainCamera) {
     for (size_t i{ 0 }; i < scene.getModels().size(); ++i) {
         Model& model = scene.getModel(i);
         if (model.mUsesDynamicEnvironment) {
-            DynamicCubeMap dynamicCubeMap = createDynamicCubeMap(model.mTransform.pos, scene, i, mainCamera);
+            DynamicCubeMap dynamicCubeMap = createDynamicCubeMap(model.mTransform.getPosition(), scene, i, mainCamera);
             if (model.mDynamicEnvironmentIndex == -1) {
                 mDynamicCubeMaps.push_back(std::move(dynamicCubeMap));
                 model.mDynamicEnvironmentIndex = mDynamicCubeMaps.size() - 1;
@@ -60,7 +60,7 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         }
         mMatrixUniformBuffer.setAllMatrices(mockCamera);
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
-        renderSkyBox(scene.getCubeMap().mTEX);
+        renderSkyBox(scene.getSkyBoxCubeMap().mTEX);
         cubeMap.setFace(mDynamicCubeMapTemporaryFramebuffer, i);
     }
     mMatrixUniformBuffer.setAllMatrices(mainCamera);
@@ -76,7 +76,7 @@ void Renderer::renderBorders(const Scene& scene) {
     mBorderShader.use();
     for (const Model& model : scene.getModels()) {
         if (model.mHasBorder) {
-            mBorderShader.setUniformModel(model.mModel);
+            mBorderShader.setUniformModel(model.mTransform.getModelMatrix());
             for (const Mesh& mesh : model.getMeshes()) {
                 glBindVertexArray(mesh.mVAO);
                 glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
@@ -87,7 +87,7 @@ void Renderer::renderBorders(const Scene& scene) {
 
     for (const Model& model : scene.getTransparentModels()) {
         if (model.mHasBorder) {
-            mBorderShader.setUniformModel(model.mModel);
+            mBorderShader.setUniformModel(model.mTransform.getModelMatrix());
             for (const Mesh& mesh : model.getMeshes()) {
                 glBindVertexArray(mesh.mVAO);
                 glDrawElements(GL_TRIANGLES, mesh.mVertexCount, GL_UNSIGNED_INT, 0);
@@ -119,7 +119,7 @@ void Renderer::renderEntireSceneLighting(const Camera& camera, const Scene& scen
             mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else{// if (!model.mUsesDynamicEnvironment){
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
+            mLightingShader.renderModel(model, scene.getSkyBoxCubeMap().mTEX);
         }
     }
 
@@ -137,7 +137,7 @@ void Renderer::renderEntireSceneLighting(const Camera& camera, const Scene& scen
             mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else if (!model.mUsesDynamicEnvironment) {
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
+            mLightingShader.renderModel(model, scene.getSkyBoxCubeMap().mTEX);
         }
     }
     glBindVertexArray(0);
@@ -151,15 +151,15 @@ void Renderer::renderLightSources(const Scene& scene) {
 
     for (const PointLight& pointLight : scene.getPointLights()) {
         glBindVertexArray(mCubeVAO);
-        mLightSourceShader.setUniformModel(pointLight.modelInfo.model);
-        mLightSourceShader.setUniformLightColor(pointLight.colors.diffuse);
-        glDrawArrays(GL_TRIANGLES, 0, pointLight.modelInfo.vertexCount);
+        mLightSourceShader.setUniformPosition(pointLight.mPosition);
+        mLightSourceShader.setUniformLightColor(pointLight.mColor);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
     }
     for (const SpotLight& spotLight : scene.getSpotLights()) {
         glBindVertexArray(mCubeVAO);
-        mLightSourceShader.setUniformModel(spotLight.modelInfo.model);
-        mLightSourceShader.setUniformLightColor(spotLight.colors.diffuse);
-        glDrawArrays(GL_TRIANGLES, 0, spotLight.modelInfo.vertexCount);
+        mLightSourceShader.setUniformPosition(spotLight.mPosition);
+        mLightSourceShader.setUniformLightColor(spotLight.mColor);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 }
 
@@ -179,7 +179,7 @@ void Renderer::renderEntireSceneGouraud(const Camera& camera, const Scene& scene
             mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else {// if (!model.mUsesDynamicEnvironment){
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
+            mLightingShader.renderModel(model, scene.getSkyBoxCubeMap().mTEX);
         }
     }
 
@@ -192,7 +192,7 @@ void Renderer::renderEntireSceneGouraud(const Camera& camera, const Scene& scene
             mLightingShader.renderModel(model, mDynamicCubeMaps[model.mDynamicEnvironmentIndex].mTEX);
         }
         else if (!model.mUsesDynamicEnvironment) {
-            mLightingShader.renderModel(model, scene.getCubeMap().mTEX);
+            mLightingShader.renderModel(model, scene.getSkyBoxCubeMap().mTEX);
         }
     }
     glBindVertexArray(0);
@@ -245,7 +245,7 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
     , mMatrixUniformBuffer{ 0 }
-    , mDynamicCubeMapTemporaryFramebuffer{ 64, 64 }
+    , mDynamicCubeMapTemporaryFramebuffer{ 1024, 1024 }
 {
     mLightingShader.use();
     //mLightingShader.setUniformDoExploding(true);
@@ -284,7 +284,7 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     glDisable(GL_STENCIL_TEST);
 
     renderLightSources(scene);
-    renderSkyBox(scene.getCubeMap().mTEX);
+    renderSkyBox(scene.getSkyBoxCubeMap().mTEX);
 
     //renderNormals(scene);
 }

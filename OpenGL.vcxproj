@@ -170,15 +170,32 @@
     <ClCompile Include="Headers\Shader Classes\skyboxshader.cpp" />
     <ClCompile Include="Headers\texture2dmanager.cpp" />
     <ClCompile Include="Headers\textureutils.cpp" />
+    <ClCompile Include="Headers\transform.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\border.frag" />
+    <None Include="shaders\border.vert" />
+    <None Include="shaders\geometry.frag" />
+    <None Include="shaders\geometry.geom" />
+    <None Include="shaders\geometry.vert" />
     <None Include="shaders\gouraud.frag" />
     <None Include="shaders\gouraud.vert" />
+    <None Include="shaders\instanced.frag" />
+    <None Include="shaders\instanced.vert" />
+    <None Include="shaders\lighting.frag" />
+    <None Include="shaders\lighting.geom" />
     <None Include="shaders\lightSource.frag" />
     <None Include="shaders\lightSource.vert" />
     <None Include="shaders\oldlighting.frag" />
     <None Include="shaders\lighting.vert" />
+    <None Include="shaders\screenquad.frag" />
+    <None Include="shaders\screenquad.vert" />
+    <None Include="shaders\shownormals.frag" />
+    <None Include="shaders\shownormals.geom" />
+    <None Include="shaders\shownormals.vert" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="images\container.png" />
@@ -206,6 +223,7 @@
     <ClInclude Include="Headers\texturedata.h" />
     <ClInclude Include="Headers\texture2dmanager.h" />
     <ClInclude Include="Headers\textureutils.h" />
+    <ClInclude Include="Headers\transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

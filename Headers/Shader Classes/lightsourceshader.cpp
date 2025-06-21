@@ -9,8 +9,8 @@
 #include "../spotLight.h"
 #include <glad/glad.h>
 
-void LightSourceShader::setUniformModel(const glm::mat4& model) const {
-	setMatrix4("model", model);
+void LightSourceShader::setUniformPosition(const glm::vec3& position) const {
+	setVector3("position", position);
 }
 void LightSourceShader::setUniformLightColor(const glm::vec3& lightColor) const {
 	setVector3("lightColor", lightColor);

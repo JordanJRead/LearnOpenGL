@@ -109,12 +109,6 @@ Model::Model(const std::string& path, const Transform& transform, bool usesDynam
 	, mHasBorder{ hasBorder }
 	, mUsesDynamicEnvironment{ usesDynamicEnvironment } {
 	loadModel(path);
-	mModel = glm::mat4(1.0);
-	mModel = glm::translate(mModel, transform.pos);
-	mModel = glm::rotate(mModel, transform.rotation.x, { 1, 0, 0 });
-	mModel = glm::rotate(mModel, transform.rotation.y, { 0, 1, 0 });
-	mModel = glm::rotate(mModel, transform.rotation.z, { 0, 0, 1 });
-	mModel = glm::scale(mModel, transform.scale);
 }
 
 const std::vector<Mesh>& Model::getMeshes() const { return mMeshes; }

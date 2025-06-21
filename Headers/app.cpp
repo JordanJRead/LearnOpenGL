@@ -10,8 +10,9 @@
 #include "camera.h"
 #include "scene.h"
 #include "structs.h"
-
 #include "stb_image.h"
+#include "transform.h"
+
 void App::processInput(GLFWwindow* window, Renderer& renderer) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
@@ -60,7 +61,6 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     , mScreenWidth{ screenWidth }
     , mScreenHeight{ screenHeight }
     , mCamera{ screenWidth, screenHeight, { 0, 0, 3 } }
-    //, mScene{ screenWidth, screenHeight, {"images/skybox/blue.png", "images/skybox/green.png", "images/skybox/white.png", "images/skybox/yellow.png", "images/skybox/red.png", "images/skybox/orange.png"} }
     , mScene{ screenWidth, screenHeight, {"images/skybox/space/px.png", "images/skybox/space/nx.png", "images/skybox/space/py.png", "images/skybox/space/ny.png", "images/skybox/space/pz.png", "images/skybox/space/nz.png"} }
     , mRenderer{ screenWidth, screenHeight, *this }
 {
@@ -133,12 +133,13 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     glClearColor(0.2, 0.2, 0.2, 1);
 
     using Direction = glm::vec3;
+    using Color = glm::vec3;
 
     mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
 
-    mScene.addSpotLight(MultiColors{ { 0, 0.2, 0 }, { 0, 0.7, 0 }, { 0, 0.3, 0 } }, Direction{ 0, -1, 0 }, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), cubeVertices, Transform{ {0, 7, 0}, {0.2, 0.2, 0.2}, {0, 0, 0} });
-
-    mScene.addPointLight(MultiColors{ { 0.2, 0.2, 0.2 }, { 1, 1, 1 }, { 1, 1, 1 } }, Attenuation{ 1, 0.1, 0.01 }, cubeVertices, Transform{ { 0, 3, 2 }, { 0.2, 0.2, 0.2 } });
+    mScene.addSpotLight(Color{ 0, 1, 0 }, Direction{0, -1, 0}, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), {0, 7, 0}, 0.2f);
+    // fixme
+    mScene.addPointLight(Color{ 1, 1, 1 }, Attenuation{ 1, 0.1, 0.01 }, { 0, 3, 2 }, 0.2f);
 
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
@@ -146,11 +147,11 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
 
     mScene.addModel("Objects/Room/room.obj", transform);
-    transform.pos += glm::vec3{ 0, 0, 7 };
+    transform.incrementPosition({ 0, 0, 7 });
     mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    transform.pos -= glm::vec3{ 0, 0, 1 };
+    transform.incrementPosition({ 0, 0, -1 });
     mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    transform.pos -= glm::vec3{ 0, 0, 1 };
+    transform.incrementPosition({ 0, 0, -1 });
     mScene.addTransparentModel("Objects/Window/window.obj", transform);
     transform = { {3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
     mScene.addModel("Objects/Backpack/backpack.obj", transform);

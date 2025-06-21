@@ -3,24 +3,22 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "structs.h"
-#include "modelinfo.h"
 
 class PointLight {
 public:
-	MultiColors colors{};
+	PointLight(const glm::vec3& color, const Attenuation& attentuation, const glm::vec3& position, float ambientScale = 0.2)
+		: mColor{ color }
+		, mPosition{ position }
+		, mAmbientScale{ ambientScale }
+		, mAttenuation{ attentuation }
+	{
+	}
 
-	Attenuation attenuation;
+	glm::vec3 mColor;
+	float mAmbientScale{ 0.2 };
 
-	ModelInfo modelInfo;
-
-	Transform transform;
-
-	PointLight(const MultiColors& _colors, const Attenuation& _attenuation, const std::vector<float>& vertices, const Transform& _transform)
-		: colors{ _colors }
-		, attenuation{ _attenuation }
-		, modelInfo{ vertices, _transform }
-		, transform{ _transform }
-	{}
+	glm::vec3 mPosition{};
+	Attenuation mAttenuation;
 };
 
 #endif
