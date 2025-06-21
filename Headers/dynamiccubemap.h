@@ -6,28 +6,16 @@
 #include "texturedata.h"
 #include <array>
 #include <cstddef>
+#include "standardframebuffer.h"
 
 class DynamicCubeMap {
 public:
 	TEX mTEX;
 
-	void setFace(const TEX& tex, int faceIndex) {
+	void setFace(const StandardFramebuffer& framebuffer, int faceIndex) {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mTEX);
-		glBindTexture(GL_TEXTURE_2D, tex);
-
-		int imageWidth;
-		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &imageWidth);
-
-		int imageHeight;
-		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &imageHeight);
-
-		unsigned int byteCount{ static_cast<unsigned int>(imageWidth) * static_cast<unsigned int>(imageHeight) * 4 * sizeof(GLubyte) };
-		GLubyte* imageData{ new GLubyte[byteCount]{} };
-		glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + faceIndex, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-
-		delete[] imageData;
+		std::vector<GLubyte> imageData{ framebuffer.getImageData() };
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + faceIndex, 0, GL_RGBA, framebuffer.getImageWidth(), framebuffer.getImageHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &(imageData[0]));
 	}
 
 	DynamicCubeMap() {

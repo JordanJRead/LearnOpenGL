@@ -163,6 +163,8 @@
     <ClCompile Include="Headers\Shader Classes\lightsourceshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\screenquadshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\shader.cpp" />
+    <ClCompile Include="Headers\standardframebuffer.cpp" />
+    <ClCompile Include="Headers\standardframebuffer.h" />
     <ClCompile Include="Headers\texture2d.cpp" />
     <ClCompile Include="Headers\texture2d.h" />
     <ClCompile Include="Headers\Shader Classes\skyboxshader.cpp" />

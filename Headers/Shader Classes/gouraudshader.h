@@ -13,10 +13,12 @@
 class DirLight;
 
 class GouraudShader : public Shader {
-	friend class Renderer;
-protected:
+public:
+	GouraudShader(std::string_view vertPath, std::string_view fragPath);
 	void setPerFrameUniforms(const Camera& camera, const Scene& scene) const;
+	void renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures2D& defaultTextures);
 
+protected:
 	void setUniformModel(const glm::mat4& model) const;
 
 	void setUniformViewPos(const glm::vec3& viewPos) const;
@@ -33,11 +35,6 @@ protected:
 	void setUniformMaxSpotLights(int count) const;
 
 	void setTexture(unsigned int textureIndex, TextureUtils::Type type);
-
-	void renderModel(const Model& model, const TEX& environmentCubeMapTex, const TextureUtils::DefaultTextures2D& defaultTextures);
-
-public:
-	GouraudShader(std::string_view vertPath, std::string_view fragPath);
 };
 
 #endif

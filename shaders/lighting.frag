@@ -89,7 +89,6 @@ void main() {
 	vec3 finalColor = reflectColor * reflectMapSample + resultColor * (1 - reflectMapSample);
 
 	FragColor = vec4(finalColor, texture(material.diffuseMap, frag_in.texCoords).w);
-	//FragColor = vec4(refractColor, texture(material.diffuseMap, fragTexCoords).w);
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor) {

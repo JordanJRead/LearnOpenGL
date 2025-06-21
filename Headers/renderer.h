@@ -36,9 +36,7 @@ public:
 private:
     MatrixUniformBuffer mMatrixUniformBuffer;
 
-    FBO mDynamicCubeMapFBO;
-    TEX mDynamicCubeMapColorTex;
-    RBO mDynamicCubeMapDepthStencilRBO;
+    StandardFramebuffer mDynamicCubeMapTemporaryFramebuffer;
 
     CubeMap mBlackCubeMap;
 
@@ -77,5 +75,4 @@ private:
 
     void initCubeVertices();
     void initScreenQuad();
-    void initDynamicEnvironment();
 };

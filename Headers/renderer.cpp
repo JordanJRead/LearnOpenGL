@@ -32,9 +32,9 @@ void Renderer::createDynamicCubeMaps(Scene& scene, const Camera& mainCamera) {
 DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera) {
     DynamicCubeMap cubeMap;
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMap.mTEX);
-    glBindFramebuffer(GL_FRAMEBUFFER, mDynamicCubeMapFBO); // also render the skybox in this function too
-    Camera mockCamera{ 1024, 1024, pos, 90, 0, 0 }; //fixme todo set in the matrix buffer
-    glViewport(0, 0, 1024, 1024);
+    mDynamicCubeMapTemporaryFramebuffer.use();
+    Camera mockCamera{ mDynamicCubeMapTemporaryFramebuffer.getImageWidth(), mDynamicCubeMapTemporaryFramebuffer.getImageHeight(), pos, 90, 0, 0}; //fixme todo set in the matrix buffer
+    glViewport(0, 0, mDynamicCubeMapTemporaryFramebuffer.getImageWidth(), mDynamicCubeMapTemporaryFramebuffer.getImageHeight());
     mockCamera.setUp({ 0, -1, 0 }); // not sure why
     for (int i{ 0 }; i < 6; ++i) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -61,7 +61,7 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         mMatrixUniformBuffer.setAllMatrices(mockCamera);
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
         renderSkyBox(scene.getCubeMap().mTEX);
-        cubeMap.setFace(mDynamicCubeMapColorTex, i);
+        cubeMap.setFace(mDynamicCubeMapTemporaryFramebuffer, i);
     }
     mMatrixUniformBuffer.setAllMatrices(mainCamera);
     glViewport(0, 0, 800, 600); // todo
@@ -245,12 +245,12 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
     , mMatrixUniformBuffer{ 0 }
+    , mDynamicCubeMapTemporaryFramebuffer{ 64, 64 }
 {
     mLightingShader.use();
     //mLightingShader.setUniformDoExploding(true);
     initCubeVertices();
     initScreenQuad();
-    initDynamicEnvironment();
     mRearViewMatrix = glm::mat4(1);
     mRearViewMatrix = glm::translate(mRearViewMatrix, { 0, 0.8, 0 });
     mRearViewMatrix = glm::scale(mRearViewMatrix, { 0.2, 0.2, 1 });
