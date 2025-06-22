@@ -5,31 +5,6 @@
 #include "../LIBRARIES/Include/glm/glm.hpp"
 
 class Camera {
-
-private:
-    bool mIsFirstMouse{ true };
-    float mPrevMouseX{ 0 };
-    float mPrevMouseY{ 0 };
-    float mYaw{ -90 };
-    float mPitch{ 0 };
-    float mSensitivity{ 0.1 };
-
-    int mScreenWidth{};
-    int mScreenHeight{};
-    float mFov{ 45 };
-
-    glm::vec3 mForward{};
-    glm::vec3 mPos{};
-    glm::vec3 mUp{ 0, 1, 0 };
-    glm::mat4 mProjection{};
-    glm::mat4 mView{};
-    float mSpeed{ 2.5 };
-
-private:
-    void calcProjection();
-    void calcView();
-    void calcFroward();
-
 public:
     Camera(int width, int height, const glm::vec3& pos = { 0, 0, 0 }, float fov = 45, float yaw = -90, float pitch = 0);
     void mouseCallback(GLFWwindow* window, double xPos, double yPos);
@@ -54,6 +29,30 @@ public:
 
     void setPitch(float pitch);
     void setYaw(float yaw);
+
+private:
+    bool mIsFirstMouse{ true };
+    float mPrevMouseX{ 0 };
+    float mPrevMouseY{ 0 };
+    float mYaw{ -90 };
+    float mPitch{ 0 };
+    float mSensitivity{ 0.1 };
+
+    int mScreenWidth{};
+    int mScreenHeight{};
+    float mFov{ 45 };
+
+    glm::vec3 mForward{};
+    glm::vec3 mPos{};
+    glm::vec3 mUp{ 0, 1, 0 };
+    glm::mat4 mProjection{};
+    glm::mat4 mView{};
+    float mSpeed{ 2.5 };
+
+private:
+    void calcProjection();
+    void calcView();
+    void calcFroward();
 };
 
 #endif

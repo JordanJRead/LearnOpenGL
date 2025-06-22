@@ -162,7 +162,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
     mRenderer.createDynamicCubeMaps(mScene, mCamera);
-    mRenderer.createDynamicCubeMaps(mScene, mCamera);
+    //mRenderer.createDynamicCubeMaps(mScene, mCamera);
 }
 
 void App::runFrame() {

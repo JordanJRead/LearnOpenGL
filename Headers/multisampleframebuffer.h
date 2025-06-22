@@ -1,5 +1,5 @@
-#ifndef STANDARD_FRAMEBUFFER_H
-#define STANDARD_FRAMEBUFFER_H
+#ifndef MULTISAMPLE_FRAMEBUFFER_H
+#define MULTISAMPLE_FRAMEBUFFER_H
 
 #include <glad/glad.h>
 #include "OpenGL Wrappers/FBO.h"
@@ -7,16 +7,17 @@
 #include "OpenGL Wrappers/RBO.h"
 #include <vector>
 #include "framebuffer.h"
+#include "standardframebuffer.h"
 
 // A framebuffer that has a color texture and depth/stencil rbo
-class StandardFramebuffer : public Framebuffer {
+class MultisampleFramebuffer : public Framebuffer {
 public:
-	StandardFramebuffer(int width, int height);
+	MultisampleFramebuffer(int width, int height);
 	std::vector<GLubyte> getImageData() const;
-	TEX getColorTexture() const;
 
 private:
-	TEX mColorTEX;
+	StandardFramebuffer mIntermediateFramebuffer;
+	TEX mMultisampleColorTex;
 	RBO mDepthStencilRBO;
 };
 

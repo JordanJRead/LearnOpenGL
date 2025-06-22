@@ -19,6 +19,7 @@
 #include <array>
 #include "cubemap.h"
 #include "matrixuniformbuffer.h"
+#include "multisampleframebuffer.h"
 
 class App;
 class Model;
@@ -36,7 +37,8 @@ public:
 private:
     MatrixUniformBuffer mMatrixUniformBuffer;
 
-    StandardFramebuffer mDynamicCubeMapTemporaryFramebuffer;
+    MultisampleFramebuffer mDynamicCubeMapTemporaryFramebuffer;
+    //StandardFramebuffer mDynamicCubeMapTemporaryFramebuffer;
 
     CubeMap mBlackCubeMap;
 

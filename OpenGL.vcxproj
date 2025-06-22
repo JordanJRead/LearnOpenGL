@@ -152,6 +152,7 @@
     <ClCompile Include="Headers\app.cpp" />
     <ClCompile Include="Headers\camera.cpp" />
     <ClCompile Include="Headers\matrixuniformbuffer.h" />
+    <ClCompile Include="Headers\multisampleframebuffer.cpp" />
     <ClCompile Include="Headers\renderer.cpp" />
     <ClCompile Include="Headers\rendererinit.cpp" />
     <ClCompile Include="Headers\Shader Classes\bordershader.cpp" />
@@ -207,6 +208,8 @@
     <ClInclude Include="Headers\app.h" />
     <ClInclude Include="Headers\cubemap.h" />
     <ClInclude Include="Headers\dynamiccubemap.h" />
+    <ClInclude Include="Headers\framebuffer.h" />
+    <ClInclude Include="Headers\multisampleframebuffer.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\EBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\FBO.h" />
     <ClInclude Include="Headers\OpenGL Wrappers\RBO.h" />

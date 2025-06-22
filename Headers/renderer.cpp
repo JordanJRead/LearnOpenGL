@@ -59,6 +59,7 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
             mockCamera.setYaw(-90);
         }
         mMatrixUniformBuffer.setAllMatrices(mockCamera);
+
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
         renderSkyBox(scene.getSkyBoxCubeMap().mTEX);
         cubeMap.setFace(mDynamicCubeMapTemporaryFramebuffer, i);
@@ -245,7 +246,7 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
     , mMatrixUniformBuffer{ 0 }
-    , mDynamicCubeMapTemporaryFramebuffer{ 1024, 1024 }
+    , mDynamicCubeMapTemporaryFramebuffer{ 128, 128 }
 {
     mLightingShader.use();
     //mLightingShader.setUniformDoExploding(true);
