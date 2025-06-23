@@ -3,7 +3,7 @@
 #include <string>
 #include "OpenGL Wrappers/TEX.h"
 #include <cassert>
-#include "texturedata.h"
+#include "imagedata.h"
 #include <array>
 #include <cstddef>
 #include "framebuffer.h"

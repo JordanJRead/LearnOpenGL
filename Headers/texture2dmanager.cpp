@@ -11,7 +11,7 @@
 int Texture2DManager::loadTexture(const std::string& fileName, bool srgba) {
 	std::string path{ "images/" + fileName };
 	for (int i = 0; i < mTextures.size(); ++i) {
-		if (mTextures[i].mPath == path) {
+		if (mTextures[i].mPath == path && srgba == mTextures[i].mSRGBA) {
 			return i;
 		}
 	}

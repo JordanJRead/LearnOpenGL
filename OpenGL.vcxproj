@@ -165,6 +165,7 @@
     <ClCompile Include="Headers\Shader Classes\lightsourceshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\screenquadshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\shader.cpp" />
+    <ClCompile Include="Headers\shadowframebuffer.cpp" />
     <ClCompile Include="Headers\standardframebuffer.cpp" />
     <ClCompile Include="Headers\standardframebuffer.h" />
     <ClCompile Include="Headers\texture2d.cpp" />
@@ -219,12 +220,15 @@
     <ClInclude Include="Headers\OpenGL Wrappers\BUF.h" />
     <ClInclude Include="Headers\renderer.h" />
     <ClInclude Include="Headers\Shader Classes\bordershader.h" />
+    <ClInclude Include="Headers\Shader Classes\depthshader.h" />
     <ClInclude Include="Headers\Shader Classes\gouraudshader.h" />
     <ClInclude Include="Headers\Shader Classes\instancedshader.h" />
     <ClInclude Include="Headers\Shader Classes\screenquadshader.h" />
     <ClInclude Include="Headers\Shader Classes\shownormalsshader.h" />
     <ClInclude Include="Headers\Shader Classes\skyboxshader.h" />
-    <ClInclude Include="Headers\texturedata.h" />
+    <ClInclude Include="Headers\imagedata.h" />
+    <ClInclude Include="Headers\shadowcaster.h" />
+    <ClInclude Include="Headers\shadowframebuffer.h" />
     <ClInclude Include="Headers\texture2dmanager.h" />
     <ClInclude Include="Headers\textureutils.h" />
     <ClInclude Include="Headers\transform.h" />

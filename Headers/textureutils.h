@@ -6,7 +6,7 @@
 #include "vector"
 
 class TEX;
-class TextureData;
+class ImageData;
 
 namespace TextureUtils {
 

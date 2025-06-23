@@ -1,8 +1,10 @@
-#pragma once
+#ifndef IMAGEDATA_H
+#define IMAGEDATA_H
+
 #include "stb_image.h"
 #include <string>
 
-class TextureData {
+class ImageData {
 private:
 	unsigned char* mData;
 	int mWidth;
@@ -15,13 +17,13 @@ public:
 	int getHeight() const { return mHeight; }
 	int getChannelCount() const { return mChannelCount; }
 
-	TextureData(const std::string& imagePath) {
+	ImageData(const std::string& imagePath) {
 		stbi_set_flip_vertically_on_load(true);
 		mData = stbi_load(imagePath.data(), &mWidth, &mHeight, &mChannelCount, 0);
 	}
 	
 	// Move ctor
-	TextureData(TextureData&& other) noexcept {
+	ImageData(ImageData&& other) noexcept {
 		mData = other.mData;
 		other.mData = nullptr;
 
@@ -31,15 +33,17 @@ public:
 	}
 
 	// Copy ctor
-	TextureData(const TextureData& other) = delete;
+	ImageData(const ImageData& other) = delete;
 
 	// Copy assign
-	TextureData& operator=(const TextureData& other) = delete;
+	ImageData& operator=(const ImageData& other) = delete;
 
 	// Move assign
-	TextureData& operator=(TextureData&& other) = delete;
+	ImageData& operator=(ImageData&& other) = delete;
 
-	~TextureData() {
+	~ImageData() {
 		stbi_image_free(mData);
 	}
 };
+
+#endif

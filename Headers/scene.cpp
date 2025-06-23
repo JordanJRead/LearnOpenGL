@@ -12,7 +12,7 @@
 
 
 Scene::Scene(int screenWidth, int screenHeight, const std::vector<std::string>& skyBoxFilePaths)
-	: mSkyBoxCubeMap{ skyBoxFilePaths }
+	: mSkyBoxCubeMap{ skyBoxFilePaths, true }
 	, mInstancedModel{ "Objects/Cube/cube.obj", {} }
 {
 }

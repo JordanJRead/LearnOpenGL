@@ -9,6 +9,7 @@ class Texture2D {
 public:
 	std::string mPath;
 	TEX mTex;
+	bool mSRGBA;
 
 	Texture2D(const std::string& path, bool srgba = false);
 };

@@ -21,6 +21,7 @@
 #include "matrixuniformbuffer.h"
 #include "multisampleframebuffer.h"
 #include "Shader Classes/gammashader.h"
+#include "Shader Classes/depthshader.h"
 
 class App;
 class Model;
@@ -58,6 +59,7 @@ private:
     GouraudShader mGouraudShader;
     InstancedShader mInstancedShader;
     ShowNormalsShader mShowNormalsShader{ "shaders/shownormals.vert", "shaders/shownormals.geom", "shaders/shownormals.frag" };
+    DepthShader mDepthShader{ "shaders/depth.vert", "shaders/depth.frag" };
     GammaCorrectionShader mGammaCorrectionShader;
 
     DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera);

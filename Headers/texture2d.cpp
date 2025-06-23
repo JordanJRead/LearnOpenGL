@@ -8,5 +8,6 @@
 
 Texture2D::Texture2D(const std::string& path, bool srgba)
 	: mPath{ path }
-	, mTex{ TextureUtils::texture2DFromFile(path, srgba) } {
-}
+	, mTex{ TextureUtils::texture2DFromFile(path, srgba) }
+	, mSRGBA{ srgba }
+{ }

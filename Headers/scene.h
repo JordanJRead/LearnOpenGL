@@ -11,6 +11,7 @@
 #include "OpenGL Wrappers/FBO.h"
 #include "OpenGL Wrappers/RBO.h"
 #include "cubemap.h"
+#include "shadowcaster.h"
 
 class DirLight;
 class MultiColors;
@@ -47,6 +48,7 @@ public:
 	}
 
 	void sortTransparent(const glm::vec3& cameraPos);
+	const ShadowCaster& getShadowCaster() const { return mShadowCaster; }
 
 private:
 	std::vector<Model> mModels{};
@@ -56,6 +58,7 @@ private:
 	Model mInstancedModel;
 	DirLight mDirLight{};
 	CubeMap mSkyBoxCubeMap;
+	ShadowCaster mShadowCaster{ 1024, 1024, {0.1, 10, 0} };
 };
 
 #endif

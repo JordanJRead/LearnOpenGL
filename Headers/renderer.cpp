@@ -269,12 +269,30 @@ void Renderer::renderNormals(const Scene& scene) {
 
 extern Texture2DManager* gTexture2DManager;
 void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBorders) {
+
+    //glClear(GL_DEPTH_BUFFER_BIT);
+    //glEnable(GL_DEPTH);
+    //glViewport(0, 0, 1024, 1024);
+    //const ShadowCaster& shadowCaster{ scene.getShadowCaster() };
+    //mMatrixUniformBuffer.setViewMatrix(shadowCaster.getViewMatrix());
+    //mMatrixUniformBuffer.setProjectionMatrix(shadowCaster.getProjectionMatrix());
+    //mDepthShader.use();
+    //shadowCaster.useFramebuffer();
+    //for (const Model& model : scene.getModels()) {
+    //    mDepthShader.RenderModel(model);
+    //}
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glViewport(0, 0, 800, 600);
+    //renderScreenQuad(shadowCaster.getDepthTexture());
+    //return;
+
+
     mMatrixUniformBuffer.setViewMatrix(camera.getView());
     mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
 
     glBindFramebuffer(GL_FRAMEBUFFER, mMainFramebuffer);
     glStencilMask(0xFF);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glClea  r(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
