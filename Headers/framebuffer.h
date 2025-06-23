@@ -11,9 +11,14 @@ class Framebuffer {
 public:
 	Framebuffer(int width, int height) : mWidth{ width }, mHeight{ height } {}
 	virtual std::vector<GLubyte> getImageData() const = 0;
+	virtual const TEX& getColorTex() const = 0;
 	virtual int getImageWidth() const { return mWidth; }
 	virtual int getImageHeight() const { return mHeight; }
 	virtual void use(int framebufferTarget = GL_FRAMEBUFFER) const { glBindFramebuffer(framebufferTarget, mFBO); }
+
+	operator unsigned int() {
+		return mFBO;
+	}
 
 protected:
 	FBO mFBO;

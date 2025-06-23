@@ -13,7 +13,7 @@ private:
 	TextureUtils::DefaultTextures2D mDefaultTextures;
 
 public:
-	int loadTexture(const std::string& path);
+	int loadTexture(const std::string& path, bool srgba);
 	const TEX& getTexture(int i, TextureUtils::Type type) const;
 };
 

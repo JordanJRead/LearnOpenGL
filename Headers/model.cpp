@@ -99,7 +99,7 @@ std::vector<int> Model::loadMaterialTextureIndices(aiMaterial* mat, aiTextureTyp
 		aiString texturePath;
 		mat->GetTexture(type, i, &texturePath);
 		std::filesystem::path filePath{ texturePath.C_Str() };
-		textureIndices.push_back(gTexture2DManager->loadTexture(filePath.filename().string()));
+		textureIndices.push_back(gTexture2DManager->loadTexture(filePath.filename().string(), type == aiTextureType::aiTextureType_DIFFUSE));
 	}
 	return textureIndices;
 }

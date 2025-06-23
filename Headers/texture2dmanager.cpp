@@ -8,14 +8,14 @@
 /// <summary>
 /// Takes in a file name and returns the index of that loaded texture
 /// </summary>
-int Texture2DManager::loadTexture(const std::string& fileName) {
+int Texture2DManager::loadTexture(const std::string& fileName, bool srgba) {
 	std::string path{ "images/" + fileName };
 	for (int i = 0; i < mTextures.size(); ++i) {
 		if (mTextures[i].mPath == path) {
 			return i;
 		}
 	}
-	mTextures.emplace_back(path); //todo what if path is wrong?
+	mTextures.emplace_back(path, srgba); //todo what if path is wrong?
 	return mTextures.size() - 1;
 }
 const TEX& Texture2DManager::getTexture(int i, TextureUtils::Type type) const {

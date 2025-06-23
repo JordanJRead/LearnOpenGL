@@ -135,30 +135,32 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     using Direction = glm::vec3;
     using Color = glm::vec3;
 
-    mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
+    //mScene.setDirLight(DirLight{ Direction {0, -1, 0}, MultiColors {{0.2, 0.2, 0.2}, {1, 1, 1}, {0.5, 0.5, 0.5}} });
 
-    mScene.addSpotLight(Color{ 0, 1, 0 }, Direction{0, -1, 0}, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), {0, 7, 0}, 0.2f);
-    // fixme
-    mScene.addPointLight(Color{ 1, 1, 1 }, Attenuation{ 1, 0.1, 0.01 }, { 0, 3, 2 }, 0.2f);
+    //mScene.addSpotLight(Color{ 0, 1, 0 }, Direction{0, -1, 0}, cos(glm::radians(0.0f)), cos(glm::radians(17.0f)), {0, 7, 0}, 0.2f);
+    
+    mScene.addPointLight(Color{ 1, 1, 1 }, Attenuation{ 1, 0.1, 0.01 }, { 0, 3, 0 }, 0.2f);
 
     // Delta time and rendering loop
     float currentFrame = glfwGetTime();
     float lastFrame = currentFrame;
     Transform transform = { {0, 0, 0}, {1, 1, 1}, {0, 0, 0} };
 
-    mScene.addModel("Objects/Room/room.obj", transform);
-    transform.incrementPosition({ 0, 0, 7 });
-    mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    transform.incrementPosition({ 0, 0, -1 });
-    mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    transform.incrementPosition({ 0, 0, -1 });
-    mScene.addTransparentModel("Objects/Window/window.obj", transform);
-    transform = { {3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/Backpack/backpack.obj", transform);
-    transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
-    transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
-    mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
+    //mScene.addModel("Objects/Room/room.obj", transform);
+    //transform.incrementPosition({ 0, 0, 7 });
+    //mScene.addTransparentModel("Objects/Window/window.obj", transform);
+    //transform.incrementPosition({ 0, 0, -1 });
+    //mScene.addTransparentModel("Objects/Window/window.obj", transform);
+    //transform.incrementPosition({ 0, 0, -1 });
+    //mScene.addTransparentModel("Objects/Window/window.obj", transform);
+    //transform = { {3, 3, -3 }, {1, 1, 1}, {0, 0, 0} };
+    //mScene.addModel("Objects/Backpack/backpack.obj", transform);
+    //transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
+    //mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
+    //transform = { { 0, 3, 0 }, {1, 1, 1}, {0, 0, 0} };
+    //mScene.addModel("Objects/Sphere/sphere.obj", transform, true);
+
+    mScene.addModel("Objects/Floor/Floor.obj", {});
 
     transform = { {0, 0, -5}, {2, 2, 2}, {0, 0, 0} };
     mRenderer.createDynamicCubeMaps(mScene, mCamera);
@@ -169,7 +171,7 @@ void App::runFrame() {
     mScene.sortTransparent(mCamera.getPos());
 
     glfwSwapInterval(0); // show true fps
-    std::cout << 1.0f / mDeltaTime << "\n";
+    //std::cout << 1.0f / mDeltaTime << "\n";
 
     mCurrentFrame = glfwGetTime();
     mDeltaTime = mCurrentFrame - mLastFrame;

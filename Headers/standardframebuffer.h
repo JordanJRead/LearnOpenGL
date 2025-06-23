@@ -13,7 +13,7 @@ class StandardFramebuffer : public Framebuffer {
 public:
 	StandardFramebuffer(int width, int height);
 	std::vector<GLubyte> getImageData() const;
-	TEX getColorTexture() const;
+	const TEX& getColorTex() const;
 
 private:
 	TEX mColorTEX;

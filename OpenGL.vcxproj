@@ -156,6 +156,7 @@
     <ClCompile Include="Headers\renderer.cpp" />
     <ClCompile Include="Headers\rendererinit.cpp" />
     <ClCompile Include="Headers\Shader Classes\bordershader.cpp" />
+    <ClCompile Include="Headers\Shader Classes\gammashader.h" />
     <ClCompile Include="Headers\Shader Classes\gouraudshader.cpp" />
     <ClCompile Include="Headers\Shader Classes\lightingshader.cpp" />
     <ClCompile Include="Headers\mesh.cpp" />

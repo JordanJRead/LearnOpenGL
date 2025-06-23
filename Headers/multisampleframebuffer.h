@@ -14,6 +14,7 @@ class MultisampleFramebuffer : public Framebuffer {
 public:
 	MultisampleFramebuffer(int width, int height);
 	std::vector<GLubyte> getImageData() const;
+	const TEX& getColorTex() const;
 
 private:
 	StandardFramebuffer mIntermediateFramebuffer;

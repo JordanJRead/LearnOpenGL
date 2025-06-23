@@ -9,10 +9,10 @@ ScreenQuadShader::ScreenQuadShader(const std::string& vertPath, const std::strin
 	setInt("screenTex", 0);
 }
 
-void ScreenQuadShader::setUniformModel(const glm::mat4& model) {
+void ScreenQuadShader::setUniformModel(const glm::mat4& model) const {
 	setMatrix4("model", model);
 }
-void ScreenQuadShader::setUniformOffset(float offset) {
+void ScreenQuadShader::setUniformOffset(float offset) const {
 	setFloat("offset", offset);
 }
 

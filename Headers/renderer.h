@@ -20,6 +20,7 @@
 #include "cubemap.h"
 #include "matrixuniformbuffer.h"
 #include "multisampleframebuffer.h"
+#include "Shader Classes/gammashader.h"
 
 class App;
 class Model;
@@ -35,13 +36,10 @@ public:
     void renderNormals(const Scene& scene);
 
 private:
+    MultisampleFramebuffer mMainFramebuffer;
     MatrixUniformBuffer mMatrixUniformBuffer;
 
     MultisampleFramebuffer mDynamicCubeMapTemporaryFramebuffer;
-    //StandardFramebuffer mDynamicCubeMapTemporaryFramebuffer;
-
-    CubeMap mBlackCubeMap;
-
     std::vector<DynamicCubeMap> mDynamicCubeMaps;
 
     VAO mCubeVAO;
@@ -60,19 +58,15 @@ private:
     GouraudShader mGouraudShader;
     InstancedShader mInstancedShader;
     ShowNormalsShader mShowNormalsShader{ "shaders/shownormals.vert", "shaders/shownormals.geom", "shaders/shownormals.frag" };
+    GammaCorrectionShader mGammaCorrectionShader;
 
     DynamicCubeMap createDynamicCubeMap(const glm::vec3& pos, const Scene& scene, int modelIndex, const Camera& mainCamera);
 
     void renderEntireSceneLighting(const Camera& camera, const Scene& scene, bool drawBorders, int ignoreModelIndex);
-
     void renderEntireSceneGouraud(const Camera& camera, const Scene& scene);
-
     void renderLightSources(const Scene& scene);
-
     void renderSkyBox(unsigned int skyBoxTexID);
-
     void renderScreenQuad(unsigned int texID, bool quadAtTopOfScreen);
-
     void renderBorders(const Scene& scene);
 
     void initCubeVertices();

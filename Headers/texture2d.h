@@ -10,7 +10,7 @@ public:
 	std::string mPath;
 	TEX mTex;
 
-	Texture2D(const std::string& path);
+	Texture2D(const std::string& path, bool srgba = false);
 };
 
 #endif

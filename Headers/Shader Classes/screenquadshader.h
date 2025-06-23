@@ -13,7 +13,7 @@ private:
 
 public:
 	ScreenQuadShader(const std::string& vertPath, const std::string& fragPath);
-	void setUniformModel(const glm::mat4& model);
-	void setUniformOffset(float offset);
+	void setUniformModel(const glm::mat4& model) const;
+	void setUniformOffset(float offset) const;
 	void startEffect();
 };

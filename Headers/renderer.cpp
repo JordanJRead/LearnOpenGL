@@ -2,6 +2,8 @@
 #include "app.h"
 #include "OpenGL Wrappers/VAO.h";
 #include "OpenGL Wrappers/BUF.h";
+#include "Shader Classes/gammashader.h"
+#include "texture2dmanager.h"
 
 void Renderer::startBlurEffect() {
     mScreenQuadShader.startEffect();
@@ -66,7 +68,7 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
     }
     mMatrixUniformBuffer.setAllMatrices(mainCamera);
     glViewport(0, 0, 800, 600); // todo
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, mMainFramebuffer);
     return cubeMap;
 }
 
@@ -242,11 +244,12 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mBorderShader{ "shaders/border.vert", "shaders/border.frag" }
     , mScreenQuadShader{ "shaders/screenquad.vert", "shaders/screenquad.frag" }
     , mSkyBoxShader{ "shaders/skybox.vert", "shaders/skybox.frag" }
-    , mBlackCubeMap{ {"images/black.png", "images/black.png", "images/black.png", "images/black.png", "images/black.png", "images/black.png"}}
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
     , mMatrixUniformBuffer{ 0 }
     , mDynamicCubeMapTemporaryFramebuffer{ 128, 128 }
+    , mMainFramebuffer{ screenWidth, screenHeight }
+    , mGammaCorrectionShader{ "shaders/gamma.vert", "shaders/gamma.frag", mScreenQuadVAO }
 {
     mLightingShader.use();
     //mLightingShader.setUniformDoExploding(true);
@@ -264,11 +267,12 @@ void Renderer::renderNormals(const Scene& scene) {
     }
 }
 
+extern Texture2DManager* gTexture2DManager;
 void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBorders) {
     mMatrixUniformBuffer.setViewMatrix(camera.getView());
     mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, mMainFramebuffer);
     glStencilMask(0xFF);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -287,20 +291,31 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     renderLightSources(scene);
     renderSkyBox(scene.getSkyBoxCubeMap().mTEX);
 
-    //renderNormals(scene);
+    // Works
+    std::vector<GLubyte> data{ mMainFramebuffer.getImageData() };
+
+
+    const TEX& mainRenderTex{ mMainFramebuffer.getColorTex() };
+    glBindTexture(GL_TEXTURE_2D, mainRenderTex);
+    unsigned int byteCount{ static_cast<unsigned int>(800) * static_cast<unsigned int>(600) * 4 * sizeof(GLubyte) };
+    std::vector<GLubyte> imageData(byteCount);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, &(imageData[0])); // Doesn't work
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    mGammaCorrectionShader.Correct(mainRenderTex);
+    //renderScreenQuad(gTexture2DManager->getTexture(-1, TextureUtils::Type::diffuse));
+    //renderScreenQuad(mainRenderTex);
 }
 
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
     mMatrixUniformBuffer.setViewMatrix(camera.getView());
     mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     mInstancedShader.use();
     mInstancedShader.renderModel(300, scene.getInstancedModel());
 }
 
 void Renderer::renderGeometry() {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     static float points[] = {

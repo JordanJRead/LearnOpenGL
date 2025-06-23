@@ -28,3 +28,10 @@ std::vector<GLubyte> MultisampleFramebuffer::getImageData() const {
 	this->use();
 	return mIntermediateFramebuffer.getImageData();
 }
+
+const TEX& MultisampleFramebuffer::getColorTex() const {
+	this->use(GL_READ_FRAMEBUFFER);
+	mIntermediateFramebuffer.use(GL_DRAW_FRAMEBUFFER);
+	glBlitFramebuffer(0, 0, mWidth, mHeight, 0, 0, mIntermediateFramebuffer.getImageWidth(), mIntermediateFramebuffer.getImageHeight(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+	return mIntermediateFramebuffer.getColorTex();
+}
