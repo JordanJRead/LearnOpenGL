@@ -60,13 +60,13 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         else if (i == 5) {
             mockCamera.setYaw(-90);
         }
-        mMatrixUniformBuffer.setAllMatrices(mockCamera);
+        mCameraMatrixUniformBuffer.setAllMatrices(mockCamera);
 
         renderEntireSceneLighting(mockCamera, scene, true, modelIndex);
         renderSkyBox(scene.getSkyBoxCubeMap().mTEX);
         cubeMap.setFace(mDynamicCubeMapTemporaryFramebuffer, i);
     }
-    mMatrixUniformBuffer.setAllMatrices(mainCamera);
+    mCameraMatrixUniformBuffer.setAllMatrices(mainCamera);
     glViewport(0, 0, 800, 600); // todo
     glBindFramebuffer(GL_FRAMEBUFFER, mMainFramebuffer);
     return cubeMap;
@@ -246,7 +246,8 @@ Renderer::Renderer(int screenWidth, int screenHeight, App& app)
     , mSkyBoxShader{ "shaders/skybox.vert", "shaders/skybox.frag" }
     , mGouraudShader{ "shaders/gouraud.vert", "shaders/gouraud.frag" }
     , mInstancedShader{ "shaders/instanced.vert", "shaders/instanced.frag "}
-    , mMatrixUniformBuffer{ 0 }
+    , mCameraMatrixUniformBuffer{ 0 }
+    , mShadowMatrixUniformBuffer{ 1 }
     , mDynamicCubeMapTemporaryFramebuffer{ 128, 128 }
     , mMainFramebuffer{ screenWidth, screenHeight }
     , mGammaCorrectionShader{ "shaders/gamma.vert", "shaders/gamma.frag", mScreenQuadVAO }
@@ -270,29 +271,29 @@ void Renderer::renderNormals(const Scene& scene) {
 extern Texture2DManager* gTexture2DManager;
 void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBorders) {
 
-    //glClear(GL_DEPTH_BUFFER_BIT);
-    //glEnable(GL_DEPTH);
-    //glViewport(0, 0, 1024, 1024);
-    //const ShadowCaster& shadowCaster{ scene.getShadowCaster() };
-    //mMatrixUniformBuffer.setViewMatrix(shadowCaster.getViewMatrix());
-    //mMatrixUniformBuffer.setProjectionMatrix(shadowCaster.getProjectionMatrix());
-    //mDepthShader.use();
-    //shadowCaster.useFramebuffer();
-    //for (const Model& model : scene.getModels()) {
-    //    mDepthShader.RenderModel(model);
-    //}
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //glViewport(0, 0, 800, 600);
-    //renderScreenQuad(shadowCaster.getDepthTexture());
-    //return;
+    // Fill shadow map
+    const ShadowCaster& shadowCaster{ scene.getShadowCaster() };
+    shadowCaster.useFramebuffer();
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH);
+    glViewport(0, 0, 1024, 1024);
+    mShadowMatrixUniformBuffer.use();
+    mShadowMatrixUniformBuffer.setViewMatrix(shadowCaster.getViewMatrix());
+    mShadowMatrixUniformBuffer.setProjectionMatrix(shadowCaster.getProjectionMatrix());
+    mDepthShader.use();
+    for (const Model& model : scene.getModels()) {
+        mDepthShader.RenderModel(model);
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, 800, 600);
 
-
-    mMatrixUniformBuffer.setViewMatrix(camera.getView());
-    mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
+    mCameraMatrixUniformBuffer.use();
+    mCameraMatrixUniformBuffer.setViewMatrix(camera.getView());
+    mCameraMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
 
     glBindFramebuffer(GL_FRAMEBUFFER, mMainFramebuffer);
     glStencilMask(0xFF);
-    glClea  r(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -313,7 +314,7 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     std::vector<GLubyte> data{ mMainFramebuffer.getImageData() };
 
 
-    const TEX& mainRenderTex{ mMainFramebuffer.getColorTex() };
+    const TEX& mainRenderTex{ mMainFramebuffer.getColorTexture() };
     glBindTexture(GL_TEXTURE_2D, mainRenderTex);
     unsigned int byteCount{ static_cast<unsigned int>(800) * static_cast<unsigned int>(600) * 4 * sizeof(GLubyte) };
     std::vector<GLubyte> imageData(byteCount);
@@ -326,8 +327,8 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
 }
 
 void Renderer::renderInstanced(const Camera& camera, const Scene& scene) {
-    mMatrixUniformBuffer.setViewMatrix(camera.getView());
-    mMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
+    mCameraMatrixUniformBuffer.setViewMatrix(camera.getView());
+    mCameraMatrixUniformBuffer.setProjectionMatrix(camera.getProjection());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     mInstancedShader.use();
     mInstancedShader.renderModel(300, scene.getInstancedModel());

@@ -5,12 +5,14 @@ layout (triangle_strip, max_vertices = 3) out;
 in VS_OUT {
 	vec3 normal;
 	vec3 worldPos;
+	vec3 shadowNDCPos;
 	vec2 texCoords;
 } geom_in[];
 
 out GEOM_OUT {
 	vec3 normal;
 	vec3 worldPos;
+	vec3 shadowNDCPos;
 	vec2 texCoords;
 } geom_out;
 
@@ -61,18 +63,21 @@ void main() {
 		gl_Position = projection * view * gl_in[0].gl_Position;
 		geom_out.normal = geom_in[0].normal;
 		geom_out.worldPos = geom_in[0].worldPos;
+		geom_out.shadowNDCPos = geom_in[0].shadowNDCPos;
 		geom_out.texCoords = geom_in[0].texCoords;
 		EmitVertex();
 	
 		gl_Position = projection * view * gl_in[1].gl_Position;
 		geom_out.normal = geom_in[1].normal;
 		geom_out.worldPos = geom_in[1].worldPos;
+		geom_out.shadowNDCPos = geom_in[1].shadowNDCPos;
 		geom_out.texCoords = geom_in[1].texCoords;
 		EmitVertex();
 	
 		gl_Position = projection * view * gl_in[2].gl_Position;
 		geom_out.normal = geom_in[2].normal;
 		geom_out.worldPos = geom_in[2].worldPos;
+		geom_out.shadowNDCPos = geom_in[2].shadowNDCPos;
 		geom_out.texCoords = geom_in[2].texCoords;
 		EmitVertex();
 

@@ -4,12 +4,13 @@
 #include "shadowframebuffer.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "standardframebuffer.h"
 
 class ShadowCaster {
 public:
 	ShadowCaster(int width, int height, const glm::vec3& position) : mShadowFramebuffer{ width, height } {
 		mViewMatrix = glm::lookAt(position, { 0, 0, 0 }, {0, 1, 0});
-		mProjectionMatrix = glm::ortho(-100.0, 100.0, -100.0, 100.0, 0.1, 50.0);
+		mProjectionMatrix = glm::ortho(-12.0, 12.0, -12.0, 12.0, 0.1, 50.0);
 	}
 
 	const glm::mat4& getViewMatrix() const {

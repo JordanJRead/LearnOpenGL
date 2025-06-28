@@ -4,7 +4,7 @@ layout(location = 0) in vec3 vPos;
 
 uniform mat4 model;
 
-layout(std140, binding = 0) uniform Matrices {
+layout(std140, binding = 1) uniform Matrices {
 	uniform mat4 view;
 	uniform mat4 projection;
 };

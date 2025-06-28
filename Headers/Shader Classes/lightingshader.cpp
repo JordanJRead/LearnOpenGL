@@ -25,6 +25,7 @@ LightingShader::LightingShader(std::string_view vertPath, std::string_view fragP
 	setInt("material.emissionMap", (int)TextureUtils::Type::emission);
 	setInt("material.reflectionMap", (int)TextureUtils::Type::reflection);
 	setInt("skybox", (int)TextureUtils::Type::skybox);
+	setInt("shadowMap", 5);
 	setFloat("material.shininess", 32);
 }
 
@@ -49,6 +50,8 @@ void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scen
 	setUniformSpotLights(scene.getSpotLights());
 	setUniformMaxSpotLights(scene.getSpotLights().size());
 	setUniformTime(glfwGetTime());
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(scene.getShadowCaster().getDepthTexture(), GL_TEXTURE_2D);
 }
 
 void LightingShader::setUniformDoExploding(bool b) const {

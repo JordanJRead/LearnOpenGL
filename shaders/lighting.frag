@@ -52,8 +52,11 @@ uniform samplerCube skybox;
 in GEOM_OUT {
 	vec3 normal;
 	vec3 worldPos;
+	vec3 shadowNDCPos;
 	vec2 texCoords;
 } frag_in;
+
+uniform sampler2D shadowMap;
 
 vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir);
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir);
@@ -88,6 +91,15 @@ void main() {
 	vec3 finalColor = reflectColor * reflectMapSample + resultColor * (1 - reflectMapSample);
 
 	FragColor = vec4(finalColor, texture(material.diffuseMap, frag_in.texCoords).w);
+
+	vec2 shadowMapCoordinate = (frag_in.shadowNDCPos.xy + vec2(1, 1)) / 2.0;
+	float closestShadowDepth = texture(shadowMap, shadowMapCoordinate).r;
+	float currentShadowDepth = (frag_in.shadowNDCPos.z + 1) / 2.0;
+
+	if (closestShadowDepth <= currentShadowDepth) {
+		FragColor = vec4(0, 0, 0, 1);
+	}
+	FragColor = vec4(closestShadowDepth, closestShadowDepth, closestShadowDepth, 1);
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir) {

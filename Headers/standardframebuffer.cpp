@@ -32,6 +32,6 @@ std::vector<GLubyte> StandardFramebuffer::getImageData() const {
 	return imageData;
 }
 
-const TEX& StandardFramebuffer::getColorTex() const {
+const TEX& StandardFramebuffer::getColorTexture() const {
 	return mColorTEX;
 }

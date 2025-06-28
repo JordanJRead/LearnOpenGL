@@ -38,7 +38,8 @@ public:
 
 private:
     MultisampleFramebuffer mMainFramebuffer;
-    MatrixUniformBuffer mMatrixUniformBuffer;
+    MatrixUniformBuffer mCameraMatrixUniformBuffer;
+    MatrixUniformBuffer mShadowMatrixUniformBuffer;
 
     MultisampleFramebuffer mDynamicCubeMapTemporaryFramebuffer;
     std::vector<DynamicCubeMap> mDynamicCubeMaps;
