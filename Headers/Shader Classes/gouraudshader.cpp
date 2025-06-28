@@ -69,9 +69,8 @@ void GouraudShader::setUniformPointLights(const std::vector<PointLight>& pointLi
 }
 void GouraudShader::setUniformDirLight(const DirLight& dirLight) const {
 	setVector3("dirLight.dir", dirLight.dir);
-	setVector3("dirLight.ambient", dirLight.colors.ambient);
-	setVector3("dirLight.diffuse", dirLight.colors.diffuse);
-	setVector3("dirLight.specular", dirLight.colors.specular);
+	setVector3("dirLight.color", dirLight.color);
+	setFloat("dirLight.ambientScale", dirLight.ambientScale);
 }
 void GouraudShader::setUniformSpotLights(const std::vector<SpotLight>& spotLights) const {
 	std::size_t iMax{ spotLights.size() < 4 ? spotLights.size() : 4 };

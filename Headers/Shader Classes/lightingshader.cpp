@@ -53,6 +53,7 @@ void LightingShader::setPerFrameUniforms(const Camera& camera, const Scene& scen
 	setUniformTime(glfwGetTime());
 	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, scene.getShadowCaster().getDepthTexture());
+	setBool("depth", depth);
 }
 
 void LightingShader::setUniformDoExploding(bool b) const {
@@ -92,9 +93,8 @@ void LightingShader::setUniformPointLights(const std::vector<PointLight>& pointL
 }
 void LightingShader::setUniformDirLight(const DirLight& dirLight) const {
 	setVector3("dirLight.dir", dirLight.dir);
-	setVector3("dirLight.ambient", dirLight.colors.ambient);
-	setVector3("dirLight.diffuse", dirLight.colors.diffuse);
-	setVector3("dirLight.specular", dirLight.colors.specular);
+	setVector3("dirLight.color", dirLight.color);
+	setFloat("dirLight.ambientScale", dirLight.ambientScale);
 }
 void LightingShader::setUniformSpotLights(const std::vector<SpotLight>& spotLights) const {
 	std::size_t iMax{ spotLights.size() < 4 ? spotLights.size() : 4 };

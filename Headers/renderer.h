@@ -30,6 +30,7 @@ class Renderer {
 public:
     Renderer(int screenWidth, int screenHeight, App& app);
     void startBlurEffect();
+    void toggleDepth();
     void createDynamicCubeMaps(Scene& scene, const Camera& mainCamera);
     void renderScene(const Camera& camera, const Scene& scene, bool drawBorders);
     void renderInstanced(const Camera& camera, const Scene& scene);

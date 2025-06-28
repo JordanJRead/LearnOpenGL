@@ -39,6 +39,9 @@ void App::processInput(GLFWwindow* window, Renderer& renderer) {
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
         mCamera.moveBy(-moveMag * mCamera.getUp());
     }
+    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+        renderer.toggleDepth();
+    }
 }
 
 void App::mouseCallback(GLFWwindow* window, double xPos, double yPos) {
@@ -111,6 +114,9 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 
     mScene.addModel("Objects/Floor/Floor.obj", {});
     mScene.addModel("Objects/Cube/cube.obj", { {0, 5, 0} });
+    mScene.addModel("Objects/Cube/cube.obj", { {0, 1, 0}, {0.2, 0.2, 0.2} });
+    mScene.addModel("Objects/Cube/cube.obj", { {1, 1, 0}, {0.2, 0.2, 0.2} });
+    mScene.addModel("Objects/Cube/cube.obj", { {4, 0, 0}, {0.2, 30, 0.2}, { 10, 0, 0 } });
 
     mRenderer.createDynamicCubeMaps(mScene, mCamera);
     mRenderer.createDynamicCubeMaps(mScene, mCamera);

@@ -19,6 +19,7 @@ public:
 	LightingShader(std::string_view vertPath, std::string_view geomPath, std::string_view fragPath);
 	void setPerFrameUniforms(const Camera& camera, const Scene& scene) const;
 	void renderModel(const Model& model, const TEX& environmentCubeMapTex);
+	void toggleDepth() { depth = !depth; }
 
 protected:
 	void setUniformDoExploding(bool b) const;
@@ -35,6 +36,8 @@ protected:
 	void setUniformMaxSpotLights(int count) const;
 
 	void setTexture(unsigned int textureIndex, TextureUtils::Type type);
+
+	bool depth = false;
 };
 
 #endif

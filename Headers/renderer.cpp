@@ -6,7 +6,13 @@
 #include "texture2dmanager.h"
 
 void Renderer::startBlurEffect() {
+    mScreenQuadShader.use();
     mScreenQuadShader.startEffect();
+}
+
+void Renderer::toggleDepth() {
+    mLightingShader.use();
+    mLightingShader.toggleDepth();
 }
 
 /// <summary>
@@ -284,7 +290,6 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     for (const Model& model : scene.getModels()) {
         mDepthShader.RenderModel(model);
     }
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, camera.getScreenWidth(), camera.getScreenHeight());
 
     mCameraMatrixUniformBuffer.use();

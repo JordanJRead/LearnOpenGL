@@ -18,7 +18,7 @@ public:
 	void Correct(const TEX& tex) {
         use();
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(tex, GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, tex);
 
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);

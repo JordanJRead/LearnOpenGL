@@ -28,7 +28,6 @@ uniform int maxPointLights;
 
 struct DirLight {
 	vec3 dir;
-	
 	vec3 color;
 	float ambientScale;
 };
@@ -57,7 +56,7 @@ in GEOM_OUT {
 } frag_in;
 
 uniform sampler2D shadowMap;
-
+uniform bool depth;
 vec3 CalcDirLight   (DirLight   dirLight,   vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir);
 vec3 CalcPointLight (PointLight pointLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir);
 vec3 CalcSpotLight  (SpotLight  spotLight , vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir);
@@ -70,7 +69,7 @@ void main() {
 
 	vec3 viewDir = normalize(viewPos - frag_in.worldPos);
 
-	//resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor, viewDir	);
+	resultColor += CalcDirLight(dirLight, normal, objectColor, objectSpecularColor, viewDir	);
 	
 	for (int i = 0; i < min(N_POINT_LIGHTS, maxPointLights); i++) {
 		resultColor += CalcPointLight(pointLights[i], normal, objectColor, objectSpecularColor, viewDir);
@@ -89,16 +88,8 @@ void main() {
 	//vec3 refractColor = texture(skybox, refractDir).rgb;
 
 	vec3 finalColor = reflectColor * reflectMapSample + resultColor * (1 - reflectMapSample);
-	
-	vec2 shadowMapCoordinate = (frag_in.shadowNDCPos.xy + vec2(1, 1)) / 2.0;
-	float closestShadowDepth = texture(shadowMap, shadowMapCoordinate).r;
-	float currentShadowDepth = (frag_in.shadowNDCPos.z + 1) / 2.0;
 
 	FragColor = vec4(finalColor, texture(material.diffuseMap, frag_in.texCoords).w);
-
-	if (closestShadowDepth + 0.01f < currentShadowDepth) {
-		FragColor = vec4(0, 0, 0, 1);
-	}
 }
 
 vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectSpecularColor, vec3 viewDir) {
@@ -112,6 +103,15 @@ vec3 CalcDirLight(DirLight dirLight, vec3 normal, vec3 objectColor, vec3 objectS
 	vec3 halfwayVector = normalize(viewDir + lightDir);
 	float specularFactor = pow(max(dot(normal, halfwayVector), 0.0), material.shininess);
 	vec3 specularColor = dirLight.color * objectSpecularColor * specularFactor;
+	
+	vec2 shadowMapCoordinate = (frag_in.shadowNDCPos.xy + vec2(1, 1)) * 0.5;
+	float closestShadowDepth = texture(shadowMap, shadowMapCoordinate).r;
+	float currentShadowDepth = (frag_in.shadowNDCPos.z + 1) / 2.0;
+	float bias = max(0.05 * (1.0 - dot(normal, normalize(vec3(0.1, 10, 0.3)))), 0.005) * 0.3;
+
+	if (closestShadowDepth + bias < currentShadowDepth) {
+		return ambientColor;
+	}
 	return diffuseColor + specularColor + ambientColor;
 }
 

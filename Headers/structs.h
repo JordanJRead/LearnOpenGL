@@ -30,7 +30,8 @@ struct Attenuation {
 
 struct DirLight {
 	glm::vec3 dir;
-	MultiColors colors;
+	glm::vec3 color;
+	float ambientScale;
 };
 
 #endif

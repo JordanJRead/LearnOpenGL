@@ -31,9 +31,9 @@ public:
 	const std::vector<Model>&      getTransparentModels() const { return mTransparentModels; }
 	const Model&                   getInstancedModel() const { return mInstancedModel; }
 
-	void setDirLight(const DirLight& dirLight) {
-		mDirLight = dirLight;
-	}
+	//void setDirLight(const DirLight& dirLight) {
+	//	mDirLight = dirLight;
+	//}
 	void addSpotLight(const glm::vec3& color, const glm::vec3& direction, float cutoffDot, float outerDot, const glm::vec3& position, float ambientScale = 0.2) {
 		mSpotLights.emplace_back(color, direction, cutoffDot, outerDot, position, ambientScale);
 	}
@@ -56,9 +56,9 @@ private:
 	std::vector<PointLight> mPointLights{};
 	std::vector<SpotLight> mSpotLights{};
 	Model mInstancedModel;
-	DirLight mDirLight{};
+	DirLight mDirLight{ -glm::normalize(glm::vec3{0.1, 20, 0.3}), { 1, 1, 1 }, 0.2f };
 	CubeMap mSkyBoxCubeMap;
-	ShadowCaster mShadowCaster{ 1024, {0.1, 10, 0} };
+	ShadowCaster mShadowCaster{ 1024 * 8, {0.1, 20, 0.3} };
 };
 
 #endif

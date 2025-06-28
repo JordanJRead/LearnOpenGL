@@ -10,5 +10,5 @@ layout(std140, binding = 1) uniform Matrices {
 };
 
 void main() {
-	gl_Position = projection * view * vec4(vPos, 1);
+	gl_Position = projection * view * model * vec4(vPos, 1);
 }
