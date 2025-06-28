@@ -58,7 +58,7 @@ private:
 	Model mInstancedModel;
 	DirLight mDirLight{};
 	CubeMap mSkyBoxCubeMap;
-	ShadowCaster mShadowCaster{ 1024, 1024, {0.1, 10, 0} };
+	ShadowCaster mShadowCaster{ 1024, {0.1, 10, 0} };
 };
 
 #endif

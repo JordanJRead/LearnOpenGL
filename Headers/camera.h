@@ -30,6 +30,9 @@ public:
     void setPitch(float pitch);
     void setYaw(float yaw);
 
+    int getScreenWidth()  const { return mScreenWidth; }
+    int getScreenHeight() const { return mScreenHeight; }
+
 private:
     bool mIsFirstMouse{ true };
     float mPrevMouseX{ 0 };

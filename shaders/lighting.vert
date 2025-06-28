@@ -28,7 +28,7 @@ void main() {
 
 	vec4 worldPos4 = model * vec4(vPos, 1);
 	vs_out.worldPos = worldPos4.xyz;
-	vs_out.texCoords = vTexCoords * 20;
+	vs_out.texCoords = vTexCoords;
 	//gl_Position = projection * view * worldPos4;
 	gl_Position = worldPos4; // Matrix calculation will be done in the geometry shader
 

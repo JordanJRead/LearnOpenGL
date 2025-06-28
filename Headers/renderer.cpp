@@ -67,7 +67,7 @@ DynamicCubeMap Renderer::createDynamicCubeMap(const glm::vec3& pos, const Scene&
         cubeMap.setFace(mDynamicCubeMapTemporaryFramebuffer, i);
     }
     mCameraMatrixUniformBuffer.setAllMatrices(mainCamera);
-    glViewport(0, 0, 800, 600); // todo
+    glViewport(0, 0, mainCamera.getScreenWidth(), mainCamera.getScreenHeight());
     glBindFramebuffer(GL_FRAMEBUFFER, mMainFramebuffer);
     return cubeMap;
 }
@@ -276,7 +276,7 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
     shadowCaster.useFramebuffer();
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH);
-    glViewport(0, 0, 1024, 1024);
+    glViewport(0, 0, shadowCaster.getShadowMapSize(), shadowCaster.getShadowMapSize());
     mShadowMatrixUniformBuffer.use();
     mShadowMatrixUniformBuffer.setViewMatrix(shadowCaster.getViewMatrix());
     mShadowMatrixUniformBuffer.setProjectionMatrix(shadowCaster.getProjectionMatrix());
@@ -285,7 +285,7 @@ void Renderer::renderScene(const Camera& camera, const Scene& scene, bool drawBo
         mDepthShader.RenderModel(model);
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, camera.getScreenWidth(), camera.getScreenHeight());
 
     mCameraMatrixUniformBuffer.use();
     mCameraMatrixUniformBuffer.setViewMatrix(camera.getView());

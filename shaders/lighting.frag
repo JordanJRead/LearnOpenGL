@@ -96,7 +96,7 @@ void main() {
 
 	FragColor = vec4(finalColor, texture(material.diffuseMap, frag_in.texCoords).w);
 
-	if (closestShadowDepth + 0.1f < currentShadowDepth) {
+	if (closestShadowDepth + 0.01f < currentShadowDepth) {
 		FragColor = vec4(0, 0, 0, 1);
 	}
 }

@@ -8,7 +8,7 @@
 
 class ShadowCaster {
 public:
-	ShadowCaster(int width, int height, const glm::vec3& position) : mShadowFramebuffer{ width, height } {
+	ShadowCaster(int shadowMapSize, const glm::vec3& position) : mShadowFramebuffer{ shadowMapSize, shadowMapSize }, mShadowMapSize{ shadowMapSize } {
 		mViewMatrix = glm::lookAt(position, { 0, 0, 0 }, {0, 1, 0});
 		mProjectionMatrix = glm::ortho(-12.0, 12.0, -12.0, 12.0, 0.1, 50.0);
 	}
@@ -25,12 +25,17 @@ public:
 		return mShadowFramebuffer.getDepthTexture();
 	}
 
+	int getShadowMapSize() const {
+		return mShadowMapSize;
+	}
+
 	void useFramebuffer() const { mShadowFramebuffer.use(); };
 
 private:
 	ShadowFramebuffer mShadowFramebuffer;
 	glm::mat4 mViewMatrix;
 	glm::mat4 mProjectionMatrix;
+	int mShadowMapSize;
 };
 
 #endif
