@@ -158,8 +158,8 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
     //transform = { {-3, 3, -3.5 }, {1, 1, 1}, {0, 0, 0} };
     //mScene.addModel("Objects/Cube/cube.obj", transform, false, true);
 
-    transform = { {-7.6287, 1.399, 4.954}, {0.498, 0.498, 0.498}, {0, 0, 0} };
-    //mScene.addModel("Objects/ReflectSphere/sphere.obj", transform, true);
+    transform = { {0, 3, 0}, {1, 1, 1}, {0, 0, 0} };
+    mScene.addModel("Objects/ReflectSphere/sphere.obj", transform, true);
     //mScene.addModel("Objects/Cube/cube.obj", transform, true);
     mScene.addModel("Objects/Scene/scene.obj", { {}, {1, 1, 1}, {} });
 
@@ -169,7 +169,7 @@ App::App(int screenWidth, int screenHeight, GLFWwindow* window)
 }
 
 void App::runFrame() {
-    mScene.sortTransparent(mGuidedCamera.getPos());
+    mScene.sortTransparent(mCamera.getPos());
     //mRenderer.createDynamicCubeMaps(mScene, mCamera);
 
     glfwSwapInterval(0); // show true fps
@@ -185,8 +185,8 @@ void App::runFrame() {
 
     mScene.spinSphere(mDeltaTime);
 
-    mRenderer.renderScene(mGuidedCamera, mScene, true);
-    mRenderer.renderInstanced(mGuidedCamera, mScene);
+    mRenderer.renderScene(mCamera, mScene, true);
+    mRenderer.renderInstanced(mCamera, mScene);
     //mRenderer.renderGeometry();
 
     glfwSwapBuffers(mWindow);
